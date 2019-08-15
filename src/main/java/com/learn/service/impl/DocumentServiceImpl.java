@@ -1,12 +1,12 @@
 package com.learn.service.impl;
 
 
-import com.learn.common.elastic.common.ElasticSearchClient;
 import com.learn.common.elastic.common.result.CommonResult;
 import com.learn.common.elastic.data.Document;
 import com.learn.mapper.CommentMapper;
 import com.learn.service.DocumentService;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.rest.RestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,30 +34,43 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public void fromMysql(String index) {
-		List<Map<String,Object>> result = commentMapper.getAll();
+	public CommonResult fromMysql(String index) {
+		List<Map<String,Object>> list = commentMapper.getAll();
+		CommonResult result;
 		try {
-			CommonResult result1 = document.batchAscendingId(index,result);
-			System.out.println(result1.getData());
+			result = document.batchAscendingId(index,list);
+			System.out.println(result.getData());
 		} catch (IOException e) {
-			e.printStackTrace();
+			result = CommonResult.failed(RestStatus.EXPECTATION_FAILED,"IOException",0);
 		}
-
+		return result;
 	}
 
 	@Override
-	public void fromOracle(String index) {
-
+	public CommonResult fromOracle(String index) {
+    	return null;
 	}
 
 	@Override
-	public int count(String index) {
-		return 0;
+	public CommonResult count(String index) {
+		CommonResult result;
+		try {
+			result = document.count(index);
+		} catch (IOException e) {
+			result = CommonResult.failed(RestStatus.EXPECTATION_FAILED,"IOException",0);
+		}
+		return result;
 	}
 
 	@Override
-	public boolean delete(String index) {
-		return false;
+	public CommonResult delete(String index,String id) {
+		CommonResult result;
+		try {
+			result = document.delete(index,id);
+		} catch (IOException e) {
+			result = CommonResult.failed(RestStatus.EXPECTATION_FAILED,"IOException",0);
+		}
+		return result;
 	}
 
 }

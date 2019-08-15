@@ -24,7 +24,7 @@ import java.util.List;
  * @create 2019/7/24
  *
  */
-public class simpleSearch extends QueryOptions {
+public class SimpleSearch extends QueryOptions {
 
 	private SearchTypeEnum searchType = SearchTypeEnum.matchAllSearch;
 
@@ -32,11 +32,11 @@ public class simpleSearch extends QueryOptions {
 	 * Only use for simple query.
 	 * Default is matchAllSearch.
 	 * */
-	public simpleSearch(String indice, RestHighLevelClient client){
+	public SimpleSearch(String indice, RestHighLevelClient client){
 		super(indice, client);
 	}
 
-	public simpleSearch(String indice, RestHighLevelClient client, SearchTypeEnum type){
+	public SimpleSearch(String indice, RestHighLevelClient client, SearchTypeEnum type){
 		super(indice, client);
 		if(searchType != null){
 			searchType = type;
@@ -106,7 +106,7 @@ public class simpleSearch extends QueryOptions {
 		return sourceBuilder;
 	}
 
-	public SearchSourceBuilder fullText(QueryCondition querycondition,SearchTypeEnum searchType){
+	private SearchSourceBuilder fullText(QueryCondition querycondition,SearchTypeEnum searchType){
 		if (!(querycondition instanceof FullTextCondition)) {
 			throw new IllegalArgumentException("FullText query need FullText query condition");
 		}

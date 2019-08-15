@@ -35,7 +35,8 @@ public enum SearchTypeEnum {
 		return name;
 	}
 
-	SearchTypeEnum(int index, String name) {
+	SearchTypeEnum(int index,String name) {
+		this.index = index;
 		this.name = name;
 	}
 
@@ -43,4 +44,5 @@ public enum SearchTypeEnum {
 	public String toString() {
 		return "index: " + this.index + ", name: " + this.name;
 	}
+
 }

@@ -30,7 +30,7 @@ public class BasicSearchTest {
 		String[] ids = new String[]{"x1F4g2wB8djZHRb7DRaH","B1F4g2wB8djZHRb7DReH"};
 		((FullTextCondition) condition).setValue(ss);
 		//((TermLevelCondition) condition).setIds(ids);
-		simpleSearch search = new simpleSearch("document",client,typeEnum);
+		SimpleSearch search = new SimpleSearch("document",client,typeEnum);
 		search.executeQuery(condition);
 
 	}

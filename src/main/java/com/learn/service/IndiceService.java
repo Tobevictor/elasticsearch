@@ -8,13 +8,13 @@ import java.util.Map;
  */
 public interface IndiceService {
 
-	Boolean create(String index);
+	int create(String index);
 
-	Boolean create(String index,String jsonString);
+	int create(String index,String jsonString);
 
-	Boolean create(String index, Map<String,Object>map);
+	int create(String index, Map<String,Object>map);
 
-	Boolean delete(String index);
+	int delete(String index);
 
-	Boolean isExist(String index);
+	boolean isExist(String index);
 }

@@ -1,16 +1,18 @@
 package com.learn.service;
 
+import com.learn.common.elastic.common.result.CommonResult;
+
 /**
  * @Date 2019/8/14 17:18
  * @Created by dshuyou
  */
 public interface DocumentService {
 
-	void fromMysql(String index);
+	CommonResult fromMysql(String index);
 
-	void fromOracle(String index);
+	CommonResult fromOracle(String index);
 
-	int count(String index);
+	CommonResult count(String index);
 
-	boolean delete(String index);
+	CommonResult delete(String index,String id);
 }
