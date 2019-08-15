@@ -1,2 +1,1 @@
-# elaseicsearch
-Elasticsearch learn
+这是一个ElasticSearch的项目。功能包括操作索引，文档和一些常用的查询方法。
