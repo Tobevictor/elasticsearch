@@ -1,7 +1,6 @@
 package com.learn.common.elastic.data;
 
-import com.learn.common.elastic.common.ElasticSearchClient;
-import com.learn.common.elastic.common.result.CommonResult;
+import com.learn.common.elastic.common.result.ElasticResult;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
@@ -88,8 +87,8 @@ public class IndicesTest {
 
 	@Test
 	public void get() throws IOException {
-		CommonResult result = indices.get("fenci");
-		System.out.println(result.getData());
+		Object result = indices.get("fenci");
+		System.out.println(result);
 	}
 
 	@Test

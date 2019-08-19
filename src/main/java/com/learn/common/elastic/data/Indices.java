@@ -1,6 +1,5 @@
 package com.learn.common.elastic.data;
 
-import com.learn.common.elastic.common.result.CommonResult;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.admin.indices.cache.clear.ClearIndicesCacheRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -20,7 +19,8 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.rest.RestStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -33,7 +33,7 @@ import java.util.Map;
  * 索引工具类
  */
 public class Indices {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(Indices.class);
 	private final int SHARDS = 3;
 	private final int REPLICAS = 2;
 	public RestHighLevelClient client;
@@ -46,9 +46,10 @@ public class Indices {
 	/**
 	 * 创建默认索引
 	 */
-	public int create(String index) throws IOException {
+	public void create(String index) throws IOException {
 		if(isExists(index)){
-			return RestStatus.NOT_ACCEPTABLE.getStatus();
+			LOGGER.error("document already exist");
+			return;
 		}
 		CreateIndexRequest request = new CreateIndexRequest(index);
 		request.settings(Settings.builder()
@@ -67,7 +68,6 @@ public class Indices {
 		request.mapping(mapping);
 
 		client.indices().create(request, RequestOptions.DEFAULT);
-		return RestStatus.OK.getStatus();
 	}
 
 	/**
@@ -75,9 +75,10 @@ public class Indices {
 	 * @param index
 	 * @param jsonString
 	 */
-	public int create(String index, String jsonString) throws IOException {
+	public void create(String index, String jsonString) throws IOException {
 		if(isExists(index)){
-			return RestStatus.NOT_ACCEPTABLE.getStatus();
+			LOGGER.error("document already exist");
+			return;
 		}
 		CreateIndexRequest request = new CreateIndexRequest(index);
 		request.settings(Settings.builder()
@@ -90,16 +91,16 @@ public class Indices {
 		request.mapping(jsonString, XContentType.JSON);
 
 		client.indices().create(request, RequestOptions.DEFAULT);
-		return RestStatus.OK.getStatus();
 	}
 
 	/**
 	 * 同步创建索引
 	 * @param index
 	 */
-	public int createByXcontent(String index,XContentBuilder builder) throws IOException {
+	public void createByXcontent(String index,XContentBuilder builder) throws IOException {
 		if(isExists(index)){
-			return RestStatus.NOT_ACCEPTABLE.getStatus();
+			LOGGER.error("document already exist");
+			return;
 		}
 		CreateIndexRequest request = new CreateIndexRequest(index);
 		request.settings(Settings.builder()
@@ -112,16 +113,16 @@ public class Indices {
 
 		request.mapping(builder);
 		client.indices().create(request, RequestOptions.DEFAULT);
-		return RestStatus.OK.getStatus();
 	}
 
 	/**
 	 * 同步创建索引
 	 * @param index
 	 */
-	public int create(String index,Map<String,Object> mapping) throws IOException {
+	public void create(String index,Map<String,Object> mapping) throws IOException {
 		if(isExists(index)){
-			return RestStatus.NOT_ACCEPTABLE.getStatus();
+			LOGGER.error("document already exist");
+			return;
 		}
 		CreateIndexRequest request = new CreateIndexRequest(index);
 		request.settings(Settings.builder()
@@ -134,7 +135,6 @@ public class Indices {
 		request.mapping(mapping);
 
 		client.indices().create(request, RequestOptions.DEFAULT);
-		return RestStatus.OK.getStatus();
 	}
 
 	/**
@@ -142,9 +142,10 @@ public class Indices {
 	 * @param index
 	 * @param jsonString
 	 */
-	public int createAsync(String index, String jsonString) throws IOException {
+	public void createAsync(String index, String jsonString) throws IOException {
 		if(isExists(index)){
-			return RestStatus.NOT_ACCEPTABLE.getStatus();
+			LOGGER.error("document already exist");
+			return;
 		}
 		CreateIndexRequest request = new CreateIndexRequest(index);
 		request.settings(Settings.builder()
@@ -165,21 +166,19 @@ public class Indices {
 			}
 		};
 		client.indices().createAsync(request,RequestOptions.DEFAULT,listener);
-		return RestStatus.OK.getStatus();
 	}
 
 	/**
 	 * 删除索引
 	 * @param index
 	 */
-	public int delete(String index) throws IOException {
+	public void delete(String index) throws IOException {
 		if(!isExists(index)){
-			return RestStatus.NOT_FOUND.getStatus();
+			LOGGER.error("index not found");
+			return;
 		}
 		DeleteIndexRequest request = new DeleteIndexRequest(index);
 		client.indices().delete(request,RequestOptions.DEFAULT);
-		return RestStatus.OK.getStatus();
-
 	}
 
 	/**
@@ -190,7 +189,8 @@ public class Indices {
 		try {
 			GetIndexRequest request = new GetIndexRequest(index);
 			return client.indices().exists(request, RequestOptions.DEFAULT);
-		}catch (Exception e){
+		}catch (IOException e){
+			LOGGER.error("IOException");
 			return false;
 		}
 	}
@@ -200,24 +200,25 @@ public class Indices {
 	 * @param indexs
 	 * @param map
 	 */
-	public int update(Map<String, Object> map, String... indexs) throws IOException {
+	public void update(Map<String, Object> map, String... indexs) throws IOException {
 		if(!isExists(indexs)){
-			return RestStatus.NOT_FOUND.getStatus();
+			LOGGER.error("index not found");
+			return;
 		}
 		UpdateSettingsRequest requestMultiple =
 				new UpdateSettingsRequest(indexs);
 
 		client.indices().putSettings(requestMultiple, RequestOptions.DEFAULT);
-		return RestStatus.OK.getStatus();
 	}
 
 	/**
 	 * 获取索引
 	 * @param index
 	 */
-	public CommonResult get(String... index) throws IOException {
+	public Object get(String... index) throws IOException {
 		if(!isExists(index)){
-			return CommonResult.failed(RestStatus.NOT_FOUND);
+			LOGGER.error("index not found");
+			return null;
 		}
 		GetIndexRequest request = new GetIndexRequest(index);
 		//request.includeDefaults(true);
@@ -227,22 +228,22 @@ public class Indices {
 		Map<String,Settings> setting = response.getSettings();
 		String[] indices = response.getIndices();
 		Map<String, MappingMetaData> mapping = response.getMappings();
-		return CommonResult.success(setting+"/"+ Arrays.toString(indices) +"/"+mapping);
+		return setting+"/"+ Arrays.toString(indices) +"/"+mapping;
 	}
 
 	/**
 	 * 刷新请求
 	 * @param index
 	 */
-	public int refresh(String... index) throws IOException {
+	public void refresh(String... index) throws IOException {
 		if(!isExists(index)){
-			return RestStatus.NOT_FOUND.getStatus();
+			LOGGER.error("index not found");
+			return;
 		}
 		RefreshRequest request = new RefreshRequest(index);
 		request.indicesOptions(IndicesOptions.lenientExpandOpen());
 
 		client.indices().refresh(request, RequestOptions.DEFAULT);
-		return RestStatus.OK.getStatus();
 	}
 
 	/**
@@ -250,9 +251,10 @@ public class Indices {
 	 * @param field
 	 * @param index
 	 */
-	public int clearCache(String field,String... index) throws IOException {
+	public void clearCache(String field,String... index) throws IOException {
 		if(!isExists(index)){
-			return RestStatus.NOT_FOUND.getStatus();
+			LOGGER.error("index not found");
+			return;
 		}
 		ClearIndicesCacheRequest request = new ClearIndicesCacheRequest(index);
 		request.indicesOptions(IndicesOptions.lenientExpandOpen());
@@ -262,7 +264,6 @@ public class Indices {
 		request.fields(field);
 
 		client.indices().clearCache(request, RequestOptions.DEFAULT);
-		return RestStatus.OK.getStatus();
 
 	}
 
@@ -270,9 +271,10 @@ public class Indices {
 	 * 刷新索引
 	 * @param index
 	 */
-	public int flush(String... index) throws IOException {
+	public void flush(String... index) throws IOException {
 		if(!isExists(index)){
-			return RestStatus.NOT_FOUND.getStatus();
+			LOGGER.error("index not found");
+			return;
 		}
 		FlushRequest request = new FlushRequest(index);
 		request.indicesOptions(IndicesOptions.lenientExpandOpen());
@@ -280,7 +282,5 @@ public class Indices {
 		//request.force(true);
 
 		client.indices().flush(request, RequestOptions.DEFAULT);
-		return RestStatus.OK.getStatus();
-
 	}
 }

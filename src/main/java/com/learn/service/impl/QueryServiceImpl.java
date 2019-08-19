@@ -1,11 +1,15 @@
 package com.learn.service.impl;
 
+import com.learn.common.elastic.common.result.ElasticResult;
 import com.learn.common.elastic.condition.QueryCondition;
 import com.learn.common.elastic.query.search.GeoSearch;
 import com.learn.common.elastic.query.search.SearchTypeEnum;
 import com.learn.common.elastic.query.search.SimpleSearch;
 import com.learn.service.QueryService;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.rest.RestStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,49 +22,62 @@ import java.util.List;
  */
 @Service
 public class QueryServiceImpl implements QueryService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(QueryServiceImpl.class);
 
 	@Autowired
 	private RestHighLevelClient client;
 
 	@Override
-	public List<String> simpleQuery(String index,QueryCondition condition) {
+	public ElasticResult simpleQuery(String index, QueryCondition condition) {
 		SimpleSearch simpleSearch = new SimpleSearch(index,client);
-		List<String> list;
+		List<String> list = null;
+		ElasticResult result;
 		try {
 			list = simpleSearch.executeQuery(condition);
+			result =  ElasticResult.success("simpleQuery success",list);
 		} catch (IOException e) {
-			return null;
+			LOGGER.error("IOException");
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"simpleQuery failed,error:"+e,list);
 		}
-		return list;
+		return result;
 	}
 
 	@Override
-	public List<String> simpleQuery(SearchTypeEnum type, String index, QueryCondition condition) {
-		SimpleSearch simpleSearch = new SimpleSearch(index,client,type);
-		List<String> list;
+	public ElasticResult simpleQuery(String type, String index, QueryCondition condition) {
+		SearchTypeEnum searchTypeEnum = SearchTypeEnum.valueOf(type);
+		SimpleSearch simpleSearch = new SimpleSearch(index,client,searchTypeEnum);
+		List<String> list = null;
+		ElasticResult result;
 		try {
 			list = simpleSearch.executeQuery(condition);
+			result =  ElasticResult.success(type+"query success",list);
 		} catch (IOException e) {
-			return null;
+			LOGGER.error("IOException");
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"simpleQuery failed,error:"+e,list);
 		}
-		return list;
+		return result;
 	}
 
 
 	@Override
-	public List<String> geoQuery(SearchTypeEnum type, String index, QueryCondition condition) {
-		GeoSearch geoSearch = new GeoSearch(index,client,type);
-		List<String> list;
+	public ElasticResult geoQuery(String type, String index, QueryCondition condition) {
+		SearchTypeEnum searchTypeEnum = SearchTypeEnum.valueOf(type);
+		GeoSearch geoSearch = new GeoSearch(index,client,searchTypeEnum);
+		List<String> list = null;
+		ElasticResult result;
 		try {
 			list = geoSearch.executeQuery(condition);
+			result =  ElasticResult.success(type+"query success",list);
 		} catch (Throwable throwable) {
-			return null;
+			LOGGER.error("IOException");
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"geoQuery failed,error:"+throwable,list);
+
 		}
-		return list;
+		return result;
 	}
 
 	@Override
-	public List<String> multiQuery(String index, QueryCondition condition) {
+	public ElasticResult multiQuery(String index, QueryCondition condition) {
 		return null;
 	}
 

@@ -1,5 +1,8 @@
 package com.learn.service;
 
+import com.learn.common.elastic.common.result.ElasticResult;
+import com.learn.common.elastic.common.result.ServiceResult;
+
 import java.util.Map;
 
 /**
@@ -8,13 +11,13 @@ import java.util.Map;
  */
 public interface IndiceService {
 
-	int create(String index);
+	ElasticResult create(String index);
 
-	int create(String index,String jsonString);
+	ElasticResult create(String index,String jsonString);
 
-	int create(String index, Map<String,Object>map);
+	ElasticResult create(String index, Map<String,Object>map);
 
-	int delete(String index);
+	ElasticResult delete(String index);
 
-	boolean isExist(String index);
+	ElasticResult isExist(String index);
 }

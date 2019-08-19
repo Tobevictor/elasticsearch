@@ -1,5 +1,6 @@
 package com.learn.service;
 
+import com.learn.common.elastic.common.result.ElasticResult;
 import com.learn.common.elastic.condition.QueryCondition;
 import com.learn.common.elastic.query.search.SearchTypeEnum;
 
@@ -11,11 +12,11 @@ import java.util.List;
  */
 public interface QueryService {
 
-	List<String> simpleQuery(String index, QueryCondition condition);
+	ElasticResult simpleQuery(String index, QueryCondition condition);
 
-	List<String> simpleQuery(SearchTypeEnum type, String index, QueryCondition condition);
+	ElasticResult simpleQuery(String type, String index, QueryCondition condition);
 
-	List<String> geoQuery(SearchTypeEnum type, String index, QueryCondition condition);
+	ElasticResult geoQuery(String type, String index, QueryCondition condition);
 
-	List<String> multiQuery(String index, QueryCondition condition);
+	ElasticResult multiQuery(String index, QueryCondition condition);
 }

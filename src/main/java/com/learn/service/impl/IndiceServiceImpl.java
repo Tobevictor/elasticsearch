@@ -1,9 +1,12 @@
 package com.learn.service.impl;
 
+import com.learn.common.elastic.common.result.ElasticResult;
 import com.learn.common.elastic.data.Indices;
 import com.learn.service.IndiceService;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.rest.RestStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,58 +20,71 @@ import java.util.Map;
  */
 @Service
 public class IndiceServiceImpl implements IndiceService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(IndiceServiceImpl.class);
 
 	@Autowired
 	private RestHighLevelClient client;
 	private Indices indices;
-	private int restStaus;
 	@PostConstruct
 	public void init() {
 		indices = new Indices(client);
 	}
 
 	@Override
-	public int create(String index) {
+	public ElasticResult create(String index) {
+		ElasticResult result;
 		try {
-			restStaus = indices.create(index);
+			indices.create(index);
+			result = ElasticResult.success("create index success",index);
 		} catch (IOException e) {
-			restStaus = RestStatus.EXPECTATION_FAILED.getStatus();
+			LOGGER.error("IOException");
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"create index failed,error:"+e,index);
 		}
-		return restStaus;
+		return result;
 	}
 
 	@Override
-	public int create(String index, String jsonString) {
+	public ElasticResult create(String index, String jsonString) {
+		ElasticResult result;
 		try {
-			restStaus = indices.create(index,jsonString);
+			indices.create(index,jsonString);
+			result = ElasticResult.success("create index success",index);
 		} catch (IOException e) {
-			restStaus = RestStatus.EXPECTATION_FAILED.getStatus();
+			LOGGER.error("IOException");
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"create index failed,error:"+e,index);
 		}
-		return restStaus;
+		return result;
 	}
 
 	@Override
-	public int create(String index, Map<String, Object> map) {
+	public ElasticResult create(String index, Map<String, Object> map) {
+		ElasticResult result;
 		try {
-			restStaus = indices.create(index,map);
+			indices.create(index,map);
+			result = ElasticResult.success("create index success",index);
 		} catch (IOException e) {
-			restStaus = RestStatus.EXPECTATION_FAILED.getStatus();
+			LOGGER.error("IOException");
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"create index failed,error:"+e,index);
 		}
-		return restStaus;
+		return result;
 	}
 
 	@Override
-	public int delete(String index) {
+	public ElasticResult delete(String index) {
+		ElasticResult result;
 		try {
-			restStaus = indices.delete(index);
+			indices.delete(index);
+			result = ElasticResult.success("delete index success",index);
 		} catch (IOException e) {
-			restStaus = RestStatus.EXPECTATION_FAILED.getStatus();
+			LOGGER.error("IOException");
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"create index failed,error:"+e,index);
 		}
-		return restStaus;
+		return result;
 	}
 
 	@Override
-	public boolean isExist(String index) {
-		return indices.isExists(index);
+	public ElasticResult isExist(String index) {
+		boolean result = indices.isExists(index);
+		return ElasticResult.success("index isExist",result);
 	}
 }

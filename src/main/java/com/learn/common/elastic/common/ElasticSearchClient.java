@@ -46,7 +46,6 @@ public class ElasticSearchClient {
 		return new RestHighLevelClient(restClientBuilder);
 	}
 
-	@Bean
 	public static void close(@Autowired RestHighLevelClient client){
 		try {
 			client.close();

@@ -1,7 +1,5 @@
 package com.learn.common.elastic.data;
 
-import com.learn.common.elastic.common.ElasticSearchClient;
-import com.learn.common.elastic.common.result.CommonResult;
 import com.learn.common.elastic.util.Comment;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.Before;
@@ -115,8 +113,8 @@ public class DocumentTest {
 		}
 		System.out.println(data.size());
 		long start = System.currentTimeMillis();
-		CommonResult result = document.batchAscendingId("document2",list);
-		System.out.println(result.getData());
+		long count = document.batchAscendingId("document2",list);
+		System.out.println(count);
 
 		long end = System.currentTimeMillis();
 		System.out.println("***导入完成***");

@@ -71,7 +71,7 @@ public class SimpleSearch extends QueryOptions {
 
 		for (SearchHit searchHit : hits) {
 			list.add(searchHit.getSourceAsString());
-			System.out.println(searchHit.getSourceAsString());
+			//System.out.println(searchHit.getSourceAsString());
 		}
 		return list;
 	}

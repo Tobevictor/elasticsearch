@@ -1,6 +1,5 @@
 package com.learn.common.elastic.data;
 
-import com.learn.common.elastic.common.result.CommonResult;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.DocWriteResponse;
@@ -11,7 +10,6 @@ import org.elasticsearch.action.get.*;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.CountRequest;
@@ -19,6 +17,8 @@ import org.elasticsearch.client.core.CountResponse;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -40,43 +40,47 @@ public class Document {
 		indices = new Indices(client);
 	}
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(Document.class);
 	/**
 	 * 插入数据(指定ID)
 	 * @param index
+	 * @param id
 	 * @param jsonString
 	 */
-	public CommonResult insert(String index, String id, String jsonString) throws IOException {
+	public void inert(String index, String id, String jsonString) throws IOException {
 		if(!indices.isExists(index)){
-			indices.create(index,jsonString);
+			LOGGER.error("index not found");
+			return;
 		}
 		IndexRequest request = new IndexRequest(index).id(id);
 		request.source(jsonString, XContentType.JSON);
 		client.index(request, RequestOptions.DEFAULT);
-		return CommonResult.success("insert success",1);
 	}
 	/**
 	 * 插入数据
 	 * @param index
 	 * @param jsonString
 	 */
-	public CommonResult insert(String index, String jsonString) throws IOException {
+	public void insert(String index, String jsonString) throws IOException {
 		if(!indices.isExists(index)){
-			indices.create(index);
+			LOGGER.error("index not found");
+			return;
 		}
 		IndexRequest request = new IndexRequest(index);
 		request.source(jsonString, XContentType.JSON);
 		client.index(request, RequestOptions.DEFAULT);
-		return CommonResult.success("insert success",1);
 	}
 
 	/**
 	 * 插入数据(指定ID)
 	 * @param index
+	 * @param id
 	 * @param source
 	 */
-	public CommonResult insert(String index, String id, Map<String,Object> source) throws IOException {
+	public void insert(String index, String id, Map<String,Object> source) throws IOException {
 		if(!indices.isExists(index)){
-			indices.create(index);
+			LOGGER.error("index not found");
+			return;
 		}
 		Map<String, Object> jsonMap = new HashMap<>();
 		for (Map.Entry<String,Object> entry : source.entrySet()) {
@@ -84,7 +88,6 @@ public class Document {
 		}
 		IndexRequest request = new IndexRequest(index).id(id).source(jsonMap);
 		client.index(request,RequestOptions.DEFAULT);
-		return CommonResult.success("insert success",1);
 	}
 
 	/**
@@ -92,9 +95,10 @@ public class Document {
 	 * @param index
 	 * @param source
 	 */
-	public CommonResult insert(String index, Map<String,Object> source) throws IOException {
+	public void insert(String index, Map<String,Object> source) throws IOException {
 		if(!indices.isExists(index)){
-			indices.create(index);
+			LOGGER.error("index not found");
+			return;
 		}
 		Map<String, Object> jsonMap = new HashMap<>();
 		for (Map.Entry<String,Object> entry : source.entrySet()) {
@@ -102,17 +106,18 @@ public class Document {
 		}
 		IndexRequest request = new IndexRequest(index).source(jsonMap);
 		client.index(request,RequestOptions.DEFAULT);
-		return CommonResult.success("insert success",1);
 	}
 
 	/**
 	 * 异步插入数据(指定ID)
 	 * @param index
+	 * @param id
 	 * @param jsonString
 	 */
-	public CommonResult insertAsync(String index, String id, String jsonString) throws IOException {
+	public void insertAsync(String index, String id, String jsonString) throws IOException {
 		if(!indices.isExists(index)){
-			indices.create(index);
+			LOGGER.error("index not found");
+			return;
 		}
 		IndexRequest request = new IndexRequest(index).id(id);
 		request.source(jsonString, XContentType.JSON);
@@ -128,7 +133,6 @@ public class Document {
 			}
 		};
 		client.indexAsync(request, RequestOptions.DEFAULT, listener);
-		return CommonResult.success("insert success",1);
 	}
 
 	/**
@@ -136,30 +140,29 @@ public class Document {
 	 * @param index
 	 * @param id
 	 */
-	public CommonResult delete(String index, String id) throws IOException {
+	public void delete(String index, String id) throws IOException {
 		if(!indices.isExists(index)||!isIdExists(index,id)){
-			return CommonResult.failed(RestStatus.NOT_FOUND,"index or id not found",0);
+			LOGGER.error("index or id not found");
 		}
 		DeleteRequest request = new DeleteRequest(index,id);
 
 		DeleteResponse response = client.delete(request,RequestOptions.DEFAULT);
 		if (response.getResult() == DocWriteResponse.Result.NOT_FOUND) {
-			return CommonResult.failed(RestStatus.FAILED_DEPENDENCY,"document not exist",0);
+			LOGGER.error("document not exist");
 		}
-		return CommonResult.success("delete success",1);
 	}
 
-	public CommonResult count(String index) throws IOException {
+	public long count(String index) throws IOException {
 		CountRequest request = new CountRequest(index);
 		try{
 			CountResponse response = client.count(request,RequestOptions.DEFAULT);
-			return CommonResult.success("delete success",response.getCount());
+			return response.getCount();
 		}catch (ElasticsearchException e) {
 			if (e.status() == RestStatus.NOT_FOUND) {
-				return CommonResult.failed(RestStatus.NOT_FOUND,"index not found",0);
+				LOGGER.error("index or id not found");
 			}
 		}
-		return CommonResult.failed(RestStatus.NOT_ACCEPTABLE,"count exception",0);
+		return 0;
 	}
 
 	/**
@@ -182,44 +185,44 @@ public class Document {
 	 * @param index
 	 * @param id
 	 */
-	public CommonResult get(String index, String id) throws IOException {
+	public String get(String index, String id) throws IOException {
 		GetRequest request = new GetRequest(index,id);
 
 		try {
 			GetResponse getResponse = client.get(request, RequestOptions.DEFAULT);
 			if (getResponse.isExists()) {
-				String sourceAsString = getResponse.getSourceAsString();
-				System.out.println(sourceAsString);
-				return CommonResult.success(sourceAsString);
+				return getResponse.getSourceAsString();
 			}
 		} catch (ElasticsearchException e) {
 			if (e.status() == RestStatus.NOT_FOUND) {
-				return CommonResult.failed(RestStatus.NOT_FOUND,"index not found",null);
+				LOGGER.error("index or id not found");
 			}
 		}
-		return CommonResult.failed(RestStatus.NOT_ACCEPTABLE,"get exception",null);
+		return null;
 	}
 
-	public CommonResult getFieldsValues(String index, String[] fields) throws IOException {
+	/**
+	 * 获取字段值
+	 * @param index
+	 * @param fields
+	 */
+	public List<Object> getFieldsValues(String index, String[] fields) throws IOException {
 		GetRequest request = new GetRequest(index);
 		request.storedFields(fields);
-
+		List<Object> list = new ArrayList<>();
 		try {
 			GetResponse getResponse = client.get(request, RequestOptions.DEFAULT);
-			List<Object> list = new ArrayList<>();
 			if (getResponse.isExists()) {
 				for (int i = 0;i<fields.length; i++){
 					list.add(getResponse.getField(fields[i]).getValues());
 				}
-				System.out.println(list);
-				return CommonResult.success("get success",list);
 			}
 		} catch (ElasticsearchException e) {
 			if (e.status() == RestStatus.NOT_FOUND) {
-				return CommonResult.failed(RestStatus.NOT_FOUND,"index not found",null);
+				LOGGER.error("index or id not found");
 			}
 		}
-		return CommonResult.failed(RestStatus.NOT_ACCEPTABLE,"get exception",null);
+		return list;
 	}
 
 
@@ -228,9 +231,9 @@ public class Document {
 	 * @param index
 	 * @param ids
 	 */
-	public CommonResult multiGet(String index, String[] ids) throws IOException {
+	public List<String> multiGet(String index, String[] ids) throws IOException {
 		if(!indices.isExists(index)){
-			return CommonResult.failed(RestStatus.NOT_FOUND,"index not found",null);
+			LOGGER.error("index or id not found");
 		}
 		MultiGetRequest request = new MultiGetRequest();
 		for (String id:ids){
@@ -245,11 +248,9 @@ public class Document {
 			if (firstGet.isExists()) {
 				String sourceAsString = firstGet.getSourceAsString();
 				list.add(sourceAsString);
-			}else {
-				return CommonResult.failed(RestStatus.NOT_ACCEPTABLE,"response not exist",list);
 			}
 		}
-		return CommonResult.success(list);
+		return list;
 	}
 
 	/**
@@ -258,15 +259,14 @@ public class Document {
 	 * @param id
 	 * @param jsonMap
 	 */
-	public CommonResult update(String index, String id, Map<String,Object> jsonMap) throws IOException {
+	public void update(String index, String id, Map<String,Object> jsonMap) throws IOException {
 		if(!isIdExists(index,id)){
-			return CommonResult.failed(RestStatus.NOT_FOUND,"index not found",0);
+			LOGGER.error("index or id not found");
 		}
 		UpdateRequest request = new UpdateRequest(index, id).doc(jsonMap);
 		/*request.retryOnConflict(3);
 		request.fetchSource(true);*/
-		UpdateResponse updateResponse = client.update(request, RequestOptions.DEFAULT);
-		return CommonResult.success(1);
+		client.update(request, RequestOptions.DEFAULT);
 	}
 
 	public List<IndexRequest> generateRequests(String indexName, String[] source){
@@ -279,7 +279,12 @@ public class Document {
 		return requests;
 	}
 
-	public CommonResult batchAscendingId(String index,List<Map<String,Object>> list) throws IOException {
+	/**
+	 * 批量插入数据
+	 * @param index
+	 * @param list
+	 */
+	public long batchAscendingId(String index,List<Map<String,Object>> list) throws IOException {
 		if(!indices.isExists(index)){
 			indices.create(index);
 		}
@@ -302,7 +307,7 @@ public class Document {
 			bulkRequest.add(request);
 		}
 		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return CommonResult.success("batchInsert success",Objects.requireNonNull(requests).size());
+		return Objects.requireNonNull(requests).size();
 	}
 
 	/**
@@ -310,7 +315,7 @@ public class Document {
 	 * @param index
 	 * @param source
 	 */
-	public CommonResult batchInsert(String index, String[] source) throws IOException {
+	public long batchInsert(String index, String[] source) throws IOException {
 		if(!indices.isExists(index)){
 			indices.create(index);
 		}
@@ -322,7 +327,7 @@ public class Document {
 			}
 		}
 		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return CommonResult.success("batchInsert success",Objects.requireNonNull(requests).size());
+		return Objects.requireNonNull(requests).size();
 	}
 
 	/**
@@ -330,7 +335,7 @@ public class Document {
 	 * @param index
 	 * @param source
 	 */
-	public CommonResult batchAscendingId(String index, String[] source) throws IOException {
+	public long batchAscendingId(String index, String[] source) throws IOException {
 		if(!indices.isExists(index)){
 			indices.create(index);
 		}
@@ -347,7 +352,7 @@ public class Document {
 			}
 		}
 		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return CommonResult.success("batchInsert success",Objects.requireNonNull(requests).size());
+		return Objects.requireNonNull(requests).size();
 	}
 }
 

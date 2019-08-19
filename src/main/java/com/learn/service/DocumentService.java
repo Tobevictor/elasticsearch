@@ -1,6 +1,7 @@
 package com.learn.service;
 
-import com.learn.common.elastic.common.result.CommonResult;
+import com.learn.common.elastic.common.result.ElasticResult;
+import com.learn.common.elastic.common.result.ServiceResult;
 
 /**
  * @Date 2019/8/14 17:18
@@ -8,11 +9,11 @@ import com.learn.common.elastic.common.result.CommonResult;
  */
 public interface DocumentService {
 
-	CommonResult fromMysql(String index);
+	ElasticResult fromMysql(String index);
 
-	CommonResult fromOracle(String index);
+	ElasticResult fromOracle(String index);
 
-	CommonResult count(String index);
+	ElasticResult count(String index);
 
-	CommonResult delete(String index,String id);
+	ElasticResult delete(String index, String id);
 }

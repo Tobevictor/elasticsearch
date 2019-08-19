@@ -1,12 +1,14 @@
 package com.learn.service.impl;
 
 
-import com.learn.common.elastic.common.result.CommonResult;
+import com.learn.common.elastic.common.result.ElasticResult;
 import com.learn.common.elastic.data.Document;
 import com.learn.mapper.CommentMapper;
 import com.learn.service.DocumentService;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.rest.RestStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import java.util.*;
  */
 @Service
 public class DocumentServiceImpl implements DocumentService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(DocumentServiceImpl.class);
 
 	@Autowired
 	private CommentMapper commentMapper;
@@ -34,41 +37,46 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public CommonResult fromMysql(String index) {
+	public ElasticResult fromMysql(String index) {
 		List<Map<String,Object>> list = commentMapper.getAll();
-		CommonResult result;
+		ElasticResult result;
 		try {
-			result = document.batchAscendingId(index,list);
-			System.out.println(result.getData());
+			long count = document.batchAscendingId(index,list);
+			result = ElasticResult.success("batch intert success",count);
 		} catch (IOException e) {
-			result = CommonResult.failed(RestStatus.EXPECTATION_FAILED,"IOException",0);
+			LOGGER.error("IOException");
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"batch intert failed,error:"+e,0);
 		}
 		return result;
 	}
 
 	@Override
-	public CommonResult fromOracle(String index) {
+	public ElasticResult fromOracle(String index) {
     	return null;
 	}
 
 	@Override
-	public CommonResult count(String index) {
-		CommonResult result;
+	public ElasticResult count(String index) {
+		ElasticResult result = null;
 		try {
-			result = document.count(index);
+			long count = document.count(index);
+			result = ElasticResult.success("count success",count);
 		} catch (IOException e) {
-			result = CommonResult.failed(RestStatus.EXPECTATION_FAILED,"IOException",0);
+			LOGGER.error("IOException");
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"counting failed,error:"+e,0);
 		}
 		return result;
 	}
 
 	@Override
-	public CommonResult delete(String index,String id) {
-		CommonResult result;
+	public ElasticResult delete(String index, String id) {
+		ElasticResult result = null;
 		try {
-			result = document.delete(index,id);
+			document.delete(index,id);
+			result = ElasticResult.success("delete success",id);
 		} catch (IOException e) {
-			result = CommonResult.failed(RestStatus.EXPECTATION_FAILED,"IOException",0);
+			LOGGER.error("IOException");
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"delete failed,error:"+e,id);
 		}
 		return result;
 	}
