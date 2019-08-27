@@ -26,8 +26,8 @@ public class IdsSearchBuilder extends BaseSearchBuilder {
 
 	@Override
 	public SearchSourceBuilder builder() {
-		IdsQueryBuilder idsQueryBuilder = new IdsQueryBuilder();
-		sourceBuilder.query(idsQueryBuilder.addIds(ids));
+		IdsQueryBuilder idsQueryBuilder = new IdsQueryBuilder().addIds(ids);
+		sourceBuilder.query(idsQueryBuilder);
 		return sourceBuilder;
 	}
 

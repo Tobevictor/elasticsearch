@@ -21,11 +21,13 @@ public class BoundingBoxSearchBuilder extends BaseSearchBuilder {
 	public BoundingBoxSearchBuilder(GeoCondition condition){
 		super(condition);
 		this.field = condition.getField();
-		this.topLeft = condition.getTopLeft();
-		this.bottomRight = condition.getBottomRight();
-		if (topLeft == null || bottomRight == null) {
+		this.topLeft = new GeoPoint(condition.getLeftLatitude(),condition.getLeftLongitude());
+		this.bottomRight = new GeoPoint(condition.getRightLatitude(),condition.getRightLongitude());
+
+		/*if (condition.getLeftLatitude() < condition.getRightLatitude() ||
+				condition.getLeftLongitude() > condition.getRightLongitude()) {
 			throw new IllegalArgumentException("bad args of geo points");
-		}
+		}*/
 	}
 
 	@Override

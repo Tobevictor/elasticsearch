@@ -6,7 +6,10 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,6 +19,8 @@ import java.util.Map;
  * @Date 2019/8/1 15:53
  * @Created by dshuyou
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
 public class IndicesTest {
 	@Autowired
 	private RestHighLevelClient client;
@@ -33,7 +38,7 @@ public class IndicesTest {
 		properties.put("message", message);
 		Map<String, Object> mapping = new HashMap<>();
 		mapping.put("properties", properties);
-		indices.create("document",mapping);
+		indices.create("document3",mapping);
 	}
 
 	@Test

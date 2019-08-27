@@ -1,12 +1,14 @@
 package com.learn.common.elastic.query.search;
 
 import com.learn.common.elastic.condition.FullTextCondition;
+import com.learn.common.elastic.condition.GeoCondition;
 import com.learn.common.elastic.condition.TermLevelCondition;
 import com.learn.common.elastic.condition.QueryCondition;
 import com.learn.common.elastic.query.builder.fulltext.MatchAllSearchBuilder;
 import com.learn.common.elastic.query.builder.fulltext.MatchPhrasePrefixSearchBuilder;
 import com.learn.common.elastic.query.builder.fulltext.MatchPhraseSearchBuilder;
 import com.learn.common.elastic.query.builder.fulltext.MatchSearchBuilder;
+import com.learn.common.elastic.query.builder.geo.*;
 import com.learn.common.elastic.query.builder.termlevel.*;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -14,6 +16,8 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +29,7 @@ import java.util.List;
  *
  */
 public class SimpleSearch extends QueryOptions {
-
+	private static Logger LOGGER = LoggerFactory.getLogger(SimpleSearch.class);
 	private SearchTypeEnum searchType = SearchTypeEnum.matchAllSearch;
 
 	/**
@@ -60,14 +64,26 @@ public class SimpleSearch extends QueryOptions {
 				searchType.equals(SearchTypeEnum.rangeSearch)
 		){
 			sourceBuilder = termLevel(querycondition,searchType);
+		}else if (searchType.equals(SearchTypeEnum.boundingBoxSearch)||
+				searchType.equals(SearchTypeEnum.disjointSearch)||
+				searchType.equals(SearchTypeEnum.distanceSearch)||
+				searchType.equals(SearchTypeEnum.geoShapeSearch)||
+				searchType.equals(SearchTypeEnum.intersectionSearch)||
+				searchType.equals(SearchTypeEnum.polygonSearch)||
+				searchType.equals(SearchTypeEnum.withinSearch)
+		){
+			sourceBuilder = geoSearch(querycondition,searchType);
 		}
-
+		List<String> list = new ArrayList<>();
+		if(sourceBuilder == null){
+			LOGGER.error("sourceBuilder is null");
+			return list;
+		}
 		SearchRequest searchRequest = new SearchRequest(indice);
 		searchRequest.source(sourceBuilder);
 
 		SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
 		SearchHit[] hits = response.getHits().getHits();
-		List<String> list = new ArrayList<>();
 
 		for (SearchHit searchHit : hits) {
 			list.add(searchHit.getSourceAsString());
@@ -125,8 +141,45 @@ public class SimpleSearch extends QueryOptions {
 			case matchPhrasePrefixSearch:
 				sourceBuilder = new MatchPhrasePrefixSearchBuilder(condition).builder();
 				break;
+
 			default:
 				throw new IllegalArgumentException("not supported FullText search type");
+		}
+		return sourceBuilder;
+	}
+
+	private SearchSourceBuilder geoSearch(QueryCondition querycondition,SearchTypeEnum searchType){
+		if (!(querycondition instanceof GeoCondition)) {
+			throw new IllegalArgumentException("GeoQuery need GeoQuery condition");
+		}
+
+		GeoCondition condition = (GeoCondition) querycondition;
+
+		switch (searchType){
+			case boundingBoxSearch:
+				sourceBuilder = new BoundingBoxSearchBuilder(condition).builder();
+				break;
+			case disjointSearch:
+				sourceBuilder = new DisjointSearchBuilder(condition).builder();
+				break;
+			case distanceSearch:
+				sourceBuilder = new DistanceSearchBuilder(condition).builder();
+				break;
+			case geoShapeSearch:
+				sourceBuilder = new GeoShapeSearchBuilder(condition).builder();
+				break;
+			case intersectionSearch:
+				sourceBuilder = new IntersectionSearchBuilder(condition).builder();
+				break;
+			case polygonSearch:
+				sourceBuilder = new PolygonSearchBuilder(condition).builder();
+				break;
+			case withinSearch:
+				sourceBuilder = new WithinSearchBuilder(condition).builder();
+				break;
+
+			default:
+				throw new IllegalArgumentException("not supported GeoQuery search type");
 		}
 		return sourceBuilder;
 	}

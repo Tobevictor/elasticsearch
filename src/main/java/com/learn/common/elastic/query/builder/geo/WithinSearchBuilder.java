@@ -8,6 +8,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -17,48 +19,26 @@ import java.io.IOException;
  */
 public class WithinSearchBuilder extends BaseSearchBuilder {
 	private String field;
-	private ShapeBuilder shape;
 	private String shapeId;
 
 	public WithinSearchBuilder(GeoCondition condition) {
 		super(condition);
 		this.field = condition.getField();
-		this.shape = condition.getShape();
+		this.shapeId = condition.getShapeId();
 
-		if (field == null || shape == null) {
+		/*if (field == null || shape == null) {
 			throw new IllegalArgumentException("bad args of geo points");
-		}
-	}
-	public WithinSearchBuilder(String field, ShapeBuilder shape) {
-		super();
-		this.field = field;
-		this.shape = shape;
-
-		if (field == null || shape == null) {
-			throw new IllegalArgumentException("bad args of geo points");
-		}
+		}*/
 	}
 
 	public WithinSearchBuilder(String field, String shapeId) {
 		super();
 		this.field = field;
 		this.shapeId = shapeId;
-
-		if (field == null || shape == null) {
-			throw new IllegalArgumentException("bad args of geo points");
-		}
 	}
 
 	@Override
-	public SearchSourceBuilder builder() throws IOException {
-		GeoShapeQueryBuilder queryBuilder = QueryBuilders.geoWithinQuery(field,shape);
-		sourceBuilder.query(queryBuilder);
-		ScoreSortBuilder sort = SortBuilders.scoreSort();
-		sourceBuilder.sort(sort);
-		return sourceBuilder;
-	}
-
-	public SearchSourceBuilder builders(){
+	public SearchSourceBuilder builder(){
 		GeoShapeQueryBuilder queryBuilder = QueryBuilders.geoWithinQuery(field,shapeId);
 		sourceBuilder.query(queryBuilder);
 		ScoreSortBuilder sort = SortBuilders.scoreSort();

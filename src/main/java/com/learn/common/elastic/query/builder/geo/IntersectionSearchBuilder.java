@@ -2,12 +2,15 @@ package com.learn.common.elastic.query.builder.geo;
 
 import com.learn.common.elastic.condition.GeoCondition;
 import com.learn.common.elastic.query.builder.BaseSearchBuilder;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.builders.ShapeBuilder;
 import org.elasticsearch.index.query.GeoShapeQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -17,21 +20,18 @@ import java.io.IOException;
  */
 public class IntersectionSearchBuilder extends BaseSearchBuilder {
 	private String field;
-	private ShapeBuilder shape;
+	private String shapeId;
 
 	public IntersectionSearchBuilder(GeoCondition condition) {
 		super(condition);
 		this.field = condition.getField();
-		this.shape = condition.getShape();
+		this.shapeId = condition.getShapeId();
 
-		if (field == null || shape == null) {
-			throw new IllegalArgumentException("bad args of geo points");
-		}
 	}
 
 	@Override
-	public SearchSourceBuilder builder() throws IOException {
-		GeoShapeQueryBuilder queryBuilder = QueryBuilders.geoIntersectionQuery(field,shape);
+	public SearchSourceBuilder builder(){
+		GeoShapeQueryBuilder queryBuilder = QueryBuilders.geoIntersectionQuery(field,shapeId);
 		sourceBuilder.query(queryBuilder);
 		ScoreSortBuilder sort = SortBuilders.scoreSort();
 		sourceBuilder.sort(sort);

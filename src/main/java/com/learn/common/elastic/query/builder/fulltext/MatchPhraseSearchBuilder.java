@@ -30,7 +30,7 @@ public class MatchPhraseSearchBuilder extends BaseSearchBuilder {
 	@Override
 	public SearchSourceBuilder builder() {
 
-		MatchPhraseQueryBuilder searchBuilder = new MatchPhraseQueryBuilder(field, term);
+		MatchPhraseQueryBuilder searchBuilder = new MatchPhraseQueryBuilder(field, term).analyzer("ik_smart");
 		sourceBuilder.query(searchBuilder);
 		return sourceBuilder;
 	}

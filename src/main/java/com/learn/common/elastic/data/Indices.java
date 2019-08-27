@@ -48,7 +48,7 @@ public class Indices {
 	 */
 	public void create(String index) throws IOException {
 		if(isExists(index)){
-			LOGGER.error("document already exist");
+			LOGGER.error("index is already exist");
 			return;
 		}
 		CreateIndexRequest request = new CreateIndexRequest(index);
@@ -77,7 +77,7 @@ public class Indices {
 	 */
 	public void create(String index, String jsonString) throws IOException {
 		if(isExists(index)){
-			LOGGER.error("document already exist");
+			LOGGER.error("index is already exist");
 			return;
 		}
 		CreateIndexRequest request = new CreateIndexRequest(index);
@@ -99,7 +99,7 @@ public class Indices {
 	 */
 	public void createByXcontent(String index,XContentBuilder builder) throws IOException {
 		if(isExists(index)){
-			LOGGER.error("document already exist");
+			LOGGER.error("index is already exist");
 			return;
 		}
 		CreateIndexRequest request = new CreateIndexRequest(index);
@@ -121,7 +121,7 @@ public class Indices {
 	 */
 	public void create(String index,Map<String,Object> mapping) throws IOException {
 		if(isExists(index)){
-			LOGGER.error("document already exist");
+			LOGGER.error("index is already exist");
 			return;
 		}
 		CreateIndexRequest request = new CreateIndexRequest(index);
@@ -144,7 +144,7 @@ public class Indices {
 	 */
 	public void createAsync(String index, String jsonString) throws IOException {
 		if(isExists(index)){
-			LOGGER.error("document already exist");
+			LOGGER.error("index is already exist");
 			return;
 		}
 		CreateIndexRequest request = new CreateIndexRequest(index);
@@ -174,7 +174,7 @@ public class Indices {
 	 */
 	public void delete(String index) throws IOException {
 		if(!isExists(index)){
-			LOGGER.error("index not found");
+			LOGGER.error("index is not found");
 			return;
 		}
 		DeleteIndexRequest request = new DeleteIndexRequest(index);
@@ -190,7 +190,7 @@ public class Indices {
 			GetIndexRequest request = new GetIndexRequest(index);
 			return client.indices().exists(request, RequestOptions.DEFAULT);
 		}catch (IOException e){
-			LOGGER.error("IOException");
+			LOGGER.error("IOException"+e);
 			return false;
 		}
 	}
@@ -202,7 +202,7 @@ public class Indices {
 	 */
 	public void update(Map<String, Object> map, String... indexs) throws IOException {
 		if(!isExists(indexs)){
-			LOGGER.error("index not found");
+			LOGGER.error("index is not found");
 			return;
 		}
 		UpdateSettingsRequest requestMultiple =
@@ -217,7 +217,7 @@ public class Indices {
 	 */
 	public Object get(String... index) throws IOException {
 		if(!isExists(index)){
-			LOGGER.error("index not found");
+			LOGGER.error("index is not found");
 			return null;
 		}
 		GetIndexRequest request = new GetIndexRequest(index);
@@ -237,7 +237,7 @@ public class Indices {
 	 */
 	public void refresh(String... index) throws IOException {
 		if(!isExists(index)){
-			LOGGER.error("index not found");
+			LOGGER.error("index is not found");
 			return;
 		}
 		RefreshRequest request = new RefreshRequest(index);
@@ -253,7 +253,7 @@ public class Indices {
 	 */
 	public void clearCache(String field,String... index) throws IOException {
 		if(!isExists(index)){
-			LOGGER.error("index not found");
+			LOGGER.error("index is not found");
 			return;
 		}
 		ClearIndicesCacheRequest request = new ClearIndicesCacheRequest(index);
@@ -273,7 +273,7 @@ public class Indices {
 	 */
 	public void flush(String... index) throws IOException {
 		if(!isExists(index)){
-			LOGGER.error("index not found");
+			LOGGER.error("index is not found");
 			return;
 		}
 		FlushRequest request = new FlushRequest(index);

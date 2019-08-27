@@ -25,9 +25,9 @@ public class PolygonSearchBuilder extends BaseSearchBuilder {
 		super(condition);
 		this.field = condition.getField();
 		this.points = condition.getPoints();
-		if (points == null || points.size() <= 0) {
+		/*if (points == null || points.size() <= 0) {
 			throw new IllegalArgumentException("bad args of geo points");
-		}
+		}*/
 	}
 
 	@Override

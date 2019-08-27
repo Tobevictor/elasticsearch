@@ -37,7 +37,7 @@ public class IndiceServiceImpl implements IndiceService {
 			indices.create(index);
 			result = ElasticResult.success("create index success",index);
 		} catch (IOException e) {
-			LOGGER.error("IOException");
+			LOGGER.error("IOException:" + e);
 			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"create index failed,error:"+e,index);
 		}
 		return result;
@@ -50,7 +50,7 @@ public class IndiceServiceImpl implements IndiceService {
 			indices.create(index,jsonString);
 			result = ElasticResult.success("create index success",index);
 		} catch (IOException e) {
-			LOGGER.error("IOException");
+			LOGGER.error("IOException:" + e);
 			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"create index failed,error:"+e,index);
 		}
 		return result;
@@ -63,7 +63,7 @@ public class IndiceServiceImpl implements IndiceService {
 			indices.create(index,map);
 			result = ElasticResult.success("create index success",index);
 		} catch (IOException e) {
-			LOGGER.error("IOException");
+			LOGGER.error("IOException:" + e);
 			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"create index failed,error:"+e,index);
 		}
 		return result;
@@ -76,7 +76,7 @@ public class IndiceServiceImpl implements IndiceService {
 			indices.delete(index);
 			result = ElasticResult.success("delete index success",index);
 		} catch (IOException e) {
-			LOGGER.error("IOException");
+			LOGGER.error("IOException:" + e);
 			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"create index failed,error:"+e,index);
 		}
 		return result;

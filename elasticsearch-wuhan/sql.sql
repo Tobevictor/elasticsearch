@@ -1,0 +1,1 @@
+select time,latitude,longitude,depth,mag,ST_AsGeoJSON(geopoint) as geopoint from earthquake where time = 19950522

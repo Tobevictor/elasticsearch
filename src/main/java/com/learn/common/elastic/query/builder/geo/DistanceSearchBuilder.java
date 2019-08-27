@@ -24,10 +24,7 @@ public class DistanceSearchBuilder extends BaseSearchBuilder {
 		super(condition);
 		this.field = condition.getField();
 		this.distance = condition.getDistance();
-		this.geoPoint = condition.getPoint();
-		if (geoPoint == null) {
-			throw new IllegalArgumentException("bad args of geo points");
-		}
+		this.geoPoint = new GeoPoint(condition.getLatitude(),condition.getRightLatitude());
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class MatchSearchBuilder extends BaseSearchBuilder {
 		MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder(field, term)
 				.fuzziness(Fuzziness.AUTO)
 				.prefixLength(3)
-				.maxExpansions(10);
+				.maxExpansions(10).analyzer("ik_smart");
 		sourceBuilder.query(matchQueryBuilder);
 		return sourceBuilder;
 	}

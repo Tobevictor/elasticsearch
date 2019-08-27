@@ -1,7 +1,10 @@
 package com.learn.common.elastic.condition;
 
 import org.elasticsearch.common.geo.GeoPoint;
+import org.elasticsearch.common.geo.GeoShapeType;
 import org.elasticsearch.common.geo.builders.ShapeBuilder;
+import org.elasticsearch.common.geo.parsers.CoordinateNode;
+import org.elasticsearch.common.io.stream.StreamInput;
 
 import java.util.List;
 
@@ -13,60 +16,28 @@ import java.util.List;
 public class GeoCondition extends QueryCondition {
 
 	private String field;
-	private GeoPoint topLeft;
-	private GeoPoint bottomRight;
-	private List<GeoPoint> points;
+
+	private Double leftLongitude;
+	private Double leftLatitude;
+
+	private Double rightLongitude;
+	private Double rightLatitude;
+
+	private Double longitude;
+	private Double latitude;
+
 	private String distance;
-	private GeoPoint point;
-	private ShapeBuilder shape;
+	private String shapeId;
+	private String shapeType;
+	private CoordinateNode coordinates;
+	private List<GeoPoint> points;
 
-	public GeoCondition(String field, GeoPoint topLeft, GeoPoint bottomRight){
+	public GeoCondition(){
 		super();
-		this.field = field;
-		this.topLeft = topLeft;
-		this.bottomRight = bottomRight;
 	}
 
-	public GeoCondition(int from, int size, String field, GeoPoint topLeft, GeoPoint bottomRight){
+	public GeoCondition(int from, int size){
 		super(from, size);
-		this.field = field;
-		this.topLeft = topLeft;
-		this.bottomRight = bottomRight;
-	}
-
-	public GeoCondition(String field, List<GeoPoint> points){
-		this.field = field;
-		this.points = points;
-	}
-
-	public GeoCondition(int from, int size, String field, List<GeoPoint> points){
-		super(from, size);
-		this.field = field;
-		this.points = points;
-	}
-
-	public GeoCondition(String field, String distance, GeoPoint point){
-		this.field = field;
-		this.distance = distance;
-		this.point = point;
-	}
-
-	public GeoCondition(int from, int size, String field, String distance, GeoPoint point){
-		super(from, size);
-		this.field = field;
-		this.distance = distance;
-		this.point = point;
-	}
-
-	public GeoCondition(String field, ShapeBuilder shape){
-		this.field = field;
-		this.shape = shape;
-	}
-
-	public GeoCondition(int from, int size, String field, ShapeBuilder shape){
-		super(from, size);
-		this.field = field;
-		this.shape = shape;
 	}
 
 	public String getField() {
@@ -77,28 +48,52 @@ public class GeoCondition extends QueryCondition {
 		this.field = field;
 	}
 
-	public GeoPoint getTopLeft() {
-		return topLeft;
+	public Double getLeftLongitude() {
+		return leftLongitude;
 	}
 
-	public void setTopLeft(GeoPoint topLeft) {
-		this.topLeft = topLeft;
+	public void setLeftLongitude(Double leftLongitude) {
+		this.leftLongitude = leftLongitude;
 	}
 
-	public GeoPoint getBottomRight() {
-		return bottomRight;
+	public Double getLeftLatitude() {
+		return leftLatitude;
 	}
 
-	public void setBottomRight(GeoPoint bottomRight) {
-		this.bottomRight = bottomRight;
+	public void setLeftLatitude(Double leftLatitude) {
+		this.leftLatitude = leftLatitude;
 	}
 
-	public List<GeoPoint> getPoints() {
-		return points;
+	public Double getRightLongitude() {
+		return rightLongitude;
 	}
 
-	public void setPoints(List<GeoPoint> points) {
-		this.points = points;
+	public void setRightLongitude(Double rightLongitude) {
+		this.rightLongitude = rightLongitude;
+	}
+
+	public Double getRightLatitude() {
+		return rightLatitude;
+	}
+
+	public void setRightLatitude(Double rightLatitude) {
+		this.rightLatitude = rightLatitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
 	}
 
 	public String getDistance() {
@@ -109,19 +104,35 @@ public class GeoCondition extends QueryCondition {
 		this.distance = distance;
 	}
 
-	public GeoPoint getPoint() {
-		return point;
+	public String getShapeId() {
+		return shapeId;
 	}
 
-	public void setPoint(GeoPoint point) {
-		this.point = point;
+	public void setShapeId(String shapeId) {
+		this.shapeId = shapeId;
 	}
 
-	public ShapeBuilder getShape() {
-		return shape;
+	public List<GeoPoint> getPoints() {
+		return points;
 	}
 
-	public void setShape(ShapeBuilder shape) {
-		this.shape = shape;
+	public void setPoints(List<GeoPoint> points) {
+		this.points = points;
+	}
+
+	public String getShapeType() {
+		return shapeType;
+	}
+
+	public void setShapeType(String shapeType) {
+		this.shapeType = shapeType;
+	}
+
+	public CoordinateNode getCoordinates() {
+		return coordinates;
+	}
+
+	public void setCoordinates(CoordinateNode coordinates) {
+		this.coordinates = coordinates;
 	}
 }

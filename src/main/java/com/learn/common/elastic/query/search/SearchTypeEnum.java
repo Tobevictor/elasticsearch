@@ -1,5 +1,7 @@
 package com.learn.common.elastic.query.search;
 
+import com.learn.common.elastic.query.builder.geo.BoundingBoxSearchBuilder;
+
 /**
  * @Date 2019/7/25 11:23
  * @Created by dshuyou
@@ -21,8 +23,21 @@ public enum SearchTypeEnum {
 
 	termSearch(7,"termSearch"),
 
-	matchPhrasePrefixSearch(8,"matchPhrasePrefixSearch");
+	matchPhrasePrefixSearch(8,"matchPhrasePrefixSearch"),
 
+	boundingBoxSearch(9,"boundingBoxSearch"),
+
+	disjointSearch(10,"disjointSearch"),
+
+	distanceSearch(11,"distanceSearch"),
+
+	geoShapeSearch(12,"geoShapeSearch"),
+
+	intersectionSearch(13,"intersectionSearch"),
+
+	polygonSearch(14,"polygonSearch"),
+
+	withinSearch(15,"withinSearch");
 
 	public int index;
 	public String name;

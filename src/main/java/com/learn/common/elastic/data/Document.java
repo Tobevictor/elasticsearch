@@ -4,12 +4,14 @@ import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.*;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.CountRequest;
@@ -47,28 +49,30 @@ public class Document {
 	 * @param id
 	 * @param jsonString
 	 */
-	public void inert(String index, String id, String jsonString) throws IOException {
+	public boolean inert(String index, String id, String jsonString) throws IOException {
 		if(!indices.isExists(index)){
-			LOGGER.error("index not found");
-			return;
+			LOGGER.debug("index not found");
+			return false;
 		}
 		IndexRequest request = new IndexRequest(index).id(id);
 		request.source(jsonString, XContentType.JSON);
-		client.index(request, RequestOptions.DEFAULT);
+		IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+		return response.status() == RestStatus.OK;
 	}
 	/**
 	 * 插入数据
 	 * @param index
 	 * @param jsonString
 	 */
-	public void insert(String index, String jsonString) throws IOException {
+	public boolean insert(String index, String jsonString) throws IOException {
 		if(!indices.isExists(index)){
-			LOGGER.error("index not found");
-			return;
+			LOGGER.debug("index not found");
+			return false;
 		}
 		IndexRequest request = new IndexRequest(index);
 		request.source(jsonString, XContentType.JSON);
-		client.index(request, RequestOptions.DEFAULT);
+		IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+		return response.status() == RestStatus.OK;
 	}
 
 	/**
@@ -77,17 +81,18 @@ public class Document {
 	 * @param id
 	 * @param source
 	 */
-	public void insert(String index, String id, Map<String,Object> source) throws IOException {
+	public boolean insert(String index, String id, Map<String,Object> source) throws IOException {
 		if(!indices.isExists(index)){
-			LOGGER.error("index not found");
-			return;
+			LOGGER.debug("index not found");
+			return false;
 		}
 		Map<String, Object> jsonMap = new HashMap<>();
 		for (Map.Entry<String,Object> entry : source.entrySet()) {
 			jsonMap.put(entry.getKey(),entry.getValue());
 		}
 		IndexRequest request = new IndexRequest(index).id(id).source(jsonMap);
-		client.index(request,RequestOptions.DEFAULT);
+		IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+		return response.status() == RestStatus.OK;
 	}
 
 	/**
@@ -95,17 +100,18 @@ public class Document {
 	 * @param index
 	 * @param source
 	 */
-	public void insert(String index, Map<String,Object> source) throws IOException {
+	public boolean insert(String index, Map<String,Object> source) throws IOException {
 		if(!indices.isExists(index)){
-			LOGGER.error("index not found");
-			return;
+			LOGGER.debug("index not found");
+			return false;
 		}
 		Map<String, Object> jsonMap = new HashMap<>();
 		for (Map.Entry<String,Object> entry : source.entrySet()) {
 			jsonMap.put(entry.getKey(),entry.getValue());
 		}
 		IndexRequest request = new IndexRequest(index).source(jsonMap);
-		client.index(request,RequestOptions.DEFAULT);
+		IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+		return response.status() == RestStatus.OK;
 	}
 
 	/**
@@ -116,7 +122,7 @@ public class Document {
 	 */
 	public void insertAsync(String index, String id, String jsonString) throws IOException {
 		if(!indices.isExists(index)){
-			LOGGER.error("index not found");
+			LOGGER.debug("index not found");
 			return;
 		}
 		IndexRequest request = new IndexRequest(index).id(id);
@@ -140,16 +146,22 @@ public class Document {
 	 * @param index
 	 * @param id
 	 */
-	public void delete(String index, String id) throws IOException {
+	public boolean delete(String index, String id) throws IOException {
 		if(!indices.isExists(index)||!isIdExists(index,id)){
-			LOGGER.error("index or id not found");
+			LOGGER.debug("index or id not found");
+			return false;
 		}
 		DeleteRequest request = new DeleteRequest(index,id);
 
 		DeleteResponse response = client.delete(request,RequestOptions.DEFAULT);
-		if (response.getResult() == DocWriteResponse.Result.NOT_FOUND) {
-			LOGGER.error("document not exist");
+		if(response.status() == RestStatus.OK){
+			if (response.getResult() == DocWriteResponse.Result.NOT_FOUND) {
+				LOGGER.debug("document not exist");
+				return false;
+			}
+			return true;
 		}
+		return false;
 	}
 
 	public long count(String index) throws IOException {
@@ -259,14 +271,16 @@ public class Document {
 	 * @param id
 	 * @param jsonMap
 	 */
-	public void update(String index, String id, Map<String,Object> jsonMap) throws IOException {
+	public boolean update(String index, String id, Map<String,Object> jsonMap) throws IOException {
 		if(!isIdExists(index,id)){
 			LOGGER.error("index or id not found");
+			return false;
 		}
 		UpdateRequest request = new UpdateRequest(index, id).doc(jsonMap);
 		/*request.retryOnConflict(3);
 		request.fetchSource(true);*/
-		client.update(request, RequestOptions.DEFAULT);
+		UpdateResponse response = client.update(request, RequestOptions.DEFAULT);
+		return response.status() == RestStatus.OK;
 	}
 
 	public List<IndexRequest> generateRequests(String indexName, String[] source){
@@ -292,6 +306,7 @@ public class Document {
 		List<IndexRequest> requests = new ArrayList<>();
 		for (int i = 0;i<list.size();i++){
 			IndexRequest indexRequest = new IndexRequest(index);
+			//UpdateRequest request = new UpdateRequest().doc();
 			indexRequest.source(list.get(i), XContentType.JSON);
 			requests.add(indexRequest);
 			if(requests.size()%50000 == 0){
@@ -306,8 +321,14 @@ public class Document {
 		for (IndexRequest request : requests) {
 			bulkRequest.add(request);
 		}
-		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return Objects.requireNonNull(requests).size();
+		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+		if(responses.status() == RestStatus.OK){
+			return Objects.requireNonNull(requests).size();
+
+		}else {
+			LOGGER.error("BulkResponse status is" + responses.status());
+		}
+		return 0;
 	}
 
 	/**
@@ -326,8 +347,14 @@ public class Document {
 				bulkRequest.add(indexRequest);
 			}
 		}
-		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return Objects.requireNonNull(requests).size();
+		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+		if(responses.status() == RestStatus.OK){
+			return Objects.requireNonNull(requests).size();
+
+		}else {
+			LOGGER.error("BulkResponse status is" + responses.status());
+		}
+		return 0;
 	}
 
 	/**
@@ -351,8 +378,14 @@ public class Document {
 				bulkRequest.add(request);
 			}
 		}
-		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return Objects.requireNonNull(requests).size();
+		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+		if(responses.status() == RestStatus.OK){
+			return Objects.requireNonNull(requests).size();
+
+		}else {
+			LOGGER.error("BulkResponse status is" + responses.status());
+		}
+		return 0;
 	}
 }
 

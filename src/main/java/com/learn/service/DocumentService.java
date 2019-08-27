@@ -1,7 +1,6 @@
 package com.learn.service;
 
 import com.learn.common.elastic.common.result.ElasticResult;
-import com.learn.common.elastic.common.result.ServiceResult;
 
 /**
  * @Date 2019/8/14 17:18
@@ -10,6 +9,8 @@ import com.learn.common.elastic.common.result.ServiceResult;
 public interface DocumentService {
 
 	ElasticResult fromMysql(String index);
+
+	ElasticResult fromMysqlAsc(String index);
 
 	ElasticResult fromOracle(String index);
 

@@ -29,7 +29,7 @@ public class RangeSearchBuilder extends BaseSearchBuilder {
 
 	@Override
 	public SearchSourceBuilder builder() {
-		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(field);
+		RangeQueryBuilder rangeQueryBuilder = new RangeQueryBuilder(field);
 		rangeQueryBuilder.gte(gte);
 		rangeQueryBuilder.lte(lte);
 

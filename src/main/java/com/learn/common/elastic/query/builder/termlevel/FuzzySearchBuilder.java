@@ -31,7 +31,7 @@ public class FuzzySearchBuilder extends BaseSearchBuilder {
 
 	@Override
 	public SearchSourceBuilder builder() {
-		FuzzyQueryBuilder fuzzyQueryBuilder = QueryBuilders.fuzzyQuery(field, term);
+		FuzzyQueryBuilder fuzzyQueryBuilder = new FuzzyQueryBuilder(field, term).maxExpansions(10);
 		/*BoolQueryBuilder boolBuilder = QueryBuilders.boolQuery();
 		boolBuilder.must(fuzzyQueryBuilder);*/
 

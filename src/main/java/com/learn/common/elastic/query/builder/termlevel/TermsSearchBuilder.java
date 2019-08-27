@@ -11,12 +11,12 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
  * @Date 2019/8/12 12:10
  * @Created by dshuyou
  */
-public class termsSearchBuilder extends BaseSearchBuilder {
+public class TermsSearchBuilder extends BaseSearchBuilder {
 
 	private String field;
 	private String[] terms;
 
-	public termsSearchBuilder(TermLevelCondition condition) {
+	public TermsSearchBuilder(TermLevelCondition condition) {
 		super(condition);
 		field = condition.getField();
 		terms = condition.getValues();
@@ -31,11 +31,11 @@ public class termsSearchBuilder extends BaseSearchBuilder {
 
 	@Override
 	public SearchSourceBuilder builder() {
-		TermsQueryBuilder termsQueryBuilder = QueryBuilders.termsQuery(field,terms);
+		TermsQueryBuilder termsQueryBuilder = new TermsQueryBuilder(field,terms);
 		/*BoolQueryBuilder boolBuilder = QueryBuilders.boolQuery();
 		boolBuilder.must(termQueryBuilder);*/
 
 		sourceBuilder.query(termsQueryBuilder);
 		return sourceBuilder;
-	}
+}
 }

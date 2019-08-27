@@ -8,6 +8,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -17,20 +19,17 @@ import java.io.IOException;
  */
 public class GeoShapeSearchBuilder extends BaseSearchBuilder {
 	private String field;
-	private ShapeBuilder shape;
+	private String shapeId;
 
 	public GeoShapeSearchBuilder(GeoCondition condition) {
 		super(condition);
 		this.field = condition.getField();
-		this.shape = condition.getShape();
-		if (shape == null) {
-			throw new IllegalArgumentException("bad args of geo shap");
-		}
+		this.shapeId = condition.getShapeId();
 	}
 
 	@Override
-	public SearchSourceBuilder builder() throws IOException {
-		GeoShapeQueryBuilder qb = QueryBuilders.geoShapeQuery(field, shape);
+	public SearchSourceBuilder builder() {
+		GeoShapeQueryBuilder qb = QueryBuilders.geoShapeQuery(field, shapeId);
 		sourceBuilder.query(qb);
 		ScoreSortBuilder sort = SortBuilders.scoreSort();
 		sourceBuilder.sort(sort);

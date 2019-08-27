@@ -29,7 +29,7 @@ public class PrefixSearchBuilder extends BaseSearchBuilder {
 
 	@Override
 	public SearchSourceBuilder builder() {
-		PrefixQueryBuilder queryBuilder = QueryBuilders.prefixQuery(field, term);
+		PrefixQueryBuilder queryBuilder = new PrefixQueryBuilder(field, term);
 		/*BoolQueryBuilder boolBuilder = QueryBuilders.boolQuery();
 		boolBuilder.must(queryBuilder);*/
 

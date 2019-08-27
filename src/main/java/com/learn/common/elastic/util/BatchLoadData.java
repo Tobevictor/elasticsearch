@@ -3,10 +3,7 @@ package com.learn.common.elastic.util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * @author dshuyou
@@ -31,7 +28,8 @@ public class BatchLoadData {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Class not found " + e);
-		}return connection;
+		}
+		return connection;
 	}
 
 	// 关闭连接
@@ -49,7 +47,7 @@ public class BatchLoadData {
 
 	public void load(String file) throws IOException, SQLException {
 		long startTime = System.currentTimeMillis();
-		String prefix = "INSERT INTO comment(id, address, content, username, like, date) VALUES ";
+		String prefix = "INSERT INTO earthquake(time, latitude, longitude, depth, mag) VALUES ";
 
 		BufferedReader input = new BufferedReader(new FileReader(file));
 		String line;
@@ -61,16 +59,17 @@ public class BatchLoadData {
 			String[] lines = line.split(",");
 			String sql = null;
 			try{
-				suffix.append("("+Integer.parseInt(lines[0])+",'"+lines[2]+"','"+lines[5]+"','"
-						+lines[1]+"',"+Integer.parseInt(lines[4])+",'"+lines[3]+"')");
+				suffix.append("('"+lines[0]+"',"+Double.parseDouble(lines[1])+","+
+						Double.parseDouble(lines[2])+"," +Double.parseDouble(lines[3])+","+
+						Double.parseDouble(lines[4])+")");
 				sql = prefix + suffix.toString().substring(0, suffix.length());
 			}catch (Exception e){
-				System.out.println("第"+count+"条数据错误");
+				continue;
 			}
 			pst.addBatch(sql);
 			suffix.setLength(0);
 			count++;
-			if(count%10000==0) {
+			if(count%1000==0) {
 				pst.executeBatch();
 				connection.commit();
 				pst.clearBatch();
@@ -80,7 +79,6 @@ public class BatchLoadData {
 		pst.executeBatch();
 		connection.commit();
 		pst.clearBatch();
-		close(connection);
 		System.out.println("共计插入" + count + "条");
 		long endTime = System.currentTimeMillis();
 		System.out.println(endTime-startTime+"ms");
@@ -89,6 +87,11 @@ public class BatchLoadData {
 	public static void main(String[] args) throws IOException, SQLException {
 		BatchLoadData batch = new BatchLoadData();
 		getConnection();
-		batch.load("D:\\test.csv");
+		long start = System.currentTimeMillis();
+		batch.load("D:\\download\\Earthquake.csv");
+
+		long end = System.currentTimeMillis();
+		System.out.println("导入共需："+(end-start)/1000+"s");
+		close(connection);
 	}
 }

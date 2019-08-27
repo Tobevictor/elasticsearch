@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -28,21 +29,29 @@ public class DocumentController {
 	@ApiOperation("从MYSQL批量导入数据(全量)")
 	@RequestMapping(value = "/fromMysql",method = RequestMethod.POST)
 	@ResponseBody
-	public ElasticResult fromMysql(String index){
+	public ElasticResult fromMysql(@RequestParam String index){
 		return documentService.fromMysql(index);
+	}
+
+	@ApiOperation("从MYSQL批量导入数据(增量)")
+	@RequestMapping(value = "/fromMysqlAsc",method = RequestMethod.POST)
+	@ResponseBody
+	public ElasticResult fromMysqlAsc(@RequestParam String index){
+		return documentService.fromMysqlAsc(index);
 	}
 
 	@ApiOperation("获取文档数量")
 	@RequestMapping(value = "/count",method = RequestMethod.GET)
 	@ResponseBody
-	public ElasticResult count(String index){
+	public ElasticResult count(@RequestParam String index){
 		return documentService.count(index);
 	}
 
 	@ApiOperation("根据id删除文档")
 	@RequestMapping(value = "/delete",method = RequestMethod.GET)
 	@ResponseBody
-	public ElasticResult delete(String index, String id){
+	public ElasticResult delete(@RequestParam String index,
+								@RequestParam String id){
 		return documentService.delete(index,id);
 	}
 }

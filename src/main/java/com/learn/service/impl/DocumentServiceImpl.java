@@ -44,8 +44,22 @@ public class DocumentServiceImpl implements DocumentService {
 			long count = document.batchAscendingId(index,list);
 			result = ElasticResult.success("batch intert success",count);
 		} catch (IOException e) {
-			LOGGER.error("IOException");
+			LOGGER.error("IOException:" + e);
 			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"batch intert failed,error:"+e,0);
+		}
+		return result;
+	}
+
+	@Override
+	public ElasticResult fromMysqlAsc(String index) {
+		List<Map<String,Object>> list = commentMapper.getAsc();
+		ElasticResult result;
+		try {
+			long count = document.batchAscendingId(index,list);
+			result = ElasticResult.success("increment intert success",count);
+		} catch (IOException e) {
+			LOGGER.error("IOException:" + e);
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"increment intert failed,error:"+e,0);
 		}
 		return result;
 	}
@@ -62,7 +76,7 @@ public class DocumentServiceImpl implements DocumentService {
 			long count = document.count(index);
 			result = ElasticResult.success("count success",count);
 		} catch (IOException e) {
-			LOGGER.error("IOException");
+			LOGGER.error("IOException:" + e);
 			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"counting failed,error:"+e,0);
 		}
 		return result;
@@ -75,7 +89,7 @@ public class DocumentServiceImpl implements DocumentService {
 			document.delete(index,id);
 			result = ElasticResult.success("delete success",id);
 		} catch (IOException e) {
-			LOGGER.error("IOException");
+			LOGGER.error("IOException:" + e);
 			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"delete failed,error:"+e,id);
 		}
 		return result;

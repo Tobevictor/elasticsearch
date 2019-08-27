@@ -21,42 +21,6 @@ public class TermLevelCondition extends QueryCondition {
 		super(from, size);
 	}
 
-	public TermLevelCondition(String[] ids){
-		super();
-		this.ids = ids;
-	}
-
-	public TermLevelCondition(int from, int size, String[] ids){
-		super(from,size);
-		this.ids = ids;
-	}
-
-	public TermLevelCondition(String field, String value){
-		super();
-		this.field = field;
-		this.value = value;
-	}
-
-	public TermLevelCondition(int from, int size, String field, String value){
-		super(from,size);
-		this.field = field;
-		this.value = value;
-	}
-
-	public TermLevelCondition(String field, String gte, String lte){
-		super();
-		this.field = field;
-		this.gte = gte;
-		this.lte = lte;
-	}
-
-	public TermLevelCondition(int from, int size, String field, String gte, String lte){
-		super(from,size);
-		this.field = field;
-		this.gte = gte;
-		this.lte = lte;
-	}
-
 	public String getField() {
 		return field;
 	}

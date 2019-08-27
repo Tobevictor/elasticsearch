@@ -20,6 +20,8 @@ public class GeoSearch extends QueryOptions {
 
 	@Override
 	public List<String> executeQuery(QueryCondition queryCondition) throws Throwable {
+
+
 		return null;
 	}
 }

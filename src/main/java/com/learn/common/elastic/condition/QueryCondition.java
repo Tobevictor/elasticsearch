@@ -6,10 +6,11 @@ package com.learn.common.elastic.condition;
  *
  */
 public abstract class QueryCondition {
+	private static final int DEFAULT_FROM = 0;
+	private static final int DEFAULT_SIZE = 100;
+
 	protected int from;
 	protected int size;
-	private static final int DEFAULT_FROM = 0;
-	private static final int DEFAULT_SIZE = Integer.MAX_VALUE;
 
 	public QueryCondition() {
 		this.from = DEFAULT_FROM;
@@ -17,14 +18,8 @@ public abstract class QueryCondition {
 	}
 
 	public QueryCondition(int from,int size) {
-		this.from = from;
-		this.size = size;
-		if(from < 0){
-			throw new IllegalArgumentException("Illegal initial from: " + from);
-		}
-		if(size <= 0){
-			throw new IllegalArgumentException("Illegal initial size: " + size);
-		}
+		this.from = from >= 0 ? from : DEFAULT_FROM;
+		this.size = size > 0 ? size :DEFAULT_SIZE;
 	}
 
 	public int getFrom() {

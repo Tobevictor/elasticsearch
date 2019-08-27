@@ -1,10 +1,11 @@
 package com.learn.service;
 
 import com.learn.common.elastic.common.result.ElasticResult;
+import com.learn.common.elastic.condition.FullTextCondition;
+import com.learn.common.elastic.condition.GeoCondition;
 import com.learn.common.elastic.condition.QueryCondition;
-import com.learn.common.elastic.query.search.SearchTypeEnum;
+import com.learn.common.elastic.condition.TermLevelCondition;
 
-import java.util.List;
 
 /**
  * @Date 2019/8/14 19:14
@@ -12,11 +13,13 @@ import java.util.List;
  */
 public interface QueryService {
 
-	ElasticResult simpleQuery(String index, QueryCondition condition);
+	ElasticResult fulltextQuery(String index, FullTextCondition condition);
 
-	ElasticResult simpleQuery(String type, String index, QueryCondition condition);
+	ElasticResult fulltextQuery(String type, String index, FullTextCondition condition);
 
-	ElasticResult geoQuery(String type, String index, QueryCondition condition);
+	ElasticResult termLevelQuery(String type, String index, TermLevelCondition condition);
+
+	ElasticResult geoQuery(String type, String index, GeoCondition condition);
 
 	ElasticResult multiQuery(String index, QueryCondition condition);
 }

@@ -2,6 +2,7 @@ package com.learn.common.elastic.query.builder.fulltext;
 
 import com.learn.common.elastic.condition.FullTextCondition;
 import com.learn.common.elastic.query.builder.BaseSearchBuilder;
+import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
@@ -18,7 +19,7 @@ public class MatchAllSearchBuilder extends BaseSearchBuilder {
 
 	@Override
 	public SearchSourceBuilder builder(){
-		sourceBuilder.query(QueryBuilders.matchAllQuery());
+		sourceBuilder.query(new MatchAllQueryBuilder());
 		return sourceBuilder;
 	}
 

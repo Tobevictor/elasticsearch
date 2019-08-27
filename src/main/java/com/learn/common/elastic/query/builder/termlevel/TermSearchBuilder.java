@@ -30,7 +30,7 @@ public class TermSearchBuilder extends BaseSearchBuilder {
 
 	@Override
 	public SearchSourceBuilder builder() {
-		TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery(field,term);
+		TermQueryBuilder termQueryBuilder = new TermQueryBuilder(field,term);
 		/*BoolQueryBuilder boolBuilder = QueryBuilders.boolQuery();
 		boolBuilder.must(termQueryBuilder);*/
 

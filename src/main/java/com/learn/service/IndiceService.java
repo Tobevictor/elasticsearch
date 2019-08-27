@@ -1,7 +1,6 @@
 package com.learn.service;
 
 import com.learn.common.elastic.common.result.ElasticResult;
-import com.learn.common.elastic.common.result.ServiceResult;
 
 import java.util.Map;
 

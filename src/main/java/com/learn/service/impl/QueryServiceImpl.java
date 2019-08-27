@@ -1,8 +1,10 @@
 package com.learn.service.impl;
 
 import com.learn.common.elastic.common.result.ElasticResult;
+import com.learn.common.elastic.condition.FullTextCondition;
+import com.learn.common.elastic.condition.GeoCondition;
 import com.learn.common.elastic.condition.QueryCondition;
-import com.learn.common.elastic.query.search.GeoSearch;
+import com.learn.common.elastic.condition.TermLevelCondition;
 import com.learn.common.elastic.query.search.SearchTypeEnum;
 import com.learn.common.elastic.query.search.SimpleSearch;
 import com.learn.service.QueryService;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,50 +31,65 @@ public class QueryServiceImpl implements QueryService {
 	private RestHighLevelClient client;
 
 	@Override
-	public ElasticResult simpleQuery(String index, QueryCondition condition) {
+	public ElasticResult fulltextQuery(String index, FullTextCondition condition) {
 		SimpleSearch simpleSearch = new SimpleSearch(index,client);
-		List<String> list = null;
 		ElasticResult result;
 		try {
-			list = simpleSearch.executeQuery(condition);
+			List<String> list = simpleSearch.executeQuery(condition);
 			result =  ElasticResult.success("simpleQuery success",list);
 		} catch (IOException e) {
-			LOGGER.error("IOException");
-			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"simpleQuery failed,error:"+e,list);
+			LOGGER.error("IOException:" + e);
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),
+					"Fulltext Query failed,error:"+e,new ArrayList<>());
 		}
 		return result;
 	}
 
 	@Override
-	public ElasticResult simpleQuery(String type, String index, QueryCondition condition) {
+	public ElasticResult fulltextQuery(String type, String index, FullTextCondition condition) {
 		SearchTypeEnum searchTypeEnum = SearchTypeEnum.valueOf(type);
-		SimpleSearch simpleSearch = new SimpleSearch(index,client,searchTypeEnum);
-		List<String> list = null;
+		SimpleSearch fulltext = new SimpleSearch(index,client,searchTypeEnum);
 		ElasticResult result;
 		try {
-			list = simpleSearch.executeQuery(condition);
+			List<String> list = fulltext.executeQuery(condition);
 			result =  ElasticResult.success(type+"query success",list);
 		} catch (IOException e) {
-			LOGGER.error("IOException");
-			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"simpleQuery failed,error:"+e,list);
+			LOGGER.error("IOException:" + e);
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),
+					"Fulltext Query failed,error:"+e,new ArrayList<>());
+		}
+		return result;
+	}
+
+	@Override
+	public ElasticResult termLevelQuery(String type, String index, TermLevelCondition condition) {
+		SearchTypeEnum searchTypeEnum = SearchTypeEnum.valueOf(type);
+		SimpleSearch termLevelSearch = new SimpleSearch(index,client,searchTypeEnum);
+		ElasticResult result;
+		try {
+			List<String> list = termLevelSearch.executeQuery(condition);
+			result =  ElasticResult.success(type+"query success",list);
+		} catch (IOException e) {
+			LOGGER.error("IOException:" + e);
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),
+					"TermLevel Query failed,error:"+e,new ArrayList<>());
 		}
 		return result;
 	}
 
 
 	@Override
-	public ElasticResult geoQuery(String type, String index, QueryCondition condition) {
+	public ElasticResult geoQuery(String type, String index, GeoCondition condition) {
 		SearchTypeEnum searchTypeEnum = SearchTypeEnum.valueOf(type);
-		GeoSearch geoSearch = new GeoSearch(index,client,searchTypeEnum);
-		List<String> list = null;
+		SimpleSearch geoSearch = new SimpleSearch(index,client,searchTypeEnum);
 		ElasticResult result;
 		try {
-			list = geoSearch.executeQuery(condition);
+			List<String> list = geoSearch.executeQuery(condition);
 			result =  ElasticResult.success(type+"query success",list);
 		} catch (Throwable throwable) {
-			LOGGER.error("IOException");
-			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),"geoQuery failed,error:"+throwable,list);
-
+			LOGGER.error("Throwable throwable:" + throwable);
+			result = ElasticResult.failed(RestStatus.CONFLICT.getStatus(),
+					"GeoQuery failed,error:"+throwable,new ArrayList<>());
 		}
 		return result;
 	}
