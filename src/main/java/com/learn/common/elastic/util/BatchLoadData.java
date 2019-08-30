@@ -47,7 +47,7 @@ public class BatchLoadData {
 
 	public void load(String file) throws IOException, SQLException {
 		long startTime = System.currentTimeMillis();
-		String prefix = "INSERT INTO earthquake(time, latitude, longitude, depth, mag) VALUES ";
+		String prefix = "INSERT INTO earthquake(time, latitude, longitude, depth, mag, geopoint) VALUES ";
 
 		BufferedReader input = new BufferedReader(new FileReader(file));
 		String line;
@@ -61,7 +61,8 @@ public class BatchLoadData {
 			try{
 				suffix.append("('"+lines[0]+"',"+Double.parseDouble(lines[1])+","+
 						Double.parseDouble(lines[2])+"," +Double.parseDouble(lines[3])+","+
-						Double.parseDouble(lines[4])+")");
+						Double.parseDouble(lines[4])+",ST_GeomFromText('POINT("+Double.parseDouble(lines[2])
+						+" "+Double.parseDouble(lines[1])+")')"+")");
 				sql = prefix + suffix.toString().substring(0, suffix.length());
 			}catch (Exception e){
 				continue;
@@ -69,7 +70,7 @@ public class BatchLoadData {
 			pst.addBatch(sql);
 			suffix.setLength(0);
 			count++;
-			if(count%1000==0) {
+			if(count%100000==0) {
 				pst.executeBatch();
 				connection.commit();
 				pst.clearBatch();

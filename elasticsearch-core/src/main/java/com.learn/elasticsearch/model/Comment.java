@@ -1,4 +1,4 @@
-package com.learn.model;
+package com.learn.elasticsearch.model;
 
 import com.google.common.collect.Lists;
 

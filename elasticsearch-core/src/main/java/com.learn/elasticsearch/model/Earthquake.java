@@ -1,4 +1,4 @@
-package com.learn.model;
+package com.learn.elasticsearch.model;
 
 import com.google.common.collect.Lists;
 import com.vividsolutions.jts.geom.Geometry;
@@ -17,7 +17,7 @@ public class Earthquake {
 	private double longitude;
 	private double depth;
 	private double mag;
-	private String point;
+	private Geometry point;
 
 	public Earthquake(){
 	}
@@ -70,14 +70,6 @@ public class Earthquake {
 		this.mag = mag;
 	}
 
-	public String getPoint() {
-		return point;
-	}
-
-	public void setPoint(String point) {
-		this.point = point;
-	}
-
 	public List<String> getAnalyzedField(){
 		return Lists.newArrayList("time");
 	}
@@ -91,7 +83,7 @@ public class Earthquake {
 				", longitude=" + longitude +
 				", depth=" + depth +
 				", mag=" + mag +
-				", point='" + point + '\'' +
 				'}';
 	}
+
 }

@@ -2,7 +2,6 @@ package com.learn.config;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;

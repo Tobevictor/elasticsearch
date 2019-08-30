@@ -1,9 +1,17 @@
 package com.learn.component;
 
+import com.learn.elasticsearch.Document;
+import com.learn.mapper.CommentMapper;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Date 2019/8/21 13:06
@@ -13,13 +21,26 @@ import org.springframework.stereotype.Component;
 public class OrderTimeOutCancelTask {
 	private Logger LOGGER = LoggerFactory.getLogger(OrderTimeOutCancelTask.class);
 
+	@Autowired
+	private CommentMapper commentMapper;
+	@Autowired
+	private RestHighLevelClient client;
+
 	/**
 	 * cron表达式：Seconds Minutes Hours DayofMonth Month DayofWeek [Year]
-	 * 每10分钟扫描一次，扫描设定超时时间之前下的订单，如果没支付则取消该订单
+	 * 每10分钟扫描一次
 	 */
 	@Scheduled(cron = "0 0/10 * ? * ?")
 	private void cancelTimeOutOrder() {
-		// TODO: 2019/5/3 此处应调用取消订单的方法，具体查看mall项目源码
-		LOGGER.info("取消订单，并根据sku编号释放锁定库存");
+		List<Map<String,Object>> list = commentMapper.findAll();
+		Document document = new Document(client);
+
+		try {
+			LOGGER.info("开始导入数据");
+			document.bulkIndex("comment",list);
+			LOGGER.info("成功导入数据");
+		} catch (IOException e) {
+			LOGGER.info("导入失败");
+		}
 	}
 }
