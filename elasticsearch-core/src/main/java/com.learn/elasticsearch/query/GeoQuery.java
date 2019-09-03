@@ -60,7 +60,7 @@ public class GeoQuery extends BaseQuery{
 		List<String> list = new ArrayList<>();
 		for (SearchHit searchHit : hits) {
 			list.add(searchHit.getSourceAsString());
-			System.out.println(searchHit.getSourceAsString());
+			//System.out.println(searchHit.getSourceAsString());
 		}
 		return list;
 	}

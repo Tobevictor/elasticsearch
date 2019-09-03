@@ -1,9 +1,8 @@
 package com.learn.elasticsearch.query;
 
 import com.learn.elasticsearch.EsClientInit;
-import com.learn.elasticsearch.query.condition.FullTextCondition;
 import com.learn.elasticsearch.query.condition.TermsLevelCondition;
-import com.learn.elasticsearch.query.query_enum.QueryTypeEnum;
+import com.learn.elasticsearch.query.query_enum.TermsEnum;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +24,7 @@ public class TermsQueryTest {
 	public void setUp(){
 		client = EsClientInit.getInstance().getClient();
 		String index = "comment";
-		termsQuery = new TermsQuery(index,client, QueryTypeEnum.prefixQuery);
+		termsQuery = new TermsQuery(index,client, TermsEnum.termsQuery);
 	}
 
 	@Test
@@ -44,9 +43,10 @@ public class TermsQueryTest {
 	public void query() throws IOException {
 		TermsLevelCondition condition = new TermsLevelCondition();
 		condition.setField("content");
-		condition.setValue("我_");
+		condition.setValues(new String[]{"我","和","你"});
+		//condition.setValue("我");
 		condition.setFrom(0);
-		condition.setSize(1000);
+		condition.setSize(10);
 		List<String> list = termsQuery.executeQuery(condition);
 		for (String s :list){
 			System.out.println(s);

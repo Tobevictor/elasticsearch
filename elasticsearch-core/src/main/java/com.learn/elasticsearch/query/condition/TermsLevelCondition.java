@@ -69,19 +69,5 @@ public class TermsLevelCondition extends BaseCondition {
 	public void setValues(String[] values) {
 		this.values = values;
 	}
-
-	@Override
-	public String toString() {
-		return "TermsLevelCondition{" +
-				"field='" + field + '\'' +
-				", value='" + value + '\'' +
-				", values=" + Arrays.toString(values) +
-				", ids=" + Arrays.toString(ids) +
-				", gte='" + gte + '\'' +
-				", lte='" + lte + '\'' +
-				", from=" + from +
-				",size=" + size +
-				'}';
-	}
 }
 

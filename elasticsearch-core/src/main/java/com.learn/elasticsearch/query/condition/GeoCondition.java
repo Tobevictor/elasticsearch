@@ -12,8 +12,6 @@ import java.util.List;
 public class GeoCondition extends BaseCondition {
 	private String field;
 	private String distance;
-	private Double longitude;
-	private Double latitude;
 	private String shapeType;
 	private int shapeNumber;
 
@@ -66,22 +64,6 @@ public class GeoCondition extends BaseCondition {
 
 	public void setField(String field) {
 		this.field = field;
-	}
-
-	public Double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(Double longitude) {
-		this.longitude = longitude;
-	}
-
-	public Double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(Double latitude) {
-		this.latitude = latitude;
 	}
 
 	public String getDistance() {
@@ -170,28 +152,6 @@ public class GeoCondition extends BaseCondition {
 
 	public void setCoordinates(List<Coordinate> coordinates) {
 		this.coordinates = coordinates;
-	}
-
-	@Override
-	public String toString() {
-			return "GeoCondition{" +
-					"field='" + field + '\'' +
-					", distance='" + distance + '\'' +
-					", longitude=" + longitude +
-					", latitude=" + latitude +
-					", shapeType='" + shapeType + '\'' +
-					", shapeNumber=" + shapeNumber +
-					", topLeft=" + topLeft +
-					", bottomRight=" + bottomRight +
-					", point=" + point +
-					", tlCoordinate=" + tlCoordinate +
-					", brCoordinate=" + brCoordinate +
-					", coordinate=" + coordinate +
-					", points=" + points +
-					", coordinates=" + coordinates +
-					", from=" + from +
-					",size=" + size +
-					'}';
 	}
 }
 

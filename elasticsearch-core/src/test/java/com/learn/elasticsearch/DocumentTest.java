@@ -28,7 +28,8 @@ public class DocumentTest {
 		Document document = new Document(client);
 		Map<String, Object> map = new HashMap<>();
 		map.put("point","POINT(-118.1850357 34.1645203)");
-		document.index(index,map);
+		Object o = document.index(index,map);
+		System.out.println(o);
 	}
 
 	@Test
@@ -42,7 +43,8 @@ public class DocumentTest {
 				"\"longitude\":-118.7435}";
 
 		Document document = new Document(client);
-		document.index(index,json);
+		Object object = document.index(index,json);
+		System.out.println(object);
 	}
 
 	@Test
@@ -50,7 +52,10 @@ public class DocumentTest {
 	}
 
 	@Test
-	public void delete() {
+	public void delete() throws IOException {
+		Document document = new Document(client);
+		boolean result = document.delete(index,"s5zQ3GwBiAEaKMA44SCd");
+		System.out.println(result);
 	}
 
 	@Test

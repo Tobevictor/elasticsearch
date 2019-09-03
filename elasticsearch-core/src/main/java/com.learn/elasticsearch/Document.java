@@ -58,7 +58,7 @@ public class Document {
 			request.source((XContentBuilder) source);
 		}
 		IndexResponse response = client.index(request,RequestOptions.DEFAULT);
-		return response.status() == RestStatus.OK ? source :null;
+		return response.status() == RestStatus.CREATED ? source :null;
 	}
 
 	public Object index(String index,Object source) throws IOException {
@@ -73,10 +73,9 @@ public class Document {
 			request.source(XContentType.JSON,source);
 		}
 		IndexResponse response = client.index(request,RequestOptions.DEFAULT);
-		return response.status() == RestStatus.OK ? source :null;
+		return response.status() == RestStatus.CREATED? source :null;
 
 	}
-
 
     /**
 	 * 异步插入数据(指定ID)
@@ -205,7 +204,6 @@ public class Document {
 		return list;
 	}
 
-
     /**
 	 * 更新字段
 	 * @param index
@@ -222,7 +220,7 @@ public class Document {
 		return response.status() == RestStatus.OK;
 	}
 
-	public List<IndexRequest> generateRequests(String index, String[] source){
+	private List<IndexRequest> generateRequests(String index, String[] source){
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(source, "source");
 

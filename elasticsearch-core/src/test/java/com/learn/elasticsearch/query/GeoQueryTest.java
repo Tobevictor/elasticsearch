@@ -2,13 +2,15 @@ package com.learn.elasticsearch.query;
 
 import com.learn.elasticsearch.EsClientInit;
 import com.learn.elasticsearch.query.condition.GeoCondition;
-import com.learn.elasticsearch.query.query_enum.QueryTypeEnum;
+import com.learn.elasticsearch.query.query_enum.GeoEnum;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Date 2019/8/28 11:11
@@ -21,8 +23,8 @@ public class GeoQueryTest {
 	@Before
 	public void setUp(){
 		client = EsClientInit.getInstance().getClient();
-		String index = "my_index1";
-		QueryTypeEnum queryType = QueryTypeEnum.geoShapeQuery;
+		String index = "earthquake";
+		GeoEnum queryType = GeoEnum.geoShapeQuery;
 		geoQuery = new GeoQuery(index,client,queryType);
 	}
 
@@ -30,11 +32,11 @@ public class GeoQueryTest {
 	public void executeQuery() throws IOException {
 		GeoCondition condition = new GeoCondition();
 		condition.setShapeType("ENVELOPE");
-		condition.setField("shape");
+		condition.setField("point");
 		double leftLatitude = 80.0;
-		double leftLongitude = -150.0;
+		double leftLongitude = -180.0;
 		double rightLatitude = -80.0;
-		double rightLongitude = 150.0;
+		double rightLongitude = 180.0;
 		condition.getBox(leftLatitude,leftLongitude,rightLatitude,rightLongitude);
 		/*Coordinate coordinate = new Coordinate(leftLongitude,leftLatitude);
 		Coordinate coordinate1 = new Coordinate(rightLongitude,rightLatitude);
@@ -46,7 +48,8 @@ public class GeoQueryTest {
 		System.out.println(condition.getTlCoordinate().toString());
 		System.out.println(condition.getBrCoordinate().toString());
 
-		geoQuery.executeQuery(condition);
+		List<String> list = geoQuery.executeQuery(condition);
+		System.out.println(list.size());
 
 	}
 

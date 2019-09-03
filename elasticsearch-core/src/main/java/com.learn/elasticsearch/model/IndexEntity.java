@@ -11,6 +11,8 @@ public class IndexEntity {
 	private String indexName;
 	private Object source;
 
+	public IndexEntity(){}
+
 	public String getId() {
 		return id;
 	}

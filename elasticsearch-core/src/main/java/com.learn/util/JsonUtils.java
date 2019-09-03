@@ -1,5 +1,8 @@
 package com.learn.util;
 
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.io.WKTWriter;
 import org.geotools.geojson.geom.GeometryJSON;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -9,20 +12,6 @@ import java.io.*;
  * @author dshuyou
  */
 public class JsonUtils {
-
-
-	public String evaluate(String geoJson) {
-		String ret = null;
-		GeometryJSON gjson = new GeometryJSON();
-		Reader reader = new StringReader(geoJson);
-		try {
-			Geometry geometry = gjson.read(reader);
-			ret = geometry.toText();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return ret;
-	}
 
 	public static Geometry geojson2Geometry(String geoJson) throws IOException {
 		GeometryJSON json = new GeometryJSON();
@@ -37,25 +26,27 @@ public class JsonUtils {
 		return writer.toString();
 	}
 
-	public static void main(String[] args) throws IOException {
-		JsonUtils jsonUtils = new JsonUtils();
-		String json = "{\n" +
-				"                \"type\": \"LineString\",\n" +
-				"                \"coordinates\": [\n" +
-				"                    [\n" +
-				"                        120.6584555,\n" +
-				"                        30.45144\n" +
-				"                    ],\n" +
-				"                    [\n" +
-				"                        120.1654515,\n" +
-				"                        30.54848\n" +
-				"                    ]\n" +
-				"                ]\n" +
-				"            }";
-		Geometry geometry = geojson2Geometry(json);
-		String geojson = geometry2Geojson(geometry);
-		System.out.println(geojson);
-		System.out.println(geometry.toText());
+	public static String wkt2Geojson(String wkt) throws ParseException, IOException {
+		String json = null;
+		WKTReader wktReader = new WKTReader();
+		Geometry geometry = wktReader.read(wkt);
+		return geometry2Geojson(geometry);
+	}
 
+	public static String geojson2Wkt(String geojson) throws IOException {
+		String wkt = null;
+		Geometry geometry = geojson2Geometry(geojson);
+		WKTWriter wktWriter = new WKTWriter();
+		return wktWriter.write(geometry);
+	}
+
+	public static String geometry2Wkt(Geometry geometry){
+		WKTWriter wktWriter = new WKTWriter();
+		return wktWriter.write(geometry);
+	}
+
+	public static Geometry wkt2Geometry(String wkt) throws ParseException {
+		WKTReader wktReader = new WKTReader();
+		return wktReader.read(wkt);
 	}
 }

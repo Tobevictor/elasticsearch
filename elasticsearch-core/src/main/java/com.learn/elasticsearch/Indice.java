@@ -226,8 +226,6 @@ public class Indice {
 	public Object get(String... index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		GetIndexRequest request = new GetIndexRequest(index);
-		//request.includeDefaults(true);
-		//request.indicesOptions(IndicesOptions.lenientExpandOpen());
 
 		GetIndexResponse response = client.indices().get(request, RequestOptions.DEFAULT);
 		Map<String,Settings> setting = response.getSettings();
@@ -272,8 +270,6 @@ public class Indice {
 		Objects.requireNonNull(index, "index");
 		FlushRequest request = new FlushRequest(index);
 		request.indicesOptions(IndicesOptions.lenientExpandOpen());
-		//request.waitIfOngoing(true);
-		//request.force(true);
 
 		client.indices().flush(request, RequestOptions.DEFAULT);
 	}
@@ -286,9 +282,11 @@ public class Indice {
 	public Boolean addAlias(String index,String aliasname) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(aliasname, "aliasname");
-		IndicesAliasesRequest.AliasActions aliasActions = IndicesAliasesRequest.AliasActions.add().alias(aliasname).index(index);
-
-		return client.indices().updateAliases(new IndicesAliasesRequest().addAliasAction(aliasActions),RequestOptions.DEFAULT).isAcknowledged();
+		IndicesAliasesRequest.AliasActions aliasActions = IndicesAliasesRequest.AliasActions.add()
+				.alias(aliasname)
+				.index(index);
+		return client.indices().updateAliases(new IndicesAliasesRequest().addAliasAction(aliasActions),
+				RequestOptions.DEFAULT).isAcknowledged();
 
 	}
 
