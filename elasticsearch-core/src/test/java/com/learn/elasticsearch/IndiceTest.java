@@ -1,8 +1,12 @@
 package com.learn.elasticsearch;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +26,7 @@ public class IndiceTest {
 	public void init(){
 		client = EsClientInit.getInstance().getClient();
 		indice = new Indice(client);
-		index = "earthquake";
+		index = "dshuyou111";
 	}
 
 	@Test
@@ -36,15 +40,47 @@ public class IndiceTest {
 	}
 
 	@Test
-	public void createIndexWithSettings() {
+	public void createIndexWithSettings() throws IOException {
+		CreateIndexRequest request = new CreateIndexRequest(index);
+		String json = "{\n" +
+				"   \"settings\" : {\n" +
+				"       \"analysis\" : {\n" +
+				"           \"analyzer\" : {\n" +
+				"               \"pinyin_analyzer\" : {\n" +
+				"                   \"tokenizer\" : \"my_pinyin\"\n" +
+				"                   }\n" +
+				"           },\n" +
+				"           \"tokenizer\" : {\n" +
+				"               \"my_pinyin\" : {\n" +
+				"                   \"type\" : \"pinyin\",\n" +
+				"                   \"keep_first_letter\":true,\n" +
+				"                   \"keep_separate_first_letter\" : true,\n" +
+				"                   \"keep_full_pinyin\" : true,\n" +
+				"                   \"keep_original\" : false,\n" +
+				"                   \"limit_first_letter_length\" : 16,\n" +
+				"                   \"lowercase\" : true\n" +
+				"               }\n" +
+				"           }\n" +
+				"       }\n" +
+				"   }\n" +
+				"}";
+		request.source(json, XContentType.JSON);
+		client.indices().create(request, RequestOptions.DEFAULT);
 	}
 
 	@Test
 	public void create1() {
+		Settings.Builder setting = indice.createSetting(3,2,30);
+		try {
+			indice.create(index,setting);
+			System.out.println("success");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
-	public void createMapping() throws IOException {
+	public void createMapping(){
 		Earthquake earthquake = new Earthquake();
 		System.out.println(indice.createMapping(earthquake));
 	}

@@ -4,14 +4,13 @@ package com.learn.elasticsearch.model;
  * @author dshuyou
  * @Date 2019/8/30 16:05
  */
-public class IndexEntity {
+public class SourceEntity {
 	private String id;
-	private Object object;
 	private Long version;
 	private String indexName;
 	private Object source;
 
-	public IndexEntity(){}
+	public SourceEntity(){}
 
 	public String getId() {
 		return id;
@@ -19,14 +18,6 @@ public class IndexEntity {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public Object getObject() {
-		return object;
-	}
-
-	public void setObject(Object object) {
-		this.object = object;
 	}
 
 	public Long getVersion() {

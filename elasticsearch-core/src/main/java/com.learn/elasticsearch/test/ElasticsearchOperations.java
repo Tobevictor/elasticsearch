@@ -231,7 +231,7 @@ public interface ElasticsearchOperations {
 
 	*/
 /**
-	 * Index an object. Will do save or update
+	 * IndexEnity an object. Will do save or update
 	 *
 	 * @param indexname
 	 * @param id

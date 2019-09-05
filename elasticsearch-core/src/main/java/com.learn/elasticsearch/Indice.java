@@ -9,13 +9,13 @@ import org.elasticsearch.action.admin.indices.settings.get.GetSettingsRequest;
 import org.elasticsearch.action.support.ActiveShardCount;
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.*;
 import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
 
 import java.io.IOException;
@@ -67,19 +67,46 @@ public class Indice {
 	 * @param settings
 	 */
 	public boolean create(String index, Object settings) throws IOException {
+		return createWithAnalysis(index,settings,createAnalysis());
+	}
+
+	private boolean createWithAnalysis(String index, Object settings, Object analysis) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(settings, "settings");
 		CreateIndexRequest request = new CreateIndexRequest(index);
-		if (settings instanceof String) {
-			request.settings(String.valueOf(settings), Requests.INDEX_CONTENT_TYPE);
-		} else if(settings instanceof Settings.Builder){
-			request.settings((Settings.Builder) settings);
-		} else if (settings instanceof Map) {
-			request.settings((Map) settings);
-		} else if (settings instanceof XContentBuilder) {
-			request.settings((XContentBuilder) settings);
+
+		putSetting(request,settings);
+		if (analysis instanceof String) {
+			request.source(String.valueOf(analysis), XContentType.JSON);
+		}  else if (analysis instanceof Map) {
+			request.source((Map) analysis);
+		} else if (analysis instanceof XContentBuilder) {
+			request.source((XContentBuilder) analysis);
 		}
+
 		return client.indices().create(request, RequestOptions.DEFAULT).isAcknowledged();
+	}
+
+	/**
+	 * 同步创建索引(自定义setting,mapping)
+	 * @param index
+	 * @param mapping
+	 */
+	public boolean create(String index, Object settings, Object mapping) throws IOException {
+		Objects.requireNonNull(index, "index");
+		Objects.requireNonNull(mapping, "mapping");
+		CreateIndexRequest request = new CreateIndexRequest(index);
+
+		putSetting(request,settings);
+		if (mapping instanceof String) {
+			request.source(String.valueOf(mapping), XContentType.JSON);
+		}  else if (mapping instanceof Map) {
+			request.source((Map) mapping);
+		} else if (mapping instanceof XContentBuilder) {
+			request.source((XContentBuilder) mapping);
+		}
+		CreateIndexResponse response = client.indices().create(request, RequestOptions.DEFAULT);
+		return response.isAcknowledged();
 	}
 
 	/**
@@ -100,38 +127,6 @@ public class Indice {
 			request.source((XContentBuilder) mapping);
 		}
 		return client.indices().putMapping(request,RequestOptions.DEFAULT).isAcknowledged();
-	}
-
-	/**
-	 * 同步创建索引(自定义setting,mapping)
-	 * @param index
-	 * @param mapping
-	 */
-	public boolean create(String index, Object settings, Object mapping) throws IOException {
-		Objects.requireNonNull(index, "index");
-		Objects.requireNonNull(mapping, "mapping");
-		CreateIndexRequest request = new CreateIndexRequest(index);
-		if (settings instanceof String) {
-			request.settings(String.valueOf(settings), Requests.INDEX_CONTENT_TYPE);
-		} else if(settings instanceof Settings.Builder){
-			request.settings((Settings.Builder) settings);
-		} else if (settings instanceof Map) {
-			request.settings((Map) settings);
-		} else if (settings instanceof XContentBuilder) {
-			request.settings((XContentBuilder) settings);
-		}
-		request.setTimeout(TimeValue.timeValueMinutes(TIMEOUT));
-		request.setMasterTimeout(TimeValue.timeValueMinutes(MASTER_TIMEOUT));
-		request.waitForActiveShards(ActiveShardCount.DEFAULT);
-		if (mapping instanceof String) {
-			request.mapping(String.valueOf(mapping), XContentType.JSON);
-		} else if (mapping instanceof Map) {
-			request.mapping((Map) mapping);
-		} else if (mapping instanceof XContentBuilder) {
-			request.mapping((XContentBuilder) mapping);
-		}
-		CreateIndexResponse response = client.indices().create(request, RequestOptions.DEFAULT);
-		return response.isAcknowledged();
 	}
 
     /**
@@ -300,6 +295,26 @@ public class Indice {
 				.put("index.refresh_interval", TimeValue.timeValueSeconds(reflushInterval));
 	}
 
+	private XContentBuilder createAnalysis() throws IOException {
+		XContentBuilder builder = XContentFactory.jsonBuilder();
+		builder.startObject().startObject("settings")
+				.startObject("analysis")
+				.startObject("analyzer")
+				.startObject("pinyin_analyzer").field("tokenizer","ik_smart")
+				.field("filter","my_pinyin")
+				.endObject().endObject().startObject("filter")
+				.startObject("my_pinyin")
+				.field( "type","pinyin")
+				.field( "keep_first_letter",true)
+				.field( "keep_separate_first_letter" ,true)
+				.field( "keep_full_pinyin",true)
+				.field("keep_original" ,false)
+				.field("limit_first_letter_length" ,16)
+				.field( "lowercase",true)
+				.endObject().endObject().endObject().endObject().endObject();
+		return builder;
+	}
+
 	/**
 	 * 生成mapping
 	 * @param object
@@ -315,10 +330,11 @@ public class Indice {
 					continue;
 				}
 				String name = field.getName();
-				if ("String".equals(field.getType().getSimpleName().toLowerCase())) {
+				if ("string".equals(field.getType().getSimpleName().toLowerCase())) {
 					mapping.startObject(name)
 							.field("type", getElasticSearchMappingType(field.getType().getSimpleName().toLowerCase()))
 							.field("analyzer", "ik_smart")
+
 							//.field("search_analyzer", "ik_smart")
 							.endObject();
 				} else {
@@ -377,5 +393,19 @@ public class Indice {
 		return es;
 	}
 
+	private void putSetting(CreateIndexRequest request, Object settings) {
+		if (settings instanceof String) {
+			request.settings(String.valueOf(settings), XContentType.JSON);
+		}  else if (settings instanceof Map) {
+			request.settings((Map) settings);
+		} else if(settings instanceof Settings.Builder){
+			request.settings((Settings.Builder)settings);
+		}else if (settings instanceof XContentBuilder) {
+			request.settings((XContentBuilder) settings);
+		}
+		request.setTimeout(TimeValue.timeValueMinutes(TIMEOUT));
+		request.setMasterTimeout(TimeValue.timeValueMinutes(MASTER_TIMEOUT));
+		request.waitForActiveShards(ActiveShardCount.DEFAULT);
+	}
 }
 

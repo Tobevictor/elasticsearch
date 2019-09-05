@@ -1,7 +1,7 @@
 package com.learn.elasticsearch;
 
 import com.alibaba.fastjson.JSON;
-import com.learn.elasticsearch.model.IndexEntity;
+import com.learn.elasticsearch.model.SourceEntity;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -290,10 +290,10 @@ public class Document {
 		return Objects.requireNonNull(requests).size();
 	}
 
-	public long bulkIndex(List<IndexEntity> queries) throws IOException {
+	public long bulkIndex(List<SourceEntity> queries) throws IOException {
 		BulkRequest bulkRequest = new BulkRequest();
 		List<IndexRequest> requests = new LinkedList<>();
-		for(IndexEntity index:queries) {
+		for(SourceEntity index:queries) {
 			IndexRequest indexRequest = new IndexRequest(index.getIndexName());
 			indexRequest.source(index.getSource(), XContentType.JSON);
 			requests.add(indexRequest);
@@ -313,10 +313,10 @@ public class Document {
 		return Objects.requireNonNull(requests).size();
 	}
 
-	public long bulkUpdate(List<IndexEntity> queries) throws IOException {
+	public long bulkUpdate(List<SourceEntity> queries) throws IOException {
 		BulkRequest bulkRequest = new BulkRequest();
 		List<UpdateRequest> requests = new LinkedList<>();
-		for(IndexEntity update:queries) {
+		for(SourceEntity update:queries) {
 			UpdateRequest updateRequest = new UpdateRequest(update.getIndexName(),update.getId());
 			updateRequest.doc().source(update.getSource(), XContentType.JSON);
 			requests.add(updateRequest);
@@ -336,10 +336,10 @@ public class Document {
 		return Objects.requireNonNull(requests).size();
 	}
 
-	public long bulkDelete(List<IndexEntity> queries) throws IOException {
+	public long bulkDelete(List<SourceEntity> queries) throws IOException {
 		BulkRequest bulkRequest = new BulkRequest();
 		List<DeleteRequest> requests = new LinkedList<>();
-		for(IndexEntity delete:queries) {
+		for(SourceEntity delete:queries) {
 			DeleteRequest deleteRequest = new DeleteRequest(delete.getIndexName()).id(delete.getId());
 			requests.add(deleteRequest);
 			if(requests.size()%50000 == 0){

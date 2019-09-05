@@ -16,10 +16,6 @@ public class Comment {
 	private String date;
 	private String content;
 
-	public List<String> getAnalyzedField(){
-		return Lists.newArrayList("username","address","date","content");
-	}
-
 	public Comment(){
 
 	}

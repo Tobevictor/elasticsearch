@@ -1,6 +1,7 @@
 package com.learn.service;
 
 import com.learn.common.ServiceResult;
+import com.learn.elasticsearch.model.IndexEnity;
 import com.learn.elasticsearch.query.condition.BaseCondition;
 import com.learn.elasticsearch.query.condition.FullTextCondition;
 import com.learn.elasticsearch.query.condition.GeoCondition;
@@ -15,9 +16,13 @@ import java.util.Map;
 public interface ElasticsearchService {
 	ServiceResult createIndex(String indexName);
 
-	ServiceResult createIndex(String indexName,Object mapping);
+	ServiceResult createIndex(String indexName,Object setting);
 
 	ServiceResult createIndex(String indexName, Object setting, Object mapping);
+
+	ServiceResult createIndexFromObj(IndexEnity indexEnity);
+
+	ServiceResult putMapping(String indexName,Object mapping);
 
 	ServiceResult getMapping(String indexName);
 
