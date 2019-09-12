@@ -22,7 +22,7 @@ public class FulltextQueryTest {
 	@Before
 	public void setUp(){
 		client = EsClientInit.getInstance().getClient();
-		String index = "comment";
+		String index = "comment1";
 		fulltextQuery = new FulltextQuery(index,client, FulltextEnum.matchPhraseQuery);
 	}
 
@@ -43,20 +43,12 @@ public class FulltextQueryTest {
 	public void query() throws IOException {
 		FullTextCondition condition = new FullTextCondition();
 		condition.setField("content");
-		condition.setValue("他");
+		condition.setValue("zg");
 		condition.setFrom(0);
 		condition.setSize(1000);
 		List<String> list = fulltextQuery.executeQuery(condition);
 		for (String s :list){
 			System.out.println(s);
 		}
-	}
-
-	@Test
-	public void executeBoolQuery() {
-	}
-
-	@Test
-	public void queryBuilder() {
 	}
 }

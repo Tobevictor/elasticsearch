@@ -1,9 +1,9 @@
 package com.learn.elasticsearch;
 
-import com.alibaba.fastjson.JSON;
 import com.learn.elasticsearch.model.SourceEntity;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.*;
@@ -31,23 +31,32 @@ import java.util.*;
 
 public class Document {
 
+	private final int COUNT = 30000;
 	private RestHighLevelClient client;
 
 	public Document(RestHighLevelClient client){
 		this.client = client;
 	}
 
-    /**
-	 * 插入数据(指定ID)
-	 * @param index
-	 * @param id
-	 * @param source
+	public Document(){}
+
+	public Document setClient(RestHighLevelClient client){
+		this.client = client;
+		return this;
+	}
+
+	/**
+	 * @param index - 索引名称
+	 * @param id - 索引id
+	 * @param source - 索引内容
+	 * @return - boolean
+	 * @throws IOException - IOException
 	 */
-	public Object index(String index, String id, Object source) throws IOException {
+	public boolean index(String index, String id, Object source) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(source, "source");
 		if(id == null){
-			return index(index,source);
+			return index(index, source);
 		}
 		IndexRequest request = new IndexRequest(index).id(id);
 		if (source instanceof String) {
@@ -58,10 +67,16 @@ public class Document {
 			request.source((XContentBuilder) source);
 		}
 		IndexResponse response = client.index(request,RequestOptions.DEFAULT);
-		return response.status() == RestStatus.CREATED ? source :null;
+		return response.status() == RestStatus.CREATED;
 	}
 
-	public Object index(String index,Object source) throws IOException {
+	/**
+	 * @param index - 索引名称
+	 * @param source - 索引内容
+	 * @return - boolean
+	 * @throws IOException - IOException
+	 */
+	public boolean index(String index,Object source) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(source, "source");
 		IndexRequest request = new IndexRequest(index);
@@ -73,15 +88,13 @@ public class Document {
 			request.source(XContentType.JSON,source);
 		}
 		IndexResponse response = client.index(request,RequestOptions.DEFAULT);
-		return response.status() == RestStatus.CREATED? source :null;
-
+		return response.status() == RestStatus.CREATED ;
 	}
 
-    /**
-	 * 异步插入数据(指定ID)
-	 * @param index
-	 * @param id
-	 * @param source
+	/**
+	 * @param index - 索引名称
+	 * @param id - 索引id
+	 * @param source - 索引内容
 	 */
 	public void insertAsync(String index, String id, String source) {
 		Objects.requireNonNull(index, "index");
@@ -103,10 +116,11 @@ public class Document {
 		client.indexAsync(request, RequestOptions.DEFAULT, listener);
 	}
 
-    /**
-	 * 删除字段
-	 * @param index
-	 * @param id
+	/**
+	 * @param index - 索引名称
+	 * @param id - 索引id
+	 * @return - boolean
+	 * @throws IOException - IOException
 	 */
 	public boolean delete(String index, String id) throws IOException {
 		Objects.requireNonNull(index, "index");
@@ -117,6 +131,11 @@ public class Document {
 		return response.status() == RestStatus.OK ;
 	}
 
+	/**
+	 * @param index - 索引名称
+	 * @return - 索引数量
+	 * @throws IOException - IOException
+	 */
 	public long count(String index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		CountRequest request = new CountRequest(index);
@@ -125,10 +144,10 @@ public class Document {
 		return response.status() == RestStatus.OK ? response.getCount() :0;
 	}
 
-    /**
-	 * 判断字段id是否存在
-	 * @param index
-	 * @param id
+	/**
+	 * @param index - 索引名称
+	 * @param id - 索引id
+	 * @return - boolean
 	 */
 	public boolean isIdExists(String index,String id) {
 		Objects.requireNonNull(index, "index");
@@ -142,26 +161,28 @@ public class Document {
 		}
 	}
 
-    /**
-	 * 获取单个字段
-	 * @param index
-	 * @param id
+	/**
+	 * @param index - 索引名称
+	 * @param id - 索引id
+	 * @return - 索引内容
+	 * @throws IOException - IOException
 	 */
-	public Map<String, Object> get(String index, String id) throws IOException {
+	public String get(String index, String id) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(id, "id");
 		GetRequest request = new GetRequest(index,id);
 		GetResponse getResponse = client.get(request, RequestOptions.DEFAULT);
 		if (!getResponse.isExists() || getResponse.isSourceEmpty()) {
-			return Collections.emptyMap();
+			return null;
 		}
-		return getResponse.getSourceAsMap();
+		return getResponse.getSourceAsString();
 	}
 
-    /**
-	 * 获取字段值
-	 * @param index
-	 * @param fields
+	/**
+	 * @param index - 索引名称
+	 * @param fields - 索引字段集合
+	 * @return - 索引集合
+	 * @throws IOException - IOException
 	 */
 	public List<Object> getFieldsValues(String index, String[] fields) throws IOException {
 		Objects.requireNonNull(index, "index");
@@ -179,10 +200,11 @@ public class Document {
 		return list;
 	}
 
-    /**
-	 * 获取多个字段
-	 * @param index
-	 * @param ids
+	/**
+	 * @param index - 索引名称
+	 * @param ids - 索引id集合
+	 * @return - 索引列表
+	 * @throws IOException - IOException
 	 */
 	public List<Map<String,Object>> multiGet(String index, String[] ids) throws IOException {
 		Objects.requireNonNull(index, "index");
@@ -204,177 +226,194 @@ public class Document {
 		return list;
 	}
 
-    /**
-	 * 更新字段
-	 * @param index
-	 * @param id
-	 * @param source
+	/**
+	 * @param index - 索引名称
+	 * @param id - 索引id
+	 * @param source - 索引内容
+	 * @return - boolean
+	 * @throws IOException - IOException
 	 */
-	public boolean update(String index, String id, Map<String,Object> source) throws IOException {
+	public boolean update(String index, String id, Object source) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(id, "id");
 		Objects.requireNonNull(source, "source");
 		UpdateRequest request = new UpdateRequest(index, id).doc(source);
-
+		if (source instanceof String) {
+			request.doc(String.valueOf(source),XContentType.JSON);
+		} else if (source instanceof Map) {
+			request.doc((Map) source,XContentType.JSON);
+		} else if (source instanceof XContentBuilder) {
+			request.doc(XContentType.JSON,source);
+		}
 		UpdateResponse response = client.update(request, RequestOptions.DEFAULT);
 		return response.status() == RestStatus.OK;
 	}
 
-	private List<IndexRequest> generateRequests(String index, String[] source){
-		Objects.requireNonNull(index, "index");
-		Objects.requireNonNull(source, "source");
-
-		IndexRequest indexRequest = new IndexRequest(index);
-		List<IndexRequest> requests = new LinkedList<>();
-		for (String s : source){
-			indexRequest.source(s, XContentType.JSON);
-			requests.add(indexRequest);
-		}
-		return requests;
-	}
-
-    /**
-	 * 批量插入数据
-	 * @param index
-	 * @param source
+	/**
+	 * @param index - 索引名称
+	 * @param source - 索引内容
+	 * @return - 索引数量
+	 * @throws IOException - IOException
 	 */
-	public long bulkIndex(String index,List<Map<String,Object>> source) throws IOException {
+	public long bulkIndex1(String index,List<Map<String,Object>> source) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(source, "source");
 
 		BulkRequest bulkRequest = new BulkRequest();
 		List<IndexRequest> requests = new LinkedList<>();
+		int count = 0;
 		for (int i = 0;i<source.size();i++){
+			long start = System.currentTimeMillis();
 			IndexRequest indexRequest = new IndexRequest(index);
 			indexRequest.source(source.get(i), XContentType.JSON);
 			requests.add(indexRequest);
-			if(requests.size()%50000 == 0){
+			if(requests.size() % COUNT == 0){
 				for (IndexRequest request : requests) {
 					bulkRequest.add(request);
 				}
-				client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				bulkRequest = new BulkRequest();
+				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+				if(responses.status() == RestStatus.CREATED){
+					count = count + COUNT;
+				}
+				bulkRequest.requests().clear();
 				requests.clear();
+				long end = System.currentTimeMillis();
+				System.out.println((end-start)/1000 + "s");
 			}
 		}
 		for (IndexRequest request : requests) {
 			bulkRequest.add(request);
 		}
-		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return Objects.requireNonNull(requests).size();
+		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+		if(responses.status() == RestStatus.CREATED){
+			count = count + requests.size();
+		}
+		return count;
 	}
 
-	public long bulkIndexAsc(String index,List<Map<String,Object>> source) throws IOException {
-		Objects.requireNonNull(index, "index");
-		Objects.requireNonNull(source, "source");
-
+	/**
+	 * @param index - 索引名称
+	 * @param queries - 索引内容
+	 * @return - 索引数量
+	 * @throws IOException - IOException
+	 */
+	public long bulkIndex(String index, List<SourceEntity> queries) throws IOException {
 		BulkRequest bulkRequest = new BulkRequest();
 		List<IndexRequest> requests = new LinkedList<>();
-		for (int i = 0;i<source.size();i++){
-			IndexRequest indexRequest = new IndexRequest(index).id(String.valueOf(source.get(i).get("id")));
-			indexRequest.source(JSON.toJSONString(source.get(i)), XContentType.JSON);
+		int count = 0;
+		for(int i = 0;i<queries.size();i++) {
+			long start = System.currentTimeMillis();
+			SourceEntity query = queries.get(i);
+			IndexRequest indexRequest = new IndexRequest(index).id(query.getId());
+			Object source = query.getSource();
+			if(source instanceof String){
+				indexRequest.source(String.valueOf(source), XContentType.JSON);
+			}else if(source instanceof Map) {
+				indexRequest.source((Map<String, ?>) source, XContentType.JSON);
+			}else if(source instanceof XContentBuilder){
+				indexRequest.source((XContentBuilder)source);
+			}
 			requests.add(indexRequest);
-			if(requests.size()%50000 == 0){
+			if (requests.size() % COUNT == 0) {
 				for (IndexRequest request : requests) {
 					bulkRequest.add(request);
 				}
-				client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				bulkRequest = new BulkRequest();
+				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+				if(responses.status() == RestStatus.CREATED){
+					count = count + COUNT;
+				}
+				bulkRequest.requests().clear();
 				requests.clear();
+				long end = System.currentTimeMillis();
+				System.out.println((end-start)/1000 + "s");
 			}
 		}
 		for (IndexRequest request : requests) {
 			bulkRequest.add(request);
 		}
-		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return Objects.requireNonNull(requests).size();
+		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+		if(responses.status() == RestStatus.CREATED){
+			count = count + requests.size();
+		}
+		return count;
 	}
 
-	public long bulkIndex(List<SourceEntity> queries) throws IOException {
-		BulkRequest bulkRequest = new BulkRequest();
-		List<IndexRequest> requests = new LinkedList<>();
-		for(SourceEntity index:queries) {
-			IndexRequest indexRequest = new IndexRequest(index.getIndexName());
-			indexRequest.source(index.getSource(), XContentType.JSON);
-			requests.add(indexRequest);
-			if (requests.size() % 50000 == 0) {
-				for (IndexRequest request : requests) {
-					bulkRequest.add(request);
-				}
-				client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				bulkRequest = new BulkRequest();
-				requests.clear();
-			}
-		}
-		for (IndexRequest request : requests) {
-			bulkRequest.add(request);
-		}
-		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return Objects.requireNonNull(requests).size();
-	}
-
-	public long bulkUpdate(List<SourceEntity> queries) throws IOException {
+	/**
+	 * @param index - 索引名称
+	 * @param queries - 索引更新的内容
+	 * @return - 索引数量
+	 * @throws IOException - IOException
+	 */
+	public long bulkUpdate(String index, List<SourceEntity> queries) throws IOException {
 		BulkRequest bulkRequest = new BulkRequest();
 		List<UpdateRequest> requests = new LinkedList<>();
-		for(SourceEntity update:queries) {
-			UpdateRequest updateRequest = new UpdateRequest(update.getIndexName(),update.getId());
-			updateRequest.doc().source(update.getSource(), XContentType.JSON);
+		int count = 0;
+		for(int i = 0;i<queries.size();i++) {
+			SourceEntity update = queries.get(i);
+			UpdateRequest updateRequest = new UpdateRequest(index,update.getId());
+			Object source = update.getSource();
+			if(source instanceof String){
+				updateRequest.doc().source(String.valueOf(source), XContentType.JSON);
+			}else if(source instanceof Map) {
+				updateRequest.doc().source((Map<String, ?>) source, XContentType.JSON);
+			}
 			requests.add(updateRequest);
-			if(requests.size()%50000 == 0){
+			if(requests.size() % COUNT == 0){
 				for (UpdateRequest request : requests) {
 					bulkRequest.add(request);
 				}
-				client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				bulkRequest.getRefreshPolicy();
+				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+				if(responses.status() == RestStatus.CREATED){
+					count = count + COUNT;
+				}
+				bulkRequest.requests().clear();
 				requests.clear();
 			}
 		}
 		for (UpdateRequest request : requests) {
 			bulkRequest.add(request);
 		}
-		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return Objects.requireNonNull(requests).size();
+		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+		if(responses.status() == RestStatus.CREATED){
+			count = count + requests.size();
+		}
+		return count;
 	}
 
-	public long bulkDelete(List<SourceEntity> queries) throws IOException {
+	/**
+	 * @param index - 索引名称
+	 * @param queries - 索引删除的内容
+	 * @return - 索引数量
+	 * @throws IOException - IOException
+	 */
+	public long bulkDelete(String index, List<SourceEntity> queries) throws IOException {
 		BulkRequest bulkRequest = new BulkRequest();
 		List<DeleteRequest> requests = new LinkedList<>();
-		for(SourceEntity delete:queries) {
-			DeleteRequest deleteRequest = new DeleteRequest(delete.getIndexName()).id(delete.getId());
+		int count = 0;
+		for(int i = 0;i<queries.size();i++) {
+			SourceEntity delete = queries.get(i);
+			DeleteRequest deleteRequest = new DeleteRequest(index).id(delete.getId());
 			requests.add(deleteRequest);
-			if(requests.size()%50000 == 0){
+			if(requests.size() % COUNT == 0){
 				for (DeleteRequest request : requests) {
 					bulkRequest.add(request);
 				}
-				client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				bulkRequest.getRefreshPolicy();
+				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+				if(responses.status() == RestStatus.CREATED){
+					count = count + COUNT;
+				}
+				bulkRequest.requests().clear();
 				requests.clear();
 			}
 		}
 		for (DeleteRequest request : requests) {
 			bulkRequest.add(request);
 		}
-		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return Objects.requireNonNull(requests).size();
-	}
-
-    /**
-	 * 批量插入数据(随机ID)
-	 * @param index
-	 * @param source
-	 */
-	public long bulkIndex(String index, String[] source) throws IOException {
-		Objects.requireNonNull(index, "index");
-		Objects.requireNonNull(source, "source");
-		BulkRequest bulkRequest = new BulkRequest();
-		List<IndexRequest> requests = generateRequests(index,source);
-		if(requests!=null && requests.size()>0){
-			for (IndexRequest indexRequest : requests) {
-				bulkRequest.add(indexRequest);
-			}
+		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+		if(responses.status() == RestStatus.CREATED){
+			count = count + requests.size();
 		}
-		client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		return Objects.requireNonNull(requests).size();
+		return count;
 	}
 }
 

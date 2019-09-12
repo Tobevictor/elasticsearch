@@ -21,7 +21,7 @@ public class DocumentTest {
 	public void init(){
 		client = EsClientInit.getInstance().getClient();
 		indice = new Indice(client);
-		index = "earthquake";
+		index = "dsy";
 	}
 	@Test
 	public void index() throws IOException {
@@ -38,7 +38,7 @@ public class DocumentTest {
 				"\"depth\":6.0," +
 				"\"latitude\":37.4333333," +
 				"\"id\":2," +
-				"\"time\":\"1970-01-01T19:49:24.730Z\"," +
+				"\"time\":\"我是个中国人\"," +
 				" \"point\":{\"type\": \"Point\", \"coordinates\": [-118.7435, 37.4333333]},"+
 				"\"longitude\":-118.7435}";
 
@@ -88,7 +88,6 @@ public class DocumentTest {
 
 	@Test
 	public void bulkIndex() {
-
 
 	}
 

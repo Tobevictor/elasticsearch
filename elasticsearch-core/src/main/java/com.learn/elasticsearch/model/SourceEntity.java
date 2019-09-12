@@ -7,7 +7,6 @@ package com.learn.elasticsearch.model;
 public class SourceEntity {
 	private String id;
 	private Long version;
-	private String indexName;
 	private Object source;
 
 	public SourceEntity(){}
@@ -26,14 +25,6 @@ public class SourceEntity {
 
 	public void setVersion(Long version) {
 		this.version = version;
-	}
-
-	public String getIndexName() {
-		return indexName;
-	}
-
-	public void setIndexName(String indexName) {
-		this.indexName = indexName;
 	}
 
 	public Object getSource() {

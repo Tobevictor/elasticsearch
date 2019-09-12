@@ -1,0 +1,31 @@
+{
+  "properties": {
+    "ids": {
+      "type": "integer"
+    },
+    "address": {
+      "type": "text",
+      "analyzer": "ik_smart"
+    },
+    "content": {
+      "type": "text",
+      "analyzer": "ik_smart"
+    },
+    "date": {
+      "type": "text"
+    },
+    "id": {
+      "type": "integer"
+    },
+    "liked": {
+      "type": "integer"
+    },
+    "location": {
+      "type": "geo_point"
+    },
+    "username": {
+      "type": "text",
+      "analyzer": "ik_smart"
+    }
+  }
+}

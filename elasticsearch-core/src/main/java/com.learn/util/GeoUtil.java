@@ -11,7 +11,7 @@ import java.io.*;
  * @Date 2019/8/24 16:48
  * @author dshuyou
  */
-public class JsonUtils {
+public class GeoUtil {
 
 	public static Geometry geojson2Geometry(String geoJson) throws IOException {
 		GeometryJSON json = new GeometryJSON();
@@ -27,14 +27,12 @@ public class JsonUtils {
 	}
 
 	public static String wkt2Geojson(String wkt) throws ParseException, IOException {
-		String json = null;
 		WKTReader wktReader = new WKTReader();
 		Geometry geometry = wktReader.read(wkt);
 		return geometry2Geojson(geometry);
 	}
 
 	public static String geojson2Wkt(String geojson) throws IOException {
-		String wkt = null;
 		Geometry geometry = geojson2Geometry(geojson);
 		WKTWriter wktWriter = new WKTWriter();
 		return wktWriter.write(geometry);

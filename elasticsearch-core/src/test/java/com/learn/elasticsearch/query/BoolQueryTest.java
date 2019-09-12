@@ -4,9 +4,20 @@ import com.learn.elasticsearch.EsClientInit;
 import com.learn.elasticsearch.query.condition.BaseCondition;
 import com.learn.elasticsearch.query.condition.FullTextCondition;
 import com.learn.elasticsearch.query.condition.TermsLevelCondition;
-import com.learn.elasticsearch.query.query_enum.FulltextEnum;
-import com.learn.elasticsearch.query.query_enum.GeoEnum;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.filter.Filters;
+import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregator;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilders;
+import org.elasticsearch.search.suggest.phrase.PhraseSuggestionBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,43 +33,23 @@ import static org.junit.Assert.*;
 public class BoolQueryTest {
 
 	private RestHighLevelClient client;
-	private GeoQuery geoQuery;
 	private String index;
 	@Before
 	public void setUp(){
 		client = EsClientInit.getInstance().getClient();
-		index = "comment";
+		index = "dshuyou1";
 	}
-
-	@Test
-	public void executeQuery() {
-		List<Integer> list = get();
-		for (Integer i :list){
-			System.out.println(i);
-		}
-	}
-
-	private List<Integer> get(){
-		List<Integer> list = new ArrayList<>();
-		int a = 1;
-		if(a == 2){
-			list.add(a);
-			return list;
-		}else {
-			return Collections.emptyList();
-		}
-	}
-
 
 	@Test
 	public void executeBoolQuery() throws IOException {
 		BoolQuery boolQuery = new BoolQuery(index,client);
 		Map<String, BaseCondition> map = new HashMap<>();
-		map.put("matchPhraseQuery",new FullTextCondition("content","他"));
+		map.put("matchPhraseQuery",new FullTextCondition("content","wo"));
 		TermsLevelCondition condition = new TermsLevelCondition();
-		condition.setField("content");
-		condition.setValues(new String[]{"我","和","你"});
-		map.put("termsQuery",condition);
+		condition.setField("username");
+		//condition.setValues(new String[]{"我","和","你"});
+		condition.setValue("sw");
+		map.put("termQuery",condition);
 		long start = System.currentTimeMillis();
 		List<String> list = boolQuery.executeBoolQuery(map);
 		long end = System.currentTimeMillis();
@@ -67,5 +58,41 @@ public class BoolQueryTest {
 			System.out.println(s);
 		}
 		System.out.println(list.size());
+	}
+
+	@Test
+	public void suggestion(){
+		PhraseSuggestionBuilder builder = SuggestBuilders.phraseSuggestion("content");
+
+	}
+
+	@Test
+	public void aggregation() throws IOException {
+		AggregationBuilder aggregation =
+				AggregationBuilders
+						.filters("agg",
+								new FiltersAggregator.KeyedFilter("content", QueryBuilders.termQuery("content", "xw")),
+								new FiltersAggregator.KeyedFilter("username", QueryBuilders.termQuery("username", "wo")));
+		SearchSourceBuilder builder = new SearchSourceBuilder();
+		builder.aggregation(aggregation).from(0).size(100);
+		SearchRequest request = new SearchRequest(index);
+		request.source(builder);
+		SearchResponse response = client.search(request,RequestOptions.DEFAULT);
+		SearchHit[] hits = response.getHits().getHits();
+
+		List<String> list = new ArrayList<>();
+		for (SearchHit searchHit : hits) {
+			list.add(searchHit.getSourceAsString());
+			System.out.println(searchHit.getSourceAsString());
+		}
+		System.out.println(list.size());
+		Filters agg = response.getAggregations().get("agg");
+// For each entry
+		for (Filters.Bucket entry : agg.getBuckets()) {
+			String key = entry.getKeyAsString();            // bucket key
+			long docCount = entry.getDocCount();            // Doc count
+			System.out.println(key);
+			System.out.println(docCount);
+		}
 	}
 }

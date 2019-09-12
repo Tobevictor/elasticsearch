@@ -14,16 +14,16 @@ import java.util.Map;
 @Mapper
 public interface EarthquakeMapper {
 
-	@Select("select id,time,latitude,longitude,depth,mag,ST_AsGeoJSON(geopoint) as point from earthquake")
+	@Select("select id,time,latitude,longitude,depth,mag,ST_AsWKT(geopoint) as point from earthquake")
 	List<Map<String,Object>> findAll();
 
-	@Select("select id,time,latitude,longitude,depth,mag,ST_AsGeoJSON(geopoint) as point from earthquake where id=2")
+	@Select("select id,time,latitude,longitude,depth,mag,ST_AsWKT(geopoint) as point from earthquake")
 	List<Earthquake> findAll1();
 
-	@Select("select id,time,latitude,longitude,depth,mag,ST_AsGeoJSON(geopoint) as point from earthquake where id=2")
+	@Select("select id,time,latitude,longitude,depth,mag,ST_AsWKT(geopoint) as point from earthquake where id=2")
 	Map<String,Object> findOne();
 
-	@Select("select id,time,latitude,longitude,depth,mag,ST_AsGeoJSON(geopoint) as point from earthquake where id=2")
+	@Select("select id,time,latitude,longitude,depth,mag,ST_AsWKT(geopoint) as point from earthquake where id=2")
 	Earthquake findOne1();
 
 }

@@ -1,5 +1,6 @@
 package com.learn.mapper;
 
+import com.learn.model.Comment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -13,8 +14,9 @@ import java.util.Map;
 @Mapper
 public interface CommentMapper {
 
-	@Select("select id,address,date,content,username,liked from comment")
+	@Select("select ids,id,address,date,content,username,liked from comment")
 	List<Map<String,Object>> findAll();
 
-
+	@Select("select ids,id,address,date,content,username,liked from comment")
+	List<Comment> findAll1();
 }

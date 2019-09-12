@@ -11,7 +11,7 @@ import java.io.IOException;
  * @Date 2019/8/28 11:12
  * @author dshuyou
  */
-public class JsonUtilsTest {
+public class GeoUtilTest {
 	private String json;
 	@Before
 	public void init(){
@@ -32,43 +32,43 @@ public class JsonUtilsTest {
 
 	@Test
 	public void geojson2Geometry() throws IOException {
-		Geometry geometry = JsonUtils.geojson2Geometry(json);
+		Geometry geometry = GeoUtil.geojson2Geometry(json);
 		System.out.println(geometry);
 	}
 
 	@Test
 	public void geometry2Geojson() throws IOException {
-		Geometry geometry = JsonUtils.geojson2Geometry(json);
-		String geojson = JsonUtils.geometry2Geojson(geometry);
+		Geometry geometry = GeoUtil.geojson2Geometry(json);
+		String geojson = GeoUtil.geometry2Geojson(geometry);
 		System.out.println(geojson);
 	}
 
 	@Test
 	public void geometry2Wkt() throws IOException {
-		Geometry geometry = JsonUtils.geojson2Geometry(json);
-		String wkt = JsonUtils.geometry2Wkt(geometry);
+		Geometry geometry = GeoUtil.geojson2Geometry(json);
+		String wkt = GeoUtil.geometry2Wkt(geometry);
 		System.out.println(wkt);
 	}
 
 	@Test
 	public void wkt2Geometry() throws ParseException, IOException {
-		Geometry geometry = JsonUtils.geojson2Geometry(json);
-		String wkt = JsonUtils.geometry2Wkt(geometry);
-		System.out.println(JsonUtils.wkt2Geometry(wkt));
+		Geometry geometry = GeoUtil.geojson2Geometry(json);
+		String wkt = GeoUtil.geometry2Wkt(geometry);
+		System.out.println(GeoUtil.wkt2Geometry(wkt));
 	}
 
 	@Test
 	public void wkt2Geojson() throws IOException, ParseException {
-		Geometry geometry = JsonUtils.geojson2Geometry(json);
-		String wkt = JsonUtils.geometry2Wkt(geometry);
-		String geojson = JsonUtils.wkt2Geojson(wkt);
+		Geometry geometry = GeoUtil.geojson2Geometry(json);
+		String wkt = GeoUtil.geometry2Wkt(geometry);
+		String geojson = GeoUtil.wkt2Geojson(wkt);
 		System.out.println(geojson);
 	}
 
 	@Test
 	public void geojson2Wkt() throws IOException {
-		Geometry geometry = JsonUtils.geojson2Geometry(json);
-		String geojson = JsonUtils.geometry2Geojson(geometry);
-		System.out.println(JsonUtils.geojson2Wkt(geojson));
+		Geometry geometry = GeoUtil.geojson2Geometry(json);
+		String geojson = GeoUtil.geometry2Geojson(geometry);
+		System.out.println(GeoUtil.geojson2Wkt(geojson));
 	}
 }

@@ -1,5 +1,7 @@
 package com.learn.common;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * @Date 2019/8/19 9:50
  * @Created by dshuyou
@@ -53,58 +55,30 @@ public class ServiceResult<T> {
 	}
 
 	public static <T> ServiceResult<T> success() {
-		return new ServiceResult<>(Message.OK.code);
+		return new ServiceResult<>(HttpStatus.OK.value());
 	}
 
 	public static <T> ServiceResult success(T result) {
-		return new ServiceResult(Message.OK.code,Message.OK.value,result);
+		return new ServiceResult(HttpStatus.OK.value(),HttpStatus.OK.getReasonPhrase(),result);
 	}
 
 	public static <T> ServiceResult successOf( String message, T result) {
-		return new ServiceResult(Message.OK.code,message,result);
+		return new ServiceResult(HttpStatus.OK.value(),message,result);
 	}
 
 	public static <T> ServiceResult notFound() {
-		return new ServiceResult(Message.NOT_FOUND.code, Message.NOT_FOUND.getValue());
+		return new ServiceResult(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase());
 	}
 
 	public static <T> ServiceResult isNull() {
-		return new ServiceResult(Message.NOT_FOUND.code, Message.NOT_FOUND.getValue());
+		return new ServiceResult(HttpStatus.NO_CONTENT.value(),HttpStatus.NO_CONTENT.getReasonPhrase());
 	}
 
 	public static <T> ServiceResult isExist() {
-		return new ServiceResult(Message.IS_EXIST.code, Message.IS_EXIST.getValue());
+		return new ServiceResult(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase());
 	}
 
-	public static <T> ServiceResult notExist() {
-		return new ServiceResult(Message.NOT_EXIST.code, Message.NOT_EXIST.getValue());
-	}
-
-	public static <T> ServiceResult ioException() {
-		return new ServiceResult(Message.IOException.code, Message.IOException.value);
-	}
-
-	public enum Message {
-		OK(200,"success"),
-		ERROR(400, "error"),
-		UNAUTHORIZED(401, "unauthorized"),
-		FORBIDDEN(403,"forbidden"),
-		NOT_FOUND(404,"Not Found Resource"),
-		NULL(405,"NULL Resource"),
-		IS_EXIST(406,"IS EXIST Resource"),
-		NOT_EXIST(407,"NOT EXIST Resource"),
-		IOException(408,"IOException");
-
-		private int code;
-		private String value;
-
-		Message(int code,String value) {
-			this.code = code;
-			this.value = value;
-		}
-
-		public String getValue() {
-			return value;
-		}
+	public static <T> ServiceResult internalServerError() {
+		return new ServiceResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
 	}
 }

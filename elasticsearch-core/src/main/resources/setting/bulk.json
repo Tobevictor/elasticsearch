@@ -1,0 +1,28 @@
+{}
+
+/*POST _bulk?refresh=true
+{ "index" : { "_index" : "dshuyou8"} }
+{ "full_pinyin": "北京天安门广场"}
+{ "index" : { "_index" : "dshuyou8"} }
+{ "full_pinyin": "天安门广场"}
+{ "index" : { "_index" : "dshuyou8"} }
+{ "full_pinyin": "中国天安门广场"}
+{ "index" : { "_index" : "dshuyou8"} }
+{ "full_pinyin": "北京的一个广场"}
+{ "index" : { "_index" : "dshuyou8"} }
+{ "full_pinyin": "天坛广场"}
+{ "index" : { "_index" : "dshuyou8"} }
+{  "full_pinyin": "郑州广场"}*/
+
+/*
+POST dshuyou8/_search?pretty
+{ "size": 0,
+"suggest": {
+"blog-suggest": {
+"prefix": "e",
+"completion": {
+"field": "prefix_pinyin"
+}
+}
+}
+}*/

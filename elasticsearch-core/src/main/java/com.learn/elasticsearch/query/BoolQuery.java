@@ -79,13 +79,4 @@ public class BoolQuery extends BaseQuery{
 		}
 		return builder;
 	}
-
-	/*public static void main(String[] args){
-		QueryBuilder queryBuilder = new MatchPhraseQueryBuilder("content","我");
-		QueryBuilder queryBuilder1 = new MatchPhraseQueryBuilder("content","和");
-		QueryBuilder queryBuilder2 = new MatchPhraseQueryBuilder("content","你");
-		BoolQueryBuilder builder = new BoolQueryBuilder();
-		builder.must(queryBuilder).must(queryBuilder1).mustNot(queryBuilder2).boost(0.2f);
-		System.out.println(builder);
-	}*/
 }

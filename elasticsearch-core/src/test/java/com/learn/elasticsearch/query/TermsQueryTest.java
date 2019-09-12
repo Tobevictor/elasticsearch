@@ -52,12 +52,4 @@ public class TermsQueryTest {
 			System.out.println(s);
 		}
 	}
-
-	@Test
-	public void executeBoolQuery() {
-	}
-
-	@Test
-	public void queryBuilder() {
-	}
 }

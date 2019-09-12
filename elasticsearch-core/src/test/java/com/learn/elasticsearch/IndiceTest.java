@@ -1,12 +1,11 @@
 package com.learn.elasticsearch;
 
+import com.learn.util.JSONUtil;
 import com.vividsolutions.jts.geom.Geometry;
+import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +25,7 @@ public class IndiceTest {
 	public void init(){
 		client = EsClientInit.getInstance().getClient();
 		indice = new Indice(client);
-		index = "dshuyou111";
+		index = "dshuyou9";
 	}
 
 	@Test
@@ -40,42 +39,26 @@ public class IndiceTest {
 	}
 
 	@Test
-	public void createIndexWithSettings() throws IOException {
-		CreateIndexRequest request = new CreateIndexRequest(index);
-		String json = "{\n" +
-				"   \"settings\" : {\n" +
-				"       \"analysis\" : {\n" +
-				"           \"analyzer\" : {\n" +
-				"               \"pinyin_analyzer\" : {\n" +
-				"                   \"tokenizer\" : \"my_pinyin\"\n" +
-				"                   }\n" +
-				"           },\n" +
-				"           \"tokenizer\" : {\n" +
-				"               \"my_pinyin\" : {\n" +
-				"                   \"type\" : \"pinyin\",\n" +
-				"                   \"keep_first_letter\":true,\n" +
-				"                   \"keep_separate_first_letter\" : true,\n" +
-				"                   \"keep_full_pinyin\" : true,\n" +
-				"                   \"keep_original\" : false,\n" +
-				"                   \"limit_first_letter_length\" : 16,\n" +
-				"                   \"lowercase\" : true\n" +
-				"               }\n" +
-				"           }\n" +
-				"       }\n" +
-				"   }\n" +
-				"}";
-		request.source(json, XContentType.JSON);
-		client.indices().create(request, RequestOptions.DEFAULT);
+	public void create2() {
+		String analysis = JSONUtil.readLocalTextFile("C:\\Users\\dong6\\Desktop\\elasticsearch\\elasticsearch-core\\src\\main\\resources\\setting\\suggest.json");
+		try {
+			indice.create(index,analysis);
+			System.out.println("create index:" + index +" success");
+		} catch (IOException e) {
+			System.out.println("create index:" + index +" failed");
+		}
 	}
 
 	@Test
-	public void create1() {
-		Settings.Builder setting = indice.createSetting(3,2,30);
+	public void putMapping() {
+		//Comment comment = new Comment();
+		//XContentBuilder mapping = indice.createMapping(comment);
+		String mapping = JSONUtil.readLocalTextFile("C:\\Users\\dong6\\Desktop\\elasticsearch\\elasticsearch-core\\src\\main\\resources\\setting\\mappings1.json");
 		try {
-			indice.create(index,setting);
-			System.out.println("success");
+			indice.putMapping(index,mapping);
+			System.out.println("put mapping:" + index +" success");
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("put mapping:" + index +" failed");
 		}
 	}
 
@@ -86,14 +69,13 @@ public class IndiceTest {
 	}
 
 	@Test
-	public void putMapping() throws IOException {
-		Earthquake earthquake = new Earthquake();
-		XContentBuilder builder = indice.createMapping(earthquake);
-		indice.putMapping(index,builder);
-	}
-
-	@Test
-	public void createAsync() {
+	public void updateSetting() throws IOException {
+		UpdateSettingsRequest request = new UpdateSettingsRequest(index);
+		request.settings(Settings.builder()
+				.put("index.number_of_replicas",0)
+				.put("index.refresh_interval",-1)
+		);
+		client.indices().putSettings(request, RequestOptions.DEFAULT);
 	}
 
 	@Test
@@ -104,7 +86,6 @@ public class IndiceTest {
 		} catch (IOException e) {
 			System.out.println("get setting failed");
 		}
-
 	}
 
 	@Test
@@ -114,7 +95,6 @@ public class IndiceTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Test
@@ -151,7 +131,8 @@ public class IndiceTest {
 	}
 
 	@Test
-	public void addAlias() {
+	public void addAlias() throws IOException {
+		indice.addAlias(index,"dsy");
 	}
 
 	private static class Earthquake{

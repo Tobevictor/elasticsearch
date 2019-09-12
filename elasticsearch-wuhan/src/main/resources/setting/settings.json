@@ -1,6 +1,8 @@
-
 {
   "settings" : {
+    "index.number_of_shards":3,
+    "index.number_of_replicas":2,
+    "index.refresh_interval":"30s",
     "analysis" : {
       "analyzer" : {
         "pinyin_analyzer" : {
@@ -17,20 +19,6 @@
           "keep_original" : false,
           "limit_first_letter_length" : 16,
           "lowercase" : true
-        }
-      }
-    }
-  },
-  "mappings": {
-    "properties": {
-      "productName": {
-        "type": "text",
-        "analyzer": "pinyin_analyzer",
-        "fields": {
-          "keyword_once_pinyin": {
-            "type": "text",
-            "analyzer": "pinyin_analyzer"
-          }
         }
       }
     }

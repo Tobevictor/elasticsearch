@@ -1,11 +1,11 @@
 package com.learn.elasticsearch;
 
-import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest;
 import org.elasticsearch.action.admin.indices.cache.clear.ClearIndicesCacheRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.flush.FlushRequest;
 import org.elasticsearch.action.admin.indices.settings.get.GetSettingsRequest;
+import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest;
 import org.elasticsearch.action.support.ActiveShardCount;
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.client.RequestOptions;
@@ -32,15 +32,24 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
  */
 public class Indice {
 	private final int SHARDS = 3;
+	private final int INIT_REPLICAS = 0;
 	private final int REPLICAS = 2;
 	private final int TIMEOUT = 2;
 	private final int MASTER_TIMEOUT = 1;
+	private final int INIT_REFLUSH_INTERVAL = -1;
 	private final int REFLUSH_INTERVAL = 30;
 
 	private RestHighLevelClient client;
 
 	public Indice(RestHighLevelClient client){
 		this.client = client;
+	}
+
+	public Indice(){}
+
+	public Indice setClient(RestHighLevelClient client){
+		this.client = client;
+		return this;
 	}
 
     /**
@@ -50,14 +59,15 @@ public class Indice {
 	public boolean create(String index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		CreateIndexRequest request = new CreateIndexRequest(index);
+
 		request.settings(Settings.builder()
 				.put("index.number_of_shards", SHARDS)
-				.put("index.number_of_replicas", REPLICAS)
-				.put("index.refresh_interval",TimeValue.timeValueSeconds(REFLUSH_INTERVAL))
-		);
+				.put("index.number_of_replicas", INIT_REPLICAS)
+				.put("index.refresh_interval", TimeValue.timeValueSeconds(INIT_REFLUSH_INTERVAL)));
 		request.setTimeout(TimeValue.timeValueMinutes(TIMEOUT));
 		request.setMasterTimeout(TimeValue.timeValueMinutes(MASTER_TIMEOUT));
 		request.waitForActiveShards(ActiveShardCount.DEFAULT);
+		request.source(createAnalysis());
 		return client.indices().create(request, RequestOptions.DEFAULT).isAcknowledged();
 	}
 
@@ -67,50 +77,21 @@ public class Indice {
 	 * @param settings
 	 */
 	public boolean create(String index, Object settings) throws IOException {
-		return createWithAnalysis(index,settings,createAnalysis());
-	}
-
-	private boolean createWithAnalysis(String index, Object settings, Object analysis) throws IOException {
-		Objects.requireNonNull(index, "index");
-		Objects.requireNonNull(settings, "settings");
 		CreateIndexRequest request = new CreateIndexRequest(index);
 
-		putSetting(request,settings);
-		if (analysis instanceof String) {
-			request.source(String.valueOf(analysis), XContentType.JSON);
-		}  else if (analysis instanceof Map) {
-			request.source((Map) analysis);
-		} else if (analysis instanceof XContentBuilder) {
-			request.source((XContentBuilder) analysis);
+		if (settings instanceof String) {
+			request.source(String.valueOf(settings), XContentType.JSON);
+		} else if (settings instanceof Map) {
+			request.source((Map) settings);
+		} else if (settings instanceof XContentBuilder) {
+			request.source((XContentBuilder) settings);
 		}
 
 		return client.indices().create(request, RequestOptions.DEFAULT).isAcknowledged();
 	}
 
 	/**
-	 * 同步创建索引(自定义setting,mapping)
-	 * @param index
-	 * @param mapping
-	 */
-	public boolean create(String index, Object settings, Object mapping) throws IOException {
-		Objects.requireNonNull(index, "index");
-		Objects.requireNonNull(mapping, "mapping");
-		CreateIndexRequest request = new CreateIndexRequest(index);
-
-		putSetting(request,settings);
-		if (mapping instanceof String) {
-			request.source(String.valueOf(mapping), XContentType.JSON);
-		}  else if (mapping instanceof Map) {
-			request.source((Map) mapping);
-		} else if (mapping instanceof XContentBuilder) {
-			request.source((XContentBuilder) mapping);
-		}
-		CreateIndexResponse response = client.indices().create(request, RequestOptions.DEFAULT);
-		return response.isAcknowledged();
-	}
-
-	/**
-	 * 更新索引
+	 * 更新映射
 	 * @param index
 	 * @param mapping
 	 */
@@ -129,34 +110,13 @@ public class Indice {
 		return client.indices().putMapping(request,RequestOptions.DEFAULT).isAcknowledged();
 	}
 
-    /**
-	 * 异步创建索引
-	 * @param index
-	 * @param mapping
-	 */
-	public void createAsync(String index, String mapping) throws IOException {
-		Objects.requireNonNull(index, "index");
-		Objects.requireNonNull(mapping, "mapping");
-		CreateIndexRequest request = new CreateIndexRequest(index);
+	public boolean updateSetting(String index) throws IOException {
+		UpdateSettingsRequest request = new UpdateSettingsRequest(index);
 		request.settings(Settings.builder()
-				.put("index.number_of_shards", SHARDS)
-				.put("index.number_of_replicas", REPLICAS)
-				.put("index.refresh_interval",TimeValue.timeValueSeconds(REFLUSH_INTERVAL))
+				.put("index.number_of_replicas",REPLICAS)
+				.put("index.refresh_interval",REFLUSH_INTERVAL)
 		);
-		request.setTimeout(TimeValue.timeValueMinutes(TIMEOUT));
-		request.setMasterTimeout(TimeValue.timeValueMinutes(MASTER_TIMEOUT));
-		request.waitForActiveShards(ActiveShardCount.DEFAULT);
-		request.source(mapping, XContentType.JSON);
-
-		ActionListener<CreateIndexResponse> listener = new ActionListener<CreateIndexResponse>() {
-			@Override
-			public void onResponse(CreateIndexResponse createIndexResponse) {
-			}
-			@Override
-			public void onFailure(Exception e) {
-			}
-		};
-		client.indices().createAsync(request,RequestOptions.DEFAULT,listener);
+		return client.indices().putSettings(request, RequestOptions.DEFAULT).isAcknowledged();
 	}
 
 	/**
@@ -285,24 +245,21 @@ public class Indice {
 
 	}
 
-	/**
-	 * 生成setting
-	 */
-	public Settings.Builder createSetting(int shards,int replicas,int reflushInterval){
-		return Settings.builder()
-				.put("index.number_of_shards", shards)
-				.put("index.number_of_replicas", replicas)
-				.put("index.refresh_interval", TimeValue.timeValueSeconds(reflushInterval));
-	}
-
-	private XContentBuilder createAnalysis() throws IOException {
+	public XContentBuilder createAnalysis() throws IOException {
 		XContentBuilder builder = XContentFactory.jsonBuilder();
 		builder.startObject().startObject("settings")
 				.startObject("analysis")
 				.startObject("analyzer")
 				.startObject("pinyin_analyzer").field("tokenizer","ik_smart")
 				.field("filter","my_pinyin")
-				.endObject().endObject().startObject("filter")
+				.endObject()
+				.startObject("onlyOne_analyzer").field( "tokenizer","onlyOne_pinyin")
+				.endObject().endObject().startObject("tokenizer").startObject("onlyOne_pinyin")
+				.field( "type","pinyin")
+				.field("keep_separate_first_letter","true")
+				.field("keep_full_pinyin","false")
+				.endObject().endObject()
+				.startObject("filter")
 				.startObject("my_pinyin")
 				.field( "type","pinyin")
 				.field( "keep_first_letter",true)
@@ -315,10 +272,6 @@ public class Indice {
 		return builder;
 	}
 
-	/**
-	 * 生成mapping
-	 * @param object
-	 */
 	public XContentBuilder createMapping(Object object) {
 		Objects.requireNonNull(object, "object");
 		List<Field> fieldList = getFields(object);
@@ -333,9 +286,7 @@ public class Indice {
 				if ("string".equals(field.getType().getSimpleName().toLowerCase())) {
 					mapping.startObject(name)
 							.field("type", getElasticSearchMappingType(field.getType().getSimpleName().toLowerCase()))
-							.field("analyzer", "ik_smart")
-
-							//.field("search_analyzer", "ik_smart")
+							.field("analyzer", "pinyin_analyzer")
 							.endObject();
 				} else {
 					mapping.startObject(name)
@@ -391,21 +342,6 @@ public class Indice {
 				break;
 		}
 		return es;
-	}
-
-	private void putSetting(CreateIndexRequest request, Object settings) {
-		if (settings instanceof String) {
-			request.settings(String.valueOf(settings), XContentType.JSON);
-		}  else if (settings instanceof Map) {
-			request.settings((Map) settings);
-		} else if(settings instanceof Settings.Builder){
-			request.settings((Settings.Builder)settings);
-		}else if (settings instanceof XContentBuilder) {
-			request.settings((XContentBuilder) settings);
-		}
-		request.setTimeout(TimeValue.timeValueMinutes(TIMEOUT));
-		request.setMasterTimeout(TimeValue.timeValueMinutes(MASTER_TIMEOUT));
-		request.waitForActiveShards(ActiveShardCount.DEFAULT);
 	}
 }
 

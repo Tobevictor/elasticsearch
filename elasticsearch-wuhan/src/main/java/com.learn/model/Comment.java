@@ -9,6 +9,7 @@ import java.util.List;
  * @Created by dshuyou
  */
 public class Comment {
+	private int ids;
 	private int id;
 	private int liked;
 	private String username;
@@ -18,6 +19,14 @@ public class Comment {
 
 	public Comment(){
 
+	}
+
+	public int getIds() {
+		return ids;
+	}
+
+	public void setIds(int ids) {
+		this.ids = ids;
 	}
 
 	public int getId() {

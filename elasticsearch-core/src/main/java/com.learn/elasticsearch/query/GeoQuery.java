@@ -53,14 +53,12 @@ public class GeoQuery extends BaseQuery{
 		}
 		SearchRequest searchRequest = new SearchRequest(index);
 		searchRequest.source(sourceBuilder);
-
 		SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
 		SearchHit[] hits = response.getHits().getHits();
 
 		List<String> list = new ArrayList<>();
 		for (SearchHit searchHit : hits) {
 			list.add(searchHit.getSourceAsString());
-			//System.out.println(searchHit.getSourceAsString());
 		}
 		return list;
 	}
@@ -159,10 +157,6 @@ public class GeoQuery extends BaseQuery{
 		ShapeBuilder shapeBuilder = getShapeBuilder(condition);
 
 		GeoShapeQueryBuilder queryBuilder = QueryBuilders.geoWithinQuery(condition.getField(),shapeBuilder);
-		GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort(condition.getField(),condition.getPoints().get(0))
-				.order(SortOrder.ASC)
-				.unit(DistanceUnit.KILOMETERS);
-		sourceBuilder.sort(sort);
 		sourceBuilder.query(queryBuilder);
 		return queryBuilder;
 	}
@@ -178,19 +172,20 @@ public class GeoQuery extends BaseQuery{
 			case ENVELOPE:
 				shapeBuilder = new EnvelopeBuilder(condition.getTlCoordinate(),condition.getBrCoordinate());
 				break;
-			case CIRCLE:
-				shapeBuilder = new CircleBuilder().center(condition.getCoordinate()).radius(condition.getDistance());
-				break;
 			case POLYGON:
 				shapeBuilder = new PolygonBuilder(new CoordinatesBuilder().coordinates(condition.getCoordinates()));
 				break;
 			case LINEARRING:
 				shapeBuilder = new LineStringBuilder(condition.getCoordinates());
 				break;
-			case MULTIPOINT:
-				shapeBuilder = new MultiPointBuilder().coordinates(condition.getCoordinates());
+			//The following is not currently supported
+			/*case MULTIPOINT:
+				shapeBuilder = new MultiPointBuilder(condition.getCoordinates());
 				break;
-			/*case GEOMETRYCOLLECTION:
+			case CIRCLE:
+				shapeBuilder = new CircleBuilder().center(condition.getCoordinate()).radius(condition.getDistance());
+				break;
+			case GEOMETRYCOLLECTION:
 				shapeBuilder = new GeometryCollectionBuilder().getShapeAt(condition.getShapeNumber());
 				break;*/
 			default:
