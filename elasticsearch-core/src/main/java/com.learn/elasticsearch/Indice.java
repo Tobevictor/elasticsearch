@@ -31,13 +31,13 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
  * @author dshuyou
  */
 public class Indice {
-	private final int SHARDS = 3;
-	private final int INIT_REPLICAS = 0;
-	private final int REPLICAS = 2;
-	private final int TIMEOUT = 2;
-	private final int MASTER_TIMEOUT = 1;
-	private final int INIT_REFLUSH_INTERVAL = -1;
-	private final int REFLUSH_INTERVAL = 30;
+	public static final int SHARDS = 3;
+	public static final int INIT_REPLICAS = 0;
+	public static final int REPLICAS = 2;
+	public static final int TIMEOUT = 2;
+	public static final int MASTER_TIMEOUT = 1;
+	public static final int INIT_REFLUSH_INTERVAL = -1;
+	public static final int REFLUSH_INTERVAL = 30;
 
 	private RestHighLevelClient client;
 
@@ -52,9 +52,11 @@ public class Indice {
 		return this;
 	}
 
-    /**
-	 * 创建默认索引
-	 * @param index
+
+	/**
+	 * @param index -索引
+	 * @return -boolean
+	 * @throws IOException -io异常
 	 */
 	public boolean create(String index) throws IOException {
 		Objects.requireNonNull(index, "index");
@@ -72,9 +74,10 @@ public class Indice {
 	}
 
 	/***
-	 * 创建索引(自定义settings)
-	 * @param index
-	 * @param settings
+	 * @param index -索引
+	 * @param settings - 设置
+	 * @return -boolean
+	 * @throws IOException -io异常
 	 */
 	public boolean create(String index, Object settings) throws IOException {
 		CreateIndexRequest request = new CreateIndexRequest(index);
@@ -91,9 +94,10 @@ public class Indice {
 	}
 
 	/**
-	 * 更新映射
-	 * @param index
-	 * @param mapping
+	 * @param index - 索引
+	 * @param mapping - 映射
+	 * @return -boolean
+	 * @throws IOException - io异常
 	 */
 	public boolean putMapping(String index, Object mapping) throws IOException {
 		Objects.requireNonNull(index, "index");
@@ -110,6 +114,12 @@ public class Indice {
 		return client.indices().putMapping(request,RequestOptions.DEFAULT).isAcknowledged();
 	}
 
+
+	/**
+	 * @param index -索引
+	 * @return -boolean
+	 * @throws IOException -io异常
+	 */
 	public boolean updateSetting(String index) throws IOException {
 		UpdateSettingsRequest request = new UpdateSettingsRequest(index);
 		request.settings(Settings.builder()
@@ -119,20 +129,21 @@ public class Indice {
 		return client.indices().putSettings(request, RequestOptions.DEFAULT).isAcknowledged();
 	}
 
-	/**
-	 * 获取settings
-	 * @param index
-	 */
+	public boolean updateSetting(String index,int replicas,int reflush) throws IOException {
+		UpdateSettingsRequest request = new UpdateSettingsRequest(index);
+		request.settings(Settings.builder()
+				.put("index.number_of_replicas",replicas)
+				.put("index.refresh_interval",reflush)
+		);
+		return client.indices().putSettings(request, RequestOptions.DEFAULT).isAcknowledged();
+	}
+
 	public String getSetting(String index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		GetSettingsRequest request = new GetSettingsRequest().indices(index);
 		return client.indices().getSettings(request,RequestOptions.DEFAULT).toString();
 	}
 
-	/**
-	 * 获取mapping
-	 * @param index
-	 */
 	public Map<String,Object> getMapping(String... index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		GetMappingsRequest request = new GetMappingsRequest().indices(index);
@@ -148,9 +159,11 @@ public class Indice {
 		return Collections.emptyMap();
 	}
 
-    /**
-	 * 删除索引
-	 * @param index
+
+	/**
+	 * @param index - 索引
+	 * @return - boolean
+	 * @throws IOException - io异常
 	 */
 	public boolean deleteIndex(String... index) throws IOException {
 		Objects.requireNonNull(index, "index");
@@ -160,9 +173,9 @@ public class Indice {
 		return false;
 	}
 
-    /**
-	 * 判断索引是否存在
-	 * @param index
+	/**
+	 * @param index - 索引
+	 * @return - boolean
 	 */
 	public boolean isExists(String... index) {
 		Objects.requireNonNull(index, "index");
@@ -174,10 +187,7 @@ public class Indice {
 		}
 	}
 
-    /**
-	 * 获取索引
-	 * @param index
-	 */
+
 	public Object get(String... index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		GetIndexRequest request = new GetIndexRequest(index);
@@ -189,20 +199,11 @@ public class Indice {
 		return setting+"/"+ Arrays.toString(indices) +"/"+mapping;
 	}
 
-    /**
-	 * 刷新请求
-	 * @param index
-	 */
 	public void refresh(String... index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		client.indices().refresh(refreshRequest(index),RequestOptions.DEFAULT);
 	}
 
-    /**
-	 * 清除缓存
-	 * @param field
-	 * @param index
-	 */
 	public void clearCache(String field,String... index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(field, "field");
@@ -217,10 +218,6 @@ public class Indice {
 
 	}
 
-    /**
-	 * 刷新索引
-	 * @param index
-	 */
 	public void flush(String... index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		FlushRequest request = new FlushRequest(index);
@@ -230,9 +227,10 @@ public class Indice {
 	}
 
 	/**
-	 * 添加索引别名
-	 * @param index
-	 * @param aliasname
+	 * @param index - 索引
+	 * @param aliasname - 别名
+	 * @return -boolean
+	 * @throws IOException - io异常
 	 */
 	public Boolean addAlias(String index,String aliasname) throws IOException {
 		Objects.requireNonNull(index, "index");
@@ -303,7 +301,7 @@ public class Indice {
 
 	/**
 	 * 获取对象所有自定义的属性
-	 * @param object
+	 * @param object -具体的对象
 	 */
 	private List<Field> getFields(Object object) {
 		List<Field> fieldList = new ArrayList<>();
@@ -317,7 +315,7 @@ public class Indice {
 
 	/**
 	 * java类型与ElasticSearch类型映射
-	 * @param varType
+	 * @param varType -数据类型
 	 */
 	private String getElasticSearchMappingType(String varType) {
 		String es;
@@ -342,6 +340,12 @@ public class Indice {
 				break;
 		}
 		return es;
+	}
+
+	public boolean putIndexTemplate(String index, String source) throws IOException {
+		PutIndexTemplateRequest request = new PutIndexTemplateRequest(index);
+		request.source(source,XContentType.JSON);
+		return client.indices().putTemplate(request,RequestOptions.DEFAULT).isAcknowledged();
 	}
 }
 

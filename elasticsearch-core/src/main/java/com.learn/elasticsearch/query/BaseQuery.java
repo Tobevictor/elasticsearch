@@ -54,7 +54,5 @@ public abstract class BaseQuery {
 
 	public abstract List<String> executeQuery(BaseCondition baseCondition) throws IOException;
 
-	public abstract List<String> executeBoolQuery(Map<String, BaseCondition> conditions) throws IOException;
-
 }
 

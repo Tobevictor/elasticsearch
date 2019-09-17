@@ -29,17 +29,17 @@ public class FulltextQuery extends BaseQuery{
 
 	public FulltextQuery(String index, RestHighLevelClient client, FulltextEnum type){
 		super(index, client);
-		if(queryType != null){
+		if(type != null){
 			queryType = type;
 		}
 	}
 
 	@Override
 	public List<String> executeQuery(BaseCondition baseCondition) throws IOException {
-		if(baseCondition.getFrom() != 0){
+		if(baseCondition.getFrom() != FROM){
 			sourceBuilder.from(baseCondition.getFrom());
 		}
-		if(baseCondition.getSize() != 0){
+		if(baseCondition.getSize() != SIZE){
 			sourceBuilder.size(baseCondition.getSize());
 		}
 		sourceBuilder.query(queryBuilder(baseCondition));
@@ -57,11 +57,6 @@ public class FulltextQuery extends BaseQuery{
 			list.add(searchHit.getSourceAsString());
 		}
 		return list;
-	}
-
-	@Override
-	public List<String> executeBoolQuery(Map<String, BaseCondition> conditions) {
-		return null;
 	}
 
 	public QueryBuilder queryBuilder(BaseCondition baseCondition){

@@ -1,5 +1,6 @@
 package com.learn.mapper;
 
+import com.learn.elasticsearch.model.SourceEntity;
 import com.learn.model.Comment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learn.mapper.CommentMapper1">
+    <resultMap type="map" id="commentResultMap">
+        <id column="ids" property="commentIds" javaType="int"/>
+        <result column="id" property="id" javaType="int"/>
+        <result column="username" property="username" javaType="string"/>
+        <result column="date" property="date" javaType="string"/>
+        <result column="address" property="address" javaType="string"/>
+        <result column="content" property="content" javaType="string"/>
+        <result column="liked" property="liked" javaType="int"/>
+    </resultMap>
+    <select id="findAll" resultType="commentResultMap">
+	select * from comment
+    </select>
+</mapper>

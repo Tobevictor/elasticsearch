@@ -38,7 +38,7 @@ public class EsEarthquakeServiceImplTest {
 			SourceEntity sourceEntity = new SourceEntity();
 			Map<String, Object> map = list.get(i);
 			sourceEntity.setSource(map);
-			sourceEntity.setId(String.valueOf(map.get("id")));
+			sourceEntity.setId(String.valueOf(map.get("ids")));
 			queries.add(sourceEntity);
 		}
 		list.clear();

@@ -41,12 +41,13 @@ public class GeoQuery extends BaseQuery{
 
 	@Override
 	public List<String> executeQuery(BaseCondition baseCondition) throws IOException {
-		if(baseCondition.getFrom() != 0){
+		if(baseCondition.getFrom() != FROM){
 			sourceBuilder.from(baseCondition.getFrom());
 		}
-		if(baseCondition.getSize() != 0){
+		if(baseCondition.getSize() != SIZE){
 			sourceBuilder.size(baseCondition.getSize());
 		}
+
 		sourceBuilder.query(queryBuilder(baseCondition));
 		if(sourceBuilder == null){
 			return Collections.emptyList();
@@ -61,11 +62,6 @@ public class GeoQuery extends BaseQuery{
 			list.add(searchHit.getSourceAsString());
 		}
 		return list;
-	}
-
-	@Override
-	public List<String> executeBoolQuery(Map<String, BaseCondition> conditions) {
-		return null;
 	}
 
 	public QueryBuilder queryBuilder(BaseCondition baseCondition) throws IOException {

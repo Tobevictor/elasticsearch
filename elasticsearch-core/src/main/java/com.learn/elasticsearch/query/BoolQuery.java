@@ -1,9 +1,6 @@
 package com.learn.elasticsearch.query;
 
-import com.learn.elasticsearch.query.condition.BaseCondition;
-import com.learn.elasticsearch.query.condition.FullTextCondition;
-import com.learn.elasticsearch.query.condition.GeoCondition;
-import com.learn.elasticsearch.query.condition.TermsLevelCondition;
+import com.learn.elasticsearch.query.condition.*;
 import com.learn.elasticsearch.query.query_enum.FulltextEnum;
 import com.learn.elasticsearch.query.query_enum.GeoEnum;
 import com.learn.elasticsearch.query.query_enum.TermsEnum;
@@ -29,12 +26,19 @@ public class BoolQuery extends BaseQuery{
 	}
 
 	@Override
-	public List<String> executeQuery(BaseCondition baseCondition) {
-		return null;
-	}
+	public List<String> executeQuery(BaseCondition baseCondition) throws IOException {
+		if (!(baseCondition instanceof BoolCondition)) {
+			throw new IllegalArgumentException("Bool query need bool query condition");
+		}
+		if(baseCondition.getFrom() != FROM){
+			sourceBuilder.from(baseCondition.getFrom());
+		}
+		if(baseCondition.getSize() != SIZE){
+			sourceBuilder.size(baseCondition.getSize());
+		}
 
-	@Override
-	public List<String> executeBoolQuery(Map<String, BaseCondition> conditions) throws IOException {
+		BoolCondition condition = (BoolCondition) baseCondition;
+		Map<String, BaseCondition> conditions = condition.setConditions();
 		QueryBuilder queryBuilder = null;
 		List<QueryBuilder> list = new ArrayList<>();
 		for (Map.Entry<String, BaseCondition> entry : conditions.entrySet()) {
@@ -53,8 +57,6 @@ public class BoolQuery extends BaseQuery{
 				list.add(queryBuilder);
 			}
 		}
-		/*sourceBuilder.from(0);
-		sourceBuilder.size(100);*/
 		sourceBuilder.query(boolBuilder(list));
 		if(sourceBuilder == null){
 			return Collections.emptyList();

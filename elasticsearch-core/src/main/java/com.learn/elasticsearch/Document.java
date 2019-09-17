@@ -12,7 +12,6 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.CountRequest;
 import org.elasticsearch.client.core.CountResponse;
@@ -38,8 +37,6 @@ public class Document {
 		this.client = client;
 	}
 
-	public Document(){}
-
 	public Document setClient(RestHighLevelClient client){
 		this.client = client;
 		return this;
@@ -59,13 +56,8 @@ public class Document {
 			return index(index, source);
 		}
 		IndexRequest request = new IndexRequest(index).id(id);
-		if (source instanceof String) {
-			request.source(String.valueOf(source), Requests.INDEX_CONTENT_TYPE);
-		} else if (source instanceof Map) {
-			request.source((Map) source);
-		} else if (source instanceof XContentBuilder) {
-			request.source((XContentBuilder) source);
-		}
+		setIndexRequest(request,source);
+
 		IndexResponse response = client.index(request,RequestOptions.DEFAULT);
 		return response.status() == RestStatus.CREATED;
 	}
@@ -80,13 +72,8 @@ public class Document {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(source, "source");
 		IndexRequest request = new IndexRequest(index);
-		if (source instanceof String) {
-			request.source(String.valueOf(source),XContentType.JSON);
-		} else if (source instanceof Map) {
-			request.source((Map) source,XContentType.JSON);
-		} else if (source instanceof XContentBuilder) {
-			request.source(XContentType.JSON,source);
-		}
+		setIndexRequest(request,source);
+
 		IndexResponse response = client.index(request,RequestOptions.DEFAULT);
 		return response.status() == RestStatus.CREATED ;
 	}
@@ -238,13 +225,8 @@ public class Document {
 		Objects.requireNonNull(id, "id");
 		Objects.requireNonNull(source, "source");
 		UpdateRequest request = new UpdateRequest(index, id).doc(source);
-		if (source instanceof String) {
-			request.doc(String.valueOf(source),XContentType.JSON);
-		} else if (source instanceof Map) {
-			request.doc((Map) source,XContentType.JSON);
-		} else if (source instanceof XContentBuilder) {
-			request.doc(XContentType.JSON,source);
-		}
+		setUpdateRequest(request,source);
+
 		UpdateResponse response = client.update(request, RequestOptions.DEFAULT);
 		return response.status() == RestStatus.OK;
 	}
@@ -262,23 +244,23 @@ public class Document {
 		BulkRequest bulkRequest = new BulkRequest();
 		List<IndexRequest> requests = new LinkedList<>();
 		int count = 0;
-		for (int i = 0;i<source.size();i++){
+		for (Map<String, Object> aSource : source) {
 			long start = System.currentTimeMillis();
 			IndexRequest indexRequest = new IndexRequest(index);
-			indexRequest.source(source.get(i), XContentType.JSON);
+			indexRequest.source(aSource, XContentType.JSON);
 			requests.add(indexRequest);
-			if(requests.size() % COUNT == 0){
+			if (requests.size() % COUNT == 0) {
 				for (IndexRequest request : requests) {
 					bulkRequest.add(request);
 				}
 				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				if(responses.status() == RestStatus.CREATED){
+				if (responses.status() == RestStatus.CREATED) {
 					count = count + COUNT;
 				}
 				bulkRequest.requests().clear();
 				requests.clear();
 				long end = System.currentTimeMillis();
-				System.out.println((end-start)/1000 + "s");
+				System.out.println((end - start) / 1000 + "s");
 			}
 		}
 		for (IndexRequest request : requests) {
@@ -301,31 +283,26 @@ public class Document {
 		BulkRequest bulkRequest = new BulkRequest();
 		List<IndexRequest> requests = new LinkedList<>();
 		int count = 0;
-		for(int i = 0;i<queries.size();i++) {
+		for (SourceEntity query : queries) {
 			long start = System.currentTimeMillis();
-			SourceEntity query = queries.get(i);
 			IndexRequest indexRequest = new IndexRequest(index).id(query.getId());
+
 			Object source = query.getSource();
-			if(source instanceof String){
-				indexRequest.source(String.valueOf(source), XContentType.JSON);
-			}else if(source instanceof Map) {
-				indexRequest.source((Map<String, ?>) source, XContentType.JSON);
-			}else if(source instanceof XContentBuilder){
-				indexRequest.source((XContentBuilder)source);
-			}
+			setIndexRequest(indexRequest, source);
 			requests.add(indexRequest);
+
 			if (requests.size() % COUNT == 0) {
 				for (IndexRequest request : requests) {
 					bulkRequest.add(request);
 				}
 				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				if(responses.status() == RestStatus.CREATED){
+				if (responses.status() == RestStatus.CREATED) {
 					count = count + COUNT;
 				}
 				bulkRequest.requests().clear();
 				requests.clear();
 				long end = System.currentTimeMillis();
-				System.out.println((end-start)/1000 + "s");
+				System.out.println((end - start) / 1000 + "s");
 			}
 		}
 		for (IndexRequest request : requests) {
@@ -348,22 +325,19 @@ public class Document {
 		BulkRequest bulkRequest = new BulkRequest();
 		List<UpdateRequest> requests = new LinkedList<>();
 		int count = 0;
-		for(int i = 0;i<queries.size();i++) {
-			SourceEntity update = queries.get(i);
-			UpdateRequest updateRequest = new UpdateRequest(index,update.getId());
+		for (SourceEntity update : queries) {
+			UpdateRequest updateRequest = new UpdateRequest(index, update.getId());
+
 			Object source = update.getSource();
-			if(source instanceof String){
-				updateRequest.doc().source(String.valueOf(source), XContentType.JSON);
-			}else if(source instanceof Map) {
-				updateRequest.doc().source((Map<String, ?>) source, XContentType.JSON);
-			}
+			setUpdateRequest(updateRequest, source);
 			requests.add(updateRequest);
-			if(requests.size() % COUNT == 0){
+
+			if (requests.size() % COUNT == 0) {
 				for (UpdateRequest request : requests) {
 					bulkRequest.add(request);
 				}
 				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				if(responses.status() == RestStatus.CREATED){
+				if (responses.status() == RestStatus.CREATED) {
 					count = count + COUNT;
 				}
 				bulkRequest.requests().clear();
@@ -390,16 +364,15 @@ public class Document {
 		BulkRequest bulkRequest = new BulkRequest();
 		List<DeleteRequest> requests = new LinkedList<>();
 		int count = 0;
-		for(int i = 0;i<queries.size();i++) {
-			SourceEntity delete = queries.get(i);
+		for (SourceEntity delete : queries) {
 			DeleteRequest deleteRequest = new DeleteRequest(index).id(delete.getId());
 			requests.add(deleteRequest);
-			if(requests.size() % COUNT == 0){
+			if (requests.size() % COUNT == 0) {
 				for (DeleteRequest request : requests) {
 					bulkRequest.add(request);
 				}
 				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				if(responses.status() == RestStatus.CREATED){
+				if (responses.status() == RestStatus.CREATED) {
 					count = count + COUNT;
 				}
 				bulkRequest.requests().clear();
@@ -414,6 +387,26 @@ public class Document {
 			count = count + requests.size();
 		}
 		return count;
+	}
+
+	private void setIndexRequest(IndexRequest indexRequest,Object source){
+		if(source instanceof String){
+			indexRequest.source(String.valueOf(source), XContentType.JSON);
+		}else if(source instanceof Map) {
+			indexRequest.source((Map) source, XContentType.JSON);
+		}else if(source instanceof XContentBuilder){
+			indexRequest.source((XContentBuilder)source);
+		}
+	}
+
+	private void setUpdateRequest(UpdateRequest updateRequest,Object source){
+		if (source instanceof String) {
+			updateRequest.doc(String.valueOf(source),XContentType.JSON);
+		} else if (source instanceof Map) {
+			updateRequest.doc((Map) source,XContentType.JSON);
+		} else if (source instanceof XContentBuilder) {
+			updateRequest.doc(XContentType.JSON,source);
+		}
 	}
 }
 

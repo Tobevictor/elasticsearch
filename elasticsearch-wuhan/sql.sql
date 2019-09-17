@@ -29,6 +29,26 @@ select * from comment where id > 10000000 && id < 100000000 order by id desc ;
 show profiles ;
 
 
+create table test (
+  id int primary key ,
+  username varchar(20) not null ,
+  password varchar(50) not null ,
+  tel long not null ,
+  address varchar(50) not null
+    );
 
+insert into test values (0,'董书佑','123456',15038093696,'中国北京');
+insert into test (username,password,tel,address) values (1,123456,15038093696,'中国武汉');
+insert into test (username,password,tel,address) values (2,123456,15038093696,'中国武汉');
+insert into test (username,password,tel,address) values (3,123456,15038093696,'中国武汉');
+insert into test (username,password,tel,address) values (4,123456,15038093696,'中国武汉');
+insert into test (username,password,tel,address) values (5,123456,15038093696,'中国武汉');
+insert into test (username,password,tel,address) values (6,123456,15038093696,'中国武汉');
+insert into test (username,password,tel,address) values (7,123456,15038093696,'中国武汉');
 
+start transaction;
+select * from test where id >2;
+commit ;
+SHOW VARIABLES LIKE '%storage_engine%';
+SELECT @@tx_isolation
 

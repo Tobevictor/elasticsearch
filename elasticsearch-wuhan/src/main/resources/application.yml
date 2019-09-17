@@ -76,7 +76,9 @@ logging:
   level:
     cn.tycoding.mapper: DEBUG
 
-
-
+mybatis:
+  mapper-locations:
+  - classpath:wuhan/*.xml
+  - classpath*:wuhan/mapper/*.xml
 
 

@@ -114,6 +114,18 @@ public class IndiceTest {
 	}
 
 	@Test
+	public void putIndexTemplate(){
+		String source = JSONUtil.readLocalTextFile("C:\\Users\\dong6\\Desktop\\elasticsearch\\elasticsearch-core\\src\\main\\resources\\setting\\indexTemplate.json");
+		try {
+			if(indice.putIndexTemplate(index,source)){
+				System.out.println("put indexTemplate success");
+			}
+		} catch (IOException e) {
+			System.out.println("put indexTemplate failed");
+		}
+	}
+
+	@Test
 	public void get() {
 
 	}
