@@ -10,7 +10,7 @@
         <result column="content" property="content" javaType="string"/>
         <result column="liked" property="liked" javaType="int"/>
     </resultMap>
-    <select id="findAll" resultType="commentResultMap">
+    <select id="findAll">
 	select * from comment
     </select>
 </mapper>

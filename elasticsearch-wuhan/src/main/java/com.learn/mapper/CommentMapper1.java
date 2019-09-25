@@ -12,5 +12,5 @@ import java.util.Map;
 @Mapper
 public interface CommentMapper1 {
 
-	List<Map> findAll();
+	List<Map<String,Object>> findAll();
 }

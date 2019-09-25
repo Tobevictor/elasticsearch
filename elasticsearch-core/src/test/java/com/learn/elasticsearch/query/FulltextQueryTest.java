@@ -22,8 +22,8 @@ public class FulltextQueryTest {
 	@Before
 	public void setUp(){
 		client = EsClientInit.getInstance().getClient();
-		String index = "comment1";
-		fulltextQuery = new FulltextQuery(index,client, FulltextEnum.matchPhraseQuery);
+		String index = "dshuyou1";
+		fulltextQuery = new FulltextQuery(index,client, FulltextEnum.matchAllQuery);
 	}
 
 	@Test
@@ -44,8 +44,8 @@ public class FulltextQueryTest {
 		FullTextCondition condition = new FullTextCondition();
 		condition.setField("content");
 		condition.setValue("zg");
-		condition.setFrom(0);
-		condition.setSize(1000);
+		condition.setFrom(10);
+		condition.setSize(10);
 		List<String> list = fulltextQuery.executeQuery(condition);
 		for (String s :list){
 			System.out.println(s);

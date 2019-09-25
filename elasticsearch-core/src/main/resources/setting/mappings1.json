@@ -5,11 +5,37 @@
     },
     "address": {
       "type": "text",
-      "analyzer": "ik_smart"
+      "fields": {
+        "address_fullpinyin":{
+          "type":"text",
+          "analyzer":"full_pinyin_analyzer"
+        },
+        "address_prefixpinyin":{
+          "type":"text",
+          "analyzer":"prefix_pinyin_analyzer"
+        },
+        "address_text":{
+          "type":"text",
+          "analyzer":"ik_smart"
+        }
+      }
     },
     "content": {
       "type": "text",
-      "analyzer": "ik_smart"
+      "fields": {
+        "content_fullpinyin":{
+          "type":"text",
+          "analyzer":"full_pinyin_analyzer"
+        },
+        "content_prefixpinyin":{
+          "type":"text",
+          "analyzer":"prefix_pinyin_analyzer"
+        },
+        "content_text":{
+          "type":"text",
+          "analyzer":"ik_smart"
+        }
+      }
     },
     "date": {
       "type": "text"
@@ -25,7 +51,20 @@
     },
     "username": {
       "type": "text",
-      "analyzer": "ik_smart"
+      "fields": {
+        "username_fullpinyin":{
+          "type":"text",
+          "analyzer":"full_pinyin_analyzer"
+        },
+        "username_prefixpinyin":{
+          "type":"text",
+          "analyzer":"prefix_pinyin_analyzer"
+        },
+        "username_text":{
+          "type":"text",
+          "analyzer":"ik_smart"
+        }
+      }
     }
   }
 }

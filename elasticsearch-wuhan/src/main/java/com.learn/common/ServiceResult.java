@@ -2,6 +2,8 @@ package com.learn.common;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.Objects;
+
 /**
  * @Date 2019/8/19 9:50
  * @Created by dshuyou
@@ -80,5 +82,39 @@ public class ServiceResult<T> {
 
 	public static <T> ServiceResult internalServerError() {
 		return new ServiceResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
+			return true;
+		}
+		if (!(object instanceof ServiceResult)) {
+			return false;
+		}
+		ServiceResult<?> that = (ServiceResult<?>) object;
+		return getCode() == that.getCode() &&
+				Objects.equals(getMessage(), that.getMessage()) &&
+				Objects.equals(getResult(), that.getResult());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getCode(), getMessage());
+	}
+
+	public static void main(String[] args){
+		ServiceResult serviceResult = ServiceResult.isExist();
+		ServiceResult serviceResult1 = ServiceResult.isExist();
+		System.out.println(serviceResult.hashCode());
+		System.out.println(serviceResult1.hashCode());
+		System.out.println(serviceResult == serviceResult1);
+		System.out.println(serviceResult.equals(serviceResult1));
+		String s = new String("123");
+		String ss = new String("123");
+		System.out.println(s.equals(ss));
+		System.out.println(s == ss);
+		System.out.println(s.hashCode());
+		System.out.println(ss.hashCode());
 	}
 }

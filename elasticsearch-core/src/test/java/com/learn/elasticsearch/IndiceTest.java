@@ -25,7 +25,7 @@ public class IndiceTest {
 	public void init(){
 		client = EsClientInit.getInstance().getClient();
 		indice = new Indice(client);
-		index = "dshuyou9";
+		index = "dshuyou5";
 	}
 
 	@Test
@@ -40,7 +40,7 @@ public class IndiceTest {
 
 	@Test
 	public void create2() {
-		String analysis = JSONUtil.readLocalTextFile("C:\\Users\\dong6\\Desktop\\elasticsearch\\elasticsearch-core\\src\\main\\resources\\setting\\suggest.json");
+		String analysis = JSONUtil.readLocalTextFile("C:\\Users\\dong6\\Desktop\\elasticsearch\\elasticsearch-core\\src\\main\\resources\\setting\\settings1.json");
 		try {
 			indice.create(index,analysis);
 			System.out.println("create index:" + index +" success");
@@ -109,7 +109,12 @@ public class IndiceTest {
 
 	@Test
 	public void isExists() {
-		boolean result = indice.isExists(index);
+		boolean result = false;
+		try {
+			result = indice.isExists(index);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		System.out.println(result);
 	}
 

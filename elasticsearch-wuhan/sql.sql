@@ -50,5 +50,12 @@ start transaction;
 select * from test where id >2;
 commit ;
 SHOW VARIABLES LIKE '%storage_engine%';
-SELECT @@tx_isolation
+SELECT @@tx_isolation;
 
+explain SELECT * from earthquake where id in (1000,1010,1002,10,20,30,40,560,60,70,8,90,100,110,120,130,140,150,160,170,180,190,200);
+show profiles;
+
+select version();
+
+SHOW VARIABLES LIKE '%pro%';
+SET profiling=1;

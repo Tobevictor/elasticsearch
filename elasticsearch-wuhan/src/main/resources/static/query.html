@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+    <script src="http://how2j.cn/study/vue.min.js"></script>
+    <script src="http://how2j.cn/study/jquery.min.js"></script>
+    <script>
+        $(function () {
+            var page = "/query/matchall";
+            // 从后台获取数据
+            matchAll(page);
+        })
+        function matchAll(page) {
+            // 使用ajax发起一个GET方法的请求
+            $.get(
+                page,
+                // result参数是后台传过来的category数组
+                function (result) {
+                    // 将返回结果绑定到UI上，这里用到了vue
+                    new Vue({
+                        el:'#div1',
+                        data:{
+                            categories:result,
+                        }
+                    })
+                }
+            )
+        }
+        function create() {
+            var page = "/indice/create";
+            $.ajax({
+                url:page,
+                type:"put", // 使用的put方法，对应后台中的添加方法
+                datatype:"json",
+                data:$("#addForm").serialize(),
+                success:function () {
+                    location.reload()
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div id="div1" style="width:500px;margin:20px auto;text-align: center">
+    <table align='center' border='1' cellspacing='0'>
+        <tr>
+            <td>id</td>
+            <td>name</td>
+            <td>编辑</td>
+            <td>删除</td>
+        </tr>
+        <!-- 这里利用的Vue的循环，绑定数据到UI上非常方便，而且代码可读性好-->
+        <tr v-for="category in categories">
+            <td>{}</td>
+            <td>{}</td>
+            <td><a href=""></a></td>
+            <td><a class="delete" href="#">删除</a></td>
+        </tr>
+
+    </table>
+    <br>
+    <br>
+    <form id="addForm" action="" method="">
+        name: <input id="name" name="name"> <br>
+    </form>
+    <button id="addCategory" type="button" onclick="create()">提交</button>
+</div>
+
+</body>
+</html>

@@ -4,10 +4,10 @@ package com.learn.elasticsearch.model;
  * @author dshuyou
  * @Date 2019/8/30 16:05
  */
-public class SourceEntity {
+public class SourceEntity<T> {
 	private String id;
 	private Long version;
-	private Object source;
+	private T source;
 
 	public SourceEntity(){}
 
@@ -31,7 +31,7 @@ public class SourceEntity {
 		return source;
 	}
 
-	public void setSource(Object source) {
+	public void setSource(T source) {
 		this.source = source;
 	}
 

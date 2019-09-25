@@ -1,10 +1,10 @@
 package com.learn.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.learn.common.ServiceResult;
 import com.learn.elasticsearch.model.SourceEntity;
+import com.learn.elasticsearch.query.condition.FullTextCondition;
 import com.learn.mapper.CommentMapper;
-import com.learn.mapper.CommentMapper1;
-import com.learn.model.Comment;
 import com.learn.service.ElasticsearchService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,5 +99,21 @@ public class ElasticController {
 		}
 		return elasticsearchService.bulkIndex(index,queries);
 	}
+
+	@ApiOperation("全文检索")
+	@RequestMapping(value = "/query/matchall",method = RequestMethod.GET)
+	@ResponseBody
+	public ServiceResult matchAll(@RequestParam String index,
+								  @RequestParam(defaultValue = "0") int pageNum,
+								  @RequestParam(defaultValue = "10") int pageSize){
+		String queryType = "matchAllQuery";
+		FullTextCondition condition = new FullTextCondition();
+		PageInfo pageInfo = new PageInfo();
+		pageInfo.setPageNum(pageNum);
+		pageInfo.setPageSize(pageSize);
+
+		return elasticsearchService.fulltextQuery(index,queryType,condition,pageInfo);
+	}
+
 
 }

@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -30,13 +31,12 @@ public class EsEarthquakeServiceImplTest {
 
 	@Test
 	public void bulkIndex() throws IOException {
-		String index = "dshuyou";
+		String index = "dshuyou5";
 		long start = System.currentTimeMillis();
 		List<Map<String,Object>> list = mapper.findAll();
-		List<SourceEntity> queries = new LinkedList<>();
-		for (int i = 0;i<list.size();i++){
+		List<SourceEntity> queries = new ArrayList<>();
+		for (Map<String,Object> map : list){
 			SourceEntity sourceEntity = new SourceEntity();
-			Map<String, Object> map = list.get(i);
 			sourceEntity.setSource(map);
 			sourceEntity.setId(String.valueOf(map.get("ids")));
 			queries.add(sourceEntity);

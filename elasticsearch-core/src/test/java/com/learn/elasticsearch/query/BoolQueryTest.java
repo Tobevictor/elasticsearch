@@ -51,13 +51,13 @@ public class BoolQueryTest {
 		condition.setValue("sw");
 		map.put("termQuery",condition);
 		long start = System.currentTimeMillis();
-		List<String> list = boolQuery.executeBoolQuery(map);
+		/*List<String> list = boolQuery.executeQuery(map);
 		long end = System.currentTimeMillis();
 		System.out.println((end-start)/100 + "ms");
 		for (String s :list){
 			System.out.println(s);
 		}
-		System.out.println(list.size());
+		System.out.println(list.size());*/
 	}
 
 	@Test

@@ -19,6 +19,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
+import sun.misc.GC;
 
 import java.io.IOException;
 import java.util.*;
@@ -30,7 +31,7 @@ import java.util.*;
 
 public class Document {
 
-	private final int COUNT = 30000;
+	private final int COUNT = 10000;
 	private RestHighLevelClient client;
 
 	public Document(RestHighLevelClient client){
@@ -46,10 +47,10 @@ public class Document {
 	 * @param index - 索引名称
 	 * @param id - 索引id
 	 * @param source - 索引内容
-	 * @return - boolean
+	 * @return - 索引结果
 	 * @throws IOException - IOException
 	 */
-	public boolean index(String index, String id, Object source) throws IOException {
+	public<T> boolean index(String index, String id, T source) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(source, "source");
 		if(id == null){
@@ -65,10 +66,10 @@ public class Document {
 	/**
 	 * @param index - 索引名称
 	 * @param source - 索引内容
-	 * @return - boolean
+	 * @return - 索引结果
 	 * @throws IOException - IOException
 	 */
-	public boolean index(String index,Object source) throws IOException {
+	public<T> boolean index(String index,T source) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(source, "source");
 		IndexRequest request = new IndexRequest(index);
@@ -106,7 +107,7 @@ public class Document {
 	/**
 	 * @param index - 索引名称
 	 * @param id - 索引id
-	 * @return - boolean
+	 * @return - 删除指定索引结果
 	 * @throws IOException - IOException
 	 */
 	public boolean delete(String index, String id) throws IOException {
@@ -120,7 +121,7 @@ public class Document {
 
 	/**
 	 * @param index - 索引名称
-	 * @return - 索引数量
+	 * @return - 指定索引的数量
 	 * @throws IOException - IOException
 	 */
 	public long count(String index) throws IOException {
@@ -134,7 +135,7 @@ public class Document {
 	/**
 	 * @param index - 索引名称
 	 * @param id - 索引id
-	 * @return - boolean
+	 * @return - 判定给定id的索引是否存在
 	 */
 	public boolean isIdExists(String index,String id) {
 		Objects.requireNonNull(index, "index");
@@ -151,7 +152,7 @@ public class Document {
 	/**
 	 * @param index - 索引名称
 	 * @param id - 索引id
-	 * @return - 索引内容
+	 * @return - 指定id的索引内容
 	 * @throws IOException - IOException
 	 */
 	public String get(String index, String id) throws IOException {
@@ -220,7 +221,7 @@ public class Document {
 	 * @return - boolean
 	 * @throws IOException - IOException
 	 */
-	public boolean update(String index, String id, Object source) throws IOException {
+	public<T> boolean update(String index, String id, T source) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(id, "id");
 		Objects.requireNonNull(source, "source");
@@ -245,7 +246,6 @@ public class Document {
 		List<IndexRequest> requests = new LinkedList<>();
 		int count = 0;
 		for (Map<String, Object> aSource : source) {
-			long start = System.currentTimeMillis();
 			IndexRequest indexRequest = new IndexRequest(index);
 			indexRequest.source(aSource, XContentType.JSON);
 			requests.add(indexRequest);
@@ -259,8 +259,6 @@ public class Document {
 				}
 				bulkRequest.requests().clear();
 				requests.clear();
-				long end = System.currentTimeMillis();
-				System.out.println((end - start) / 1000 + "s");
 			}
 		}
 		for (IndexRequest request : requests) {
@@ -281,17 +279,15 @@ public class Document {
 	 */
 	public long bulkIndex(String index, List<SourceEntity> queries) throws IOException {
 		BulkRequest bulkRequest = new BulkRequest();
-		List<IndexRequest> requests = new LinkedList<>();
+		List<IndexRequest> requests = new ArrayList<>();
 		int count = 0;
 		for (SourceEntity query : queries) {
-			long start = System.currentTimeMillis();
 			IndexRequest indexRequest = new IndexRequest(index).id(query.getId());
 
 			Object source = query.getSource();
 			setIndexRequest(indexRequest, source);
 			requests.add(indexRequest);
-
-			if (requests.size() % COUNT == 0) {
+			if (requests.size() % COUNT == 0 ) {
 				for (IndexRequest request : requests) {
 					bulkRequest.add(request);
 				}
@@ -301,8 +297,6 @@ public class Document {
 				}
 				bulkRequest.requests().clear();
 				requests.clear();
-				long end = System.currentTimeMillis();
-				System.out.println((end - start) / 1000 + "s");
 			}
 		}
 		for (IndexRequest request : requests) {
@@ -323,7 +317,7 @@ public class Document {
 	 */
 	public long bulkUpdate(String index, List<SourceEntity> queries) throws IOException {
 		BulkRequest bulkRequest = new BulkRequest();
-		List<UpdateRequest> requests = new LinkedList<>();
+		List<UpdateRequest> requests = new ArrayList<>();
 		int count = 0;
 		for (SourceEntity update : queries) {
 			UpdateRequest updateRequest = new UpdateRequest(index, update.getId());
@@ -362,7 +356,7 @@ public class Document {
 	 */
 	public long bulkDelete(String index, List<SourceEntity> queries) throws IOException {
 		BulkRequest bulkRequest = new BulkRequest();
-		List<DeleteRequest> requests = new LinkedList<>();
+		List<DeleteRequest> requests = new ArrayList<>();
 		int count = 0;
 		for (SourceEntity delete : queries) {
 			DeleteRequest deleteRequest = new DeleteRequest(index).id(delete.getId());
@@ -389,7 +383,8 @@ public class Document {
 		return count;
 	}
 
-	private void setIndexRequest(IndexRequest indexRequest,Object source){
+	@SuppressWarnings("unchecked")
+	private<T> void setIndexRequest(IndexRequest indexRequest,T source){
 		if(source instanceof String){
 			indexRequest.source(String.valueOf(source), XContentType.JSON);
 		}else if(source instanceof Map) {
@@ -399,7 +394,8 @@ public class Document {
 		}
 	}
 
-	private void setUpdateRequest(UpdateRequest updateRequest,Object source){
+	@SuppressWarnings("unchecked")
+	private<T> void setUpdateRequest(UpdateRequest updateRequest,T source){
 		if (source instanceof String) {
 			updateRequest.doc(String.valueOf(source),XContentType.JSON);
 		} else if (source instanceof Map) {

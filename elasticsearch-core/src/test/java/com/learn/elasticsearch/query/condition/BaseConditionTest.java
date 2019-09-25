@@ -2,6 +2,9 @@ package com.learn.elasticsearch.query.condition;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 /**
@@ -35,6 +38,33 @@ public class BaseConditionTest {
 
 		System.out.println(BaseCondition.class.getClass().equals(fullTextCondition.getClass()));
 		System.out.println(fullTextCondition.getClass().equals(fullTextCondition.getClass()));
+	}
 
+	@Test
+	public void testGetClass1(){
+		Map<String, BaseCondition> map = new HashMap<>();
+		map.put("match",new FullTextCondition());
+		for (Map.Entry<String, BaseCondition> entry : map.entrySet()) {
+			String type = entry.getKey();
+			if (entry.getValue() instanceof FullTextCondition) {
+				System.out.println(type);
+			}else {
+				System.out.println("false");
+			}
+		}
+	}
+
+	@Test
+	public void testGetClass(){
+		Map<String, BaseCondition> map = new HashMap<>();
+		map.put("match",new FullTextCondition());
+		for (Map.Entry<String, BaseCondition> entry : map.entrySet()) {
+			String type = entry.getKey();
+			if (entry.getValue().getClass() ==  FullTextCondition.class) {
+				System.out.println(type);
+			}else {
+				System.out.println("false");
+			}
+		}
 	}
 }

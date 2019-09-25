@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +35,8 @@ public class OrderTimeOutCancelTask {
 	 */
 	@Scheduled(cron = "0 0/10 * ? * ?")
 	private void cancelTimeOutOrder() {
-		List<Map<String,Object>> list = commentMapper.findAll();
-		List<SourceEntity> queries = new LinkedList<>();
+		/*List<Map<String,Object>> list = commentMapper.findAll();
+		List<SourceEntity> queries = new ArrayList<>();
 		for (int i = 0;i<list.size();i++){
 			SourceEntity sourceEntity = new SourceEntity();
 			sourceEntity.setSource(list.get(i));
@@ -49,6 +50,6 @@ public class OrderTimeOutCancelTask {
 			LOGGER.info("成功导入数据");
 		} catch (IOException e) {
 			LOGGER.info("导入失败");
-		}
+		}*/
 	}
 }

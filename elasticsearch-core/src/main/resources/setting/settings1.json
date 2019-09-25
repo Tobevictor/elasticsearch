@@ -1,29 +1,4 @@
 {
-  "mappings": {
-    "properties": {
-      "full_pinyin": {
-        "type": "completion",
-        "analyzer": "full_pinyin_analyzer",
-        "preserve_separators": false,
-        "preserve_position_increments": true,
-        "max_input_length": 50
-      },
-      "prefix_pinyin": {
-        "type": "completion",
-        "analyzer": "prefix_pinyin_analyzer",
-        "preserve_separators": false,
-        "preserve_position_increments": true,
-        "max_input_length": 50
-      },
-      "suggestText": {
-        "type": "completion",
-        "analyzer": "ik_smart",
-        "preserve_separators": false,
-        "preserve_position_increments": true,
-        "max_input_length": 50
-      }
-    }
-  },
   "settings": {
     "analysis": {
       "filter": {

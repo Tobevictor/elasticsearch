@@ -31,11 +31,11 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
  * @author dshuyou
  */
 public class Indice {
-	public static final int SHARDS = 3;
+	private static final int SHARDS = 3;
 	public static final int INIT_REPLICAS = 0;
 	public static final int REPLICAS = 2;
-	public static final int TIMEOUT = 2;
-	public static final int MASTER_TIMEOUT = 1;
+	private static final int TIMEOUT = 2;
+	private static final int MASTER_TIMEOUT = 1;
 	public static final int INIT_REFLUSH_INTERVAL = -1;
 	public static final int REFLUSH_INTERVAL = 30;
 
@@ -52,11 +52,10 @@ public class Indice {
 		return this;
 	}
 
-
 	/**
-	 * @param index -索引
-	 * @return -boolean
-	 * @throws IOException -io异常
+	 * @param index - 索引
+	 * @return - 创建索引结果
+	 * @throws IOException - io异常
 	 */
 	public boolean create(String index) throws IOException {
 		Objects.requireNonNull(index, "index");
@@ -74,14 +73,14 @@ public class Indice {
 	}
 
 	/***
-	 * @param index -索引
+	 * @param index - 索引
 	 * @param settings - 设置
-	 * @return -boolean
-	 * @throws IOException -io异常
+	 * @return - 创建索引结果
+	 * @throws IOException - io异常
 	 */
-	public boolean create(String index, Object settings) throws IOException {
+	@SuppressWarnings("unchecked")
+	public<T> boolean create(String index, T settings) throws IOException {
 		CreateIndexRequest request = new CreateIndexRequest(index);
-
 		if (settings instanceof String) {
 			request.source(String.valueOf(settings), XContentType.JSON);
 		} else if (settings instanceof Map) {
@@ -96,10 +95,11 @@ public class Indice {
 	/**
 	 * @param index - 索引
 	 * @param mapping - 映射
-	 * @return -boolean
+	 * @return - 更新索引映射结果
 	 * @throws IOException - io异常
 	 */
-	public boolean putMapping(String index, Object mapping) throws IOException {
+	@SuppressWarnings("unchecked")
+	public<T> boolean putMapping(String index, T mapping) throws IOException {
 		Objects.requireNonNull(index, "index");
 		Objects.requireNonNull(mapping, "mapping");
 		PutMappingRequest request = new PutMappingRequest(index);
@@ -114,10 +114,9 @@ public class Indice {
 		return client.indices().putMapping(request,RequestOptions.DEFAULT).isAcknowledged();
 	}
 
-
 	/**
-	 * @param index -索引
-	 * @return -boolean
+	 * @param index - 索引
+	 * @return - 更新索引设置结果
 	 * @throws IOException -io异常
 	 */
 	public boolean updateSetting(String index) throws IOException {
@@ -138,31 +137,36 @@ public class Indice {
 		return client.indices().putSettings(request, RequestOptions.DEFAULT).isAcknowledged();
 	}
 
+	/**
+	 * @param index - 索引
+	 * @return - 索引中的设置
+	 * @throws IOException - io异常
+	 */
 	public String getSetting(String index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		GetSettingsRequest request = new GetSettingsRequest().indices(index);
 		return client.indices().getSettings(request,RequestOptions.DEFAULT).toString();
 	}
 
+	/**
+	 * @param index - 索引
+	 * @return - 索引中的映射
+	 * @throws IOException - io异常
+	 */
 	public Map<String,Object> getMapping(String... index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		GetMappingsRequest request = new GetMappingsRequest().indices(index);
 
 		Map<String,MappingMetaData> map =  client.indices().getMapping(request, RequestOptions.DEFAULT).mappings();
 		if(map != null){
-			Iterator<Map.Entry<String, MappingMetaData>> it = map.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, MappingMetaData> entry = it.next();
-				return entry.getValue().getSourceAsMap();
-			}
+			return map.get(index).getSourceAsMap();
 		}
 		return Collections.emptyMap();
 	}
 
-
 	/**
 	 * @param index - 索引
-	 * @return - boolean
+	 * @return - 删除索引结果
 	 * @throws IOException - io异常
 	 */
 	public boolean deleteIndex(String... index) throws IOException {
@@ -175,18 +179,13 @@ public class Indice {
 
 	/**
 	 * @param index - 索引
-	 * @return - boolean
+	 * @return - 给定索引是否存在
 	 */
-	public boolean isExists(String... index) {
+	public boolean isExists(String... index) throws IOException {
 		Objects.requireNonNull(index, "index");
-		try {
-			GetIndexRequest request = new GetIndexRequest(index);
-			return client.indices().exists(request, RequestOptions.DEFAULT);
-		}catch (IOException e){
-			return false;
-		}
+		GetIndexRequest request = new GetIndexRequest(index);
+		return client.indices().exists(request, RequestOptions.DEFAULT);
 	}
-
 
 	public Object get(String... index) throws IOException {
 		Objects.requireNonNull(index, "index");

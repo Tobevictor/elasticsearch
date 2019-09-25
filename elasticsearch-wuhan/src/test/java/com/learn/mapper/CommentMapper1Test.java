@@ -19,11 +19,12 @@ import java.util.Map;
 public class CommentMapper1Test {
 
 	@Autowired
+
 	private CommentMapper1 commentMapper1;
 
 	@Test
 	public void findAll() {
-		List<Map> list = commentMapper1.findAll();
+		List<Map<String,Object>> list = commentMapper1.findAll();
 		for (Map c : list){
 			Iterator it = c.keySet().iterator();
 			while (it.hasNext()){
