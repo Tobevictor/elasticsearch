@@ -36,6 +36,7 @@ spring:
       host: localhost
       port: 27017
       database: mall-port
+
     elasticsearch:
       repositories:
         enabled: true
@@ -53,7 +54,9 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
-
+  aop:
+    auto: true
+    proxy-target-class: true
 redis:
   key:
     prefix:

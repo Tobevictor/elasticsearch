@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @Date 2019/8/21 10:04
+ * @date 2019/8/21 10:04
  * @author dshuyou
  */
 public class FulltextQuery extends BaseQuery{
@@ -46,12 +46,15 @@ public class FulltextQuery extends BaseQuery{
 
 		FullTextCondition condition = (FullTextCondition) baseCondition;
 		QueryBuilder queryBuilder;
-		if(queryType == null){
+		if(this.queryType == null){
 			return matchAllBuilder();
 		}
-		switch (queryType){
+		switch (this.queryType){
 			case matchAllQuery :
 				queryBuilder = matchAllBuilder();
+				break;
+			case matchQuery:
+				queryBuilder = matchBuilder(condition);
 				break;
 			case matchPhraseQuery:
 				queryBuilder = matchPhraseBuilder(condition);
@@ -69,17 +72,24 @@ public class FulltextQuery extends BaseQuery{
 		return new MatchAllQueryBuilder();
 	}
 
+	private QueryBuilder matchBuilder(FullTextCondition condition){
+		String field = condition.getField();
+		String value = condition.getValue();
+
+		return new MatchQueryBuilder(field,value);
+	}
+
 	private QueryBuilder matchPhraseBuilder(FullTextCondition condition){
 		String field = condition.getField();
 		String value = condition.getValue();
 
-		return new MatchPhraseQueryBuilder(field,value).analyzer("ik_smart");
+		return new MatchPhraseQueryBuilder(field,value);
 	}
 
 	private QueryBuilder matchPhrasePrefixBuilder(FullTextCondition condition){
 		String field = condition.getField();
 		String value = condition.getValue();
-		MatchPhrasePrefixQueryBuilder builder = new MatchPhrasePrefixQueryBuilder(field,value).analyzer("ik_smart");
+		MatchPhrasePrefixQueryBuilder builder = new MatchPhrasePrefixQueryBuilder(field,value);
 		builder.maxExpansions(10);
 
 		return builder;

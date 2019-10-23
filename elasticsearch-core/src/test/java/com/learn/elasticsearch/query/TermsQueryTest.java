@@ -23,8 +23,8 @@ public class TermsQueryTest {
 	@Before
 	public void setUp(){
 		client = EsClientInit.getInstance().getClient();
-		String index = "comment";
-		termsQuery = new TermsQuery(index,client, TermsEnum.termsQuery);
+		String index = "dshuyou1";
+		termsQuery = new TermsQuery(index,client, TermsEnum.rangeQuery);
 	}
 
 	@Test
@@ -41,15 +41,13 @@ public class TermsQueryTest {
 	}
 
 	public void query() throws IOException {
-		TermsLevelCondition condition = new TermsLevelCondition();
-		condition.setField("content");
-		condition.setValues(new String[]{"我","和","你"});
+		TermsLevelCondition condition = new TermsLevelCondition(0,10,"ids","100","1000");
 		//condition.setValue("我");
-		condition.setFrom(0);
-		condition.setSize(10);
 		List<String> list = termsQuery.executeQuery(condition);
 		for (String s :list){
 			System.out.println(s);
 		}
 	}
+
+
 }

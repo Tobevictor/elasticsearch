@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @Date 2019/8/21 10:05
+ * @date 2019/8/21 10:05
  * @author dshuyou
  */
 public class TermsQuery extends BaseQuery{
@@ -24,7 +24,6 @@ public class TermsQuery extends BaseQuery{
 
 	@Override
 	public List<String> executeQuery(BaseCondition baseCondition) throws IOException {
-
 		sourceBuilder.query(queryBuilder(baseCondition));
 		if(sourceBuilder == null){
 			return Collections.emptyList();
@@ -40,7 +39,7 @@ public class TermsQuery extends BaseQuery{
 
 		TermsLevelCondition condition = (TermsLevelCondition) baseCondition;
 		QueryBuilder queryBuilder;
-		switch (queryType){
+		switch (this.queryType){
 			case prefixQuery:
 				queryBuilder = prefixBuilder(condition);
 				break;

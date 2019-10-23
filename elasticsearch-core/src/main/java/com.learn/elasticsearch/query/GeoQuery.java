@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @Date 2019/8/21 10:05
+ * @date 2019/8/21 10:05
  * @author dshuyou
  */
 public class GeoQuery extends BaseQuery{
@@ -50,7 +50,7 @@ public class GeoQuery extends BaseQuery{
 
 		GeoCondition condition = (GeoCondition) baseCondition;
 		QueryBuilder queryBuilder;
-		switch (queryType){
+		switch (this.queryType){
 			case boundingBoxQuery:
 				queryBuilder = boundingBoxBuilder(condition);
 				break;
@@ -88,7 +88,6 @@ public class GeoQuery extends BaseQuery{
 
 	private QueryBuilder disjoinBuilder(GeoCondition condition) throws IOException {
 		ShapeBuilder shapeBuilder = getShapeBuilder(condition);
-
 		return QueryBuilders.geoDisjointQuery(condition.getField(), shapeBuilder);
 	}
 
@@ -105,35 +104,21 @@ public class GeoQuery extends BaseQuery{
 
 	private QueryBuilder geoShapeBuilder(GeoCondition condition) throws IOException {
 		ShapeBuilder shapeBuilder = getShapeBuilder(condition);
-
-		GeoShapeQueryBuilder queryBuilder = QueryBuilders.geoShapeQuery(condition.getField(), shapeBuilder);
-		ScoreSortBuilder sort = SortBuilders.scoreSort();
-		sourceBuilder.sort(sort);
-		return queryBuilder;
+		return QueryBuilders.geoShapeQuery(condition.getField(), shapeBuilder);
 	}
 
 	private QueryBuilder intersectionBuilder(GeoCondition condition) throws IOException {
 		ShapeBuilder shapeBuilder = getShapeBuilder(condition);
-
-		GeoShapeQueryBuilder queryBuilder = QueryBuilders.geoIntersectionQuery(condition.getField(),shapeBuilder);
-		ScoreSortBuilder sort = SortBuilders.scoreSort();
-		sourceBuilder.sort(sort);
-		return queryBuilder;
+		return QueryBuilders.geoIntersectionQuery(condition.getField(),shapeBuilder);
 	}
 
 	private QueryBuilder polygonBuilder(GeoCondition condition) {
-		GeoPolygonQueryBuilder queryBuilder = QueryBuilders.geoPolygonQuery(condition.getField(),condition.getPoints());
-		ScoreSortBuilder sort = SortBuilders.scoreSort();
-		sourceBuilder.sort(sort);
-		return queryBuilder;
+		return QueryBuilders.geoPolygonQuery(condition.getField(),condition.getPoints());
 	}
 
 	private QueryBuilder withinBuilder(GeoCondition condition) throws IOException {
 		ShapeBuilder shapeBuilder = getShapeBuilder(condition);
-
-		GeoShapeQueryBuilder queryBuilder = QueryBuilders.geoWithinQuery(condition.getField(),shapeBuilder);
-		sourceBuilder.query(queryBuilder);
-		return queryBuilder;
+		return QueryBuilders.geoWithinQuery(condition.getField(),shapeBuilder);
 	}
 
 

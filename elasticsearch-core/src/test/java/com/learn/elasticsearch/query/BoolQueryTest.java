@@ -45,10 +45,7 @@ public class BoolQueryTest {
 		BoolQuery boolQuery = new BoolQuery(index,client);
 		Map<String, BaseCondition> map = new HashMap<>();
 		map.put("matchPhraseQuery",new FullTextCondition("content","wo"));
-		TermsLevelCondition condition = new TermsLevelCondition();
-		condition.setField("username");
-		//condition.setValues(new String[]{"我","和","你"});
-		condition.setValue("sw");
+		TermsLevelCondition condition = new TermsLevelCondition("username","as");
 		map.put("termQuery",condition);
 		long start = System.currentTimeMillis();
 		/*List<String> list = boolQuery.executeQuery(map);

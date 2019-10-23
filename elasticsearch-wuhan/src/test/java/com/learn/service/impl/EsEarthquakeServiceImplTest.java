@@ -2,6 +2,8 @@ package com.learn.service.impl;
 import com.learn.elasticsearch.Document;
 import com.learn.elasticsearch.model.SourceEntity;
 import com.learn.mapper.CommentMapper;
+import com.learn.mapper.EarthquakeMapper;
+import com.learn.service.ElasticsearchService;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,13 +29,20 @@ public class EsEarthquakeServiceImplTest {
 	private RestHighLevelClient client;
 	@Autowired
 	private CommentMapper mapper;
+	@Autowired
+	private EarthquakeMapper earthquakeMapper;
 
+	@Autowired
+	private ElasticsearchService elasticsearchService;
 
 	@Test
-	public void bulkIndex() throws IOException {
-		String index = "dshuyou5";
+	public void bulkIndex() throws InterruptedException {
+		String index = "dshuyou2";
 		long start = System.currentTimeMillis();
+		long findStart = System.currentTimeMillis();
 		List<Map<String,Object>> list = mapper.findAll();
+		long findEnd = System.currentTimeMillis();
+		System.out.println(findEnd-findStart + "ms");
 		List<SourceEntity> queries = new ArrayList<>();
 		for (Map<String,Object> map : list){
 			SourceEntity sourceEntity = new SourceEntity();
@@ -44,7 +53,7 @@ public class EsEarthquakeServiceImplTest {
 		list.clear();
 		Document document = new Document(client);
 
-		document.bulkIndex(index,queries);
+		document.bulkProcessorIndex(index,queries);
 		long end = System.currentTimeMillis();
 		System.out.println((end-start)/1000 + "s");
 	}
@@ -63,7 +72,7 @@ public class EsEarthquakeServiceImplTest {
 
 	@Test
 	public void bulkIndex2() throws IOException {
-		String index = "dshuyou3";
+		String index = "dshuyou2";
 		long start = System.currentTimeMillis();
 		List<Map<String,Object>> list = mapper.findAll();
 		Document document = new Document(client);
@@ -71,5 +80,20 @@ public class EsEarthquakeServiceImplTest {
 		document.bulkIndex1(index,list);
 		long end = System.currentTimeMillis();
 		System.out.println((end-start)/1000 + "s");
+	}
+
+	@Test
+	public void extendWord(){
+		String[] field = new String[]{"content.content_fullpinyin", "content.content_prefixpinyin", "content.content_text"};
+		String keyword = "像我";
+		int size = 10;
+		String index = "asxdasd";
+		List<String> list = null;
+		list = (List<String>) elasticsearchService.extendWord(index ,keyword, size, field).getResult();
+		if(list == null){return;}
+		System.out.println(list.size());
+		for (String s : list) {
+			System.out.println(s);
+		}
 	}
 }

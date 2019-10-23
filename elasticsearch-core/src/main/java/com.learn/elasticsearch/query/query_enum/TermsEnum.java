@@ -1,7 +1,7 @@
 package com.learn.elasticsearch.query.query_enum;
 
 /**
- * @Date 2019/8/30 11:39
+ * @date 2019/8/30 11:39
  * @author dshuyou
  */
 public enum  TermsEnum {

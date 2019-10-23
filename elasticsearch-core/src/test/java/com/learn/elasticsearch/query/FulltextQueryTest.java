@@ -41,11 +41,10 @@ public class FulltextQueryTest {
 	}
 
 	public void query() throws IOException {
-		FullTextCondition condition = new FullTextCondition();
-		condition.setField("content");
-		condition.setValue("zg");
+		FullTextCondition condition = new FullTextCondition("content","zg");
 		condition.setFrom(10);
 		condition.setSize(10);
+		condition.setSortField("id");
 		List<String> list = fulltextQuery.executeQuery(condition);
 		for (String s :list){
 			System.out.println(s);

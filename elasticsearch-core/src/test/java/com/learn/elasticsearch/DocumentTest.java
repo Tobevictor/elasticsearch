@@ -1,12 +1,30 @@
 package com.learn.elasticsearch;
 
+import com.learn.elasticsearch.model.SourceEntity;
+import org.elasticsearch.action.bulk.BackoffPolicy;
+import org.elasticsearch.action.bulk.BulkProcessor;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.unit.ByteSizeUnit;
+import org.elasticsearch.common.unit.ByteSizeValue;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.jws.Oneway;
+import javax.xml.transform.Source;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static org.elasticsearch.client.Requests.refreshRequest;
 
 /**
  * @Date 2019/8/28 11:11
@@ -21,7 +39,7 @@ public class DocumentTest {
 	public void init(){
 		client = EsClientInit.getInstance().getClient();
 		indice = new Indice(client);
-		index = "dsy";
+		index = "dshuyou0";
 	}
 	@Test
 	public void index() throws IOException {
@@ -105,5 +123,19 @@ public class DocumentTest {
 
 	@Test
 	public void batchAscendingId() {
+	}
+
+
+	@Test
+	public void bulkProcessorIndex() throws IOException, InterruptedException {
+		Document document = new Document(client);
+		SourceEntity sourceEntity = new SourceEntity();
+		sourceEntity.setId("0");
+		Map<String, Object> map = new HashMap<>();
+		map.put("title","123456465465");
+		sourceEntity.setSource(map);
+		List<SourceEntity> list = new ArrayList<>();
+		list.add(sourceEntity);
+		document.bulkProcessorIndex(index,list);
 	}
 }

@@ -1,8 +1,13 @@
 package com.learn.elasticsearch.query.condition;
 
 /**
- * @Date 2019/8/21 10:06
+ * Abstract class of query condition.
+ * @date 2019/8/21 10:06
  * @author dshuyou
+ * @see BoolCondition
+ * @see FullTextCondition
+ * @see GeoCondition
+ * @see TermsLevelCondition
  */
 public abstract class BaseCondition {
 	private static final int DEFAULT_FROM = 0;
@@ -10,6 +15,7 @@ public abstract class BaseCondition {
 
 	protected int from;
 	protected int size;
+	protected String sortField;
 
 	public BaseCondition() {
 		this.from = DEFAULT_FROM;
@@ -35,6 +41,14 @@ public abstract class BaseCondition {
 
 	public void setSize(int size) {
 		this.size = size;
+	}
+
+	public String getSortField() {
+		return sortField;
+	}
+
+	public void setSortField(String sortField) {
+		this.sortField = sortField;
 	}
 }
 

@@ -34,7 +34,7 @@ public class GeoQueryTest {
 	public void distance() throws IOException {
 		GeoCondition condition = new GeoCondition();
 		condition.setField("address");
-		condition.getPoint(50,30);
+		condition.setPoint(50,30);
 		condition.setDistance(String.valueOf(10000));
 		List<String> list = geoQuery.executeQuery(condition);
 		System.out.println(list.size());
@@ -54,7 +54,7 @@ public class GeoQueryTest {
 		list.add(new Coordinate(20,-20));
 		list.add(new Coordinate(-20,-20));
 		list.add(new Coordinate(-20,20));
-		condition.getCoordinates(list);
+		condition.setCoordinates(list);
 		List<String> result = geoQuery.executeQuery(condition);
 		System.out.println(result.size());
 		for (int i = 0;i<result.size();i++){
@@ -73,7 +73,7 @@ public class GeoQueryTest {
 		list.add(new GeoPoint(80,-180));
 		list.add(new GeoPoint(-80,-180));
 		list.add(new GeoPoint(-80,180));
-		condition.getPoints(list);
+		condition.setPoints(list);
 		List<String> result = geoQuery.executeQuery(condition);
 		System.out.println(result.size());
 		for (int i = 0;i<result.size();i++){
@@ -92,7 +92,7 @@ public class GeoQueryTest {
 		list.add(new Coordinate(180,-80));
 		list.add(new Coordinate(-180,-80));
 		list.add(new Coordinate(-180,80));
-		condition.getCoordinates(list);
+		condition.setCoordinates(list);
 		List<String> result = geoQuery.executeQuery(condition);
 		System.out.println(result.size());
 		for (int i = 0;i<result.size();i++){
@@ -111,7 +111,7 @@ public class GeoQueryTest {
 		list.add(new Coordinate(180,-80));
 		list.add(new Coordinate(-180,-80));
 		list.add(new Coordinate(-180,80));
-		condition.getCoordinates(list);
+		condition.setCoordinates(list);
 		List<String> result = geoQuery.executeQuery(condition);
 		System.out.println(result.size());
 		for (int i = 0;i<result.size();i++){
@@ -123,7 +123,7 @@ public class GeoQueryTest {
 	public void boundingbox() throws IOException {
 		GeoCondition condition = new GeoCondition();
 		condition.setField("address");
-		condition.getBox(80,-180,-80,180);
+		condition.setBox(80,-180,-80,180);
 		List<String> list = geoQuery.executeQuery(condition);
 		System.out.println(list.size());
 		for (int i = 0;i<list.size();i++){
@@ -141,7 +141,7 @@ public class GeoQueryTest {
 		double rightLatitude = -80.0;
 		double rightLongitude = 180.0;
 
-		condition.getBoxfromCoord(leftLatitude,leftLongitude,rightLatitude,rightLongitude);
+		condition.setBoxfromCoord(leftLatitude,leftLongitude,rightLatitude,rightLongitude);
 		System.out.println(condition.getTlCoordinate().toString());
 		System.out.println(condition.getBrCoordinate().toString());
 
@@ -160,7 +160,7 @@ public class GeoQueryTest {
 		list.add(new Coordinate(180,-80));
 		list.add(new Coordinate(-180,-80));
 		list.add(new Coordinate(-180,80));
-		condition.getCoordinates(list);
+		condition.setCoordinates(list);
 		List<String> result = geoQuery.executeQuery(condition);
 		System.out.println(result.size());
 	}
@@ -171,7 +171,7 @@ public class GeoQueryTest {
 		condition.setField("point");
 		condition.setShapeType("POINT");
 
-		condition.getCoordinate(80,-180);
+		condition.setCoordinate(80,-180);
 		List<String> result = geoQuery.executeQuery(condition);
 		System.out.println(result.size());
 	}
@@ -183,7 +183,7 @@ public class GeoQueryTest {
 		condition.setField("point");
 		condition.setShapeType("CIRCLE");
 
-		condition.getCoordinate(80,-180);
+		condition.setCoordinate(80,-180);
 		condition.setDistance(String.valueOf(1000000));
 		List<String> result = geoQuery.executeQuery(condition);
 		System.out.println(result.size());
@@ -199,7 +199,7 @@ public class GeoQueryTest {
 		list.add(new Coordinate(180,-80));
 		list.add(new Coordinate(-180,-80));
 
-		condition.getCoordinates(list);
+		condition.setCoordinates(list);
 		List<String> result = geoQuery.executeQuery(condition);
 		System.out.println(result.size());
 	}
@@ -216,7 +216,7 @@ public class GeoQueryTest {
 		list.add(new Coordinate(180,-80));
 		list.add(new Coordinate(-180,-80));
 
-		condition.getCoordinates(list);
+		condition.setCoordinates(list);
 		List<String> result = geoQuery.executeQuery(condition);
 		System.out.println(result.size());
 	}

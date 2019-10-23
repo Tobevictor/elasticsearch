@@ -1,7 +1,10 @@
 package com.learn.elasticsearch;
 
 import com.learn.elasticsearch.model.SourceEntity;
+import org.apache.log4j.Logger;
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.bulk.BackoffPolicy;
+import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -15,14 +18,17 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.CountRequest;
 import org.elasticsearch.client.core.CountResponse;
+import org.elasticsearch.common.unit.ByteSizeUnit;
+import org.elasticsearch.common.unit.ByteSizeValue;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
-import sun.misc.GC;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Date 2019/8/21 10:03
@@ -30,8 +36,10 @@ import java.util.*;
  */
 
 public class Document {
-
-	private final int COUNT = 10000;
+	private Logger logger = Logger.getLogger(Document.class);
+	private static final int COUNT = 10000;
+	private static final int BULK_SIZE = 20;
+	private static final int FLUSH_INTERVAL = 5;
 	private RestHighLevelClient client;
 
 	public Document(RestHighLevelClient client){
@@ -254,7 +262,7 @@ public class Document {
 					bulkRequest.add(request);
 				}
 				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				if (responses.status() == RestStatus.CREATED) {
+				if (responses.status() == RestStatus.OK) {
 					count = count + COUNT;
 				}
 				bulkRequest.requests().clear();
@@ -265,7 +273,7 @@ public class Document {
 			bulkRequest.add(request);
 		}
 		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		if(responses.status() == RestStatus.CREATED){
+		if(responses.status() == RestStatus.OK){
 			count = count + requests.size();
 		}
 		return count;
@@ -284,15 +292,14 @@ public class Document {
 		for (SourceEntity query : queries) {
 			IndexRequest indexRequest = new IndexRequest(index).id(query.getId());
 
-			Object source = query.getSource();
-			setIndexRequest(indexRequest, source);
+			setIndexRequest(indexRequest, query.getSource());
 			requests.add(indexRequest);
 			if (requests.size() % COUNT == 0 ) {
 				for (IndexRequest request : requests) {
 					bulkRequest.add(request);
 				}
 				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				if (responses.status() == RestStatus.CREATED) {
+				if (responses.status() == RestStatus.OK) {
 					count = count + COUNT;
 				}
 				bulkRequest.requests().clear();
@@ -303,7 +310,7 @@ public class Document {
 			bulkRequest.add(request);
 		}
 		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		if(responses.status() == RestStatus.CREATED){
+		if(responses.status() == RestStatus.OK){
 			count = count + requests.size();
 		}
 		return count;
@@ -322,8 +329,7 @@ public class Document {
 		for (SourceEntity update : queries) {
 			UpdateRequest updateRequest = new UpdateRequest(index, update.getId());
 
-			Object source = update.getSource();
-			setUpdateRequest(updateRequest, source);
+			setUpdateRequest(updateRequest, update.getSource());
 			requests.add(updateRequest);
 
 			if (requests.size() % COUNT == 0) {
@@ -331,7 +337,7 @@ public class Document {
 					bulkRequest.add(request);
 				}
 				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				if (responses.status() == RestStatus.CREATED) {
+				if (responses.status() == RestStatus.OK) {
 					count = count + COUNT;
 				}
 				bulkRequest.requests().clear();
@@ -342,7 +348,7 @@ public class Document {
 			bulkRequest.add(request);
 		}
 		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		if(responses.status() == RestStatus.CREATED){
+		if(responses.status() == RestStatus.OK){
 			count = count + requests.size();
 		}
 		return count;
@@ -366,7 +372,7 @@ public class Document {
 					bulkRequest.add(request);
 				}
 				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				if (responses.status() == RestStatus.CREATED) {
+				if (responses.status() == RestStatus.OK) {
 					count = count + COUNT;
 				}
 				bulkRequest.requests().clear();
@@ -377,7 +383,7 @@ public class Document {
 			bulkRequest.add(request);
 		}
 		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		if(responses.status() == RestStatus.CREATED){
+		if(responses.status() == RestStatus.OK){
 			count = count + requests.size();
 		}
 		return count;
@@ -403,6 +409,52 @@ public class Document {
 		} else if (source instanceof XContentBuilder) {
 			updateRequest.doc(XContentType.JSON,source);
 		}
+	}
+
+	public void bulkProcessorIndex(String index, List<SourceEntity> queries) throws InterruptedException {
+		BulkProcessor.Listener listener = new BulkProcessor.Listener() {
+			@Override
+			public void beforeBulk(long executionId, BulkRequest request) {
+				int numberOfActions = request.numberOfActions();
+				logger.debug("Executing bulk:"+ executionId + " with "+ numberOfActions + " requests");
+			}
+
+			@Override
+			public void afterBulk(long executionId, BulkRequest request,
+								  BulkResponse response) {
+				if (response.hasFailures()) {
+					logger.warn("Executing bulk:"+ executionId + " failure");
+				} else {
+					logger.debug("Executing bulk:"+ executionId +
+							"	completed in " + response.getTook().getMillis()+
+									" milliseconds");
+				}
+			}
+
+			@Override
+			public void afterBulk(long executionId, BulkRequest request,
+								  Throwable failure) {
+				logger.error("Failed to execute bulk");
+			}
+		};
+		BulkProcessor bulkProcessor = BulkProcessor.builder(
+				(request, bulkListener) ->
+						client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener),
+				listener)
+				.setBulkActions(COUNT)
+				.setBulkSize(new ByteSizeValue(BULK_SIZE, ByteSizeUnit.MB))
+				.setFlushInterval(TimeValue.timeValueSeconds(FLUSH_INTERVAL))
+				.setConcurrentRequests(4)
+				.setBackoffPolicy(
+						BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(100), 3))
+				.build();
+		for (SourceEntity query : queries) {
+			IndexRequest indexRequest = new IndexRequest(index).id(query.getId());
+			setIndexRequest(indexRequest,query.getSource());
+			bulkProcessor.add(indexRequest);
+		}
+		bulkProcessor.flush();
+		bulkProcessor.awaitClose(10, TimeUnit.SECONDS);
 	}
 }
 

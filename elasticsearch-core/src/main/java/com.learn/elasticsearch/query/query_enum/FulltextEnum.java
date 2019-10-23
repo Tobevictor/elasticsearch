@@ -1,7 +1,7 @@
 package com.learn.elasticsearch.query.query_enum;
 
 /**
- * @Date 2019/7/25 11:23
+ * @date 2019/7/25 11:23
  * @author dshuyou
  */
 public enum FulltextEnum {

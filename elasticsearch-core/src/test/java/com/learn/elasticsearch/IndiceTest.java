@@ -25,7 +25,7 @@ public class IndiceTest {
 	public void init(){
 		client = EsClientInit.getInstance().getClient();
 		indice = new Indice(client);
-		index = "dshuyou5";
+		index = "dshuyou2";
 	}
 
 	@Test

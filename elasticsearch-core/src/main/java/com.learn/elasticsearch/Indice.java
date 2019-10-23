@@ -37,7 +37,7 @@ public class Indice {
 	private static final int TIMEOUT = 2;
 	private static final int MASTER_TIMEOUT = 1;
 	public static final int INIT_REFLUSH_INTERVAL = -1;
-	public static final int REFLUSH_INTERVAL = 30;
+	public static final int REFRESH_INTERVAL = 30;
 
 	private RestHighLevelClient client;
 
@@ -123,16 +123,16 @@ public class Indice {
 		UpdateSettingsRequest request = new UpdateSettingsRequest(index);
 		request.settings(Settings.builder()
 				.put("index.number_of_replicas",REPLICAS)
-				.put("index.refresh_interval",REFLUSH_INTERVAL)
+				.put("index.refresh_interval",REFRESH_INTERVAL)
 		);
 		return client.indices().putSettings(request, RequestOptions.DEFAULT).isAcknowledged();
 	}
 
-	public boolean updateSetting(String index,int replicas,int reflush) throws IOException {
+	public boolean updateSetting(String index,int replicas,String refresh) throws IOException {
 		UpdateSettingsRequest request = new UpdateSettingsRequest(index);
 		request.settings(Settings.builder()
 				.put("index.number_of_replicas",replicas)
-				.put("index.refresh_interval",reflush)
+				.put("index.refresh_interval",refresh)
 		);
 		return client.indices().putSettings(request, RequestOptions.DEFAULT).isAcknowledged();
 	}

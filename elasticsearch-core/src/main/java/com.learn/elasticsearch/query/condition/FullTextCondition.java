@@ -1,7 +1,8 @@
 package com.learn.elasticsearch.query.condition;
 
 /**
- * @Date 2019/8/21 10:05
+ * Full Text Query Condition
+ * @date 2019/8/21 10:05
  * @author dshuyou
  */
 public class FullTextCondition extends BaseCondition {
@@ -32,17 +33,10 @@ public class FullTextCondition extends BaseCondition {
 		return field;
 	}
 
-	public void setField(String field) {
-		this.field = field;
-	}
-
 	public String getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
-	}
 
 	@Override
 	public String toString() {

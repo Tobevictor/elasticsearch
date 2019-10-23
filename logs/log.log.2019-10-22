@@ -1,0 +1,266 @@
+2019-10-22 12:08:14  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 12:08:14  [ restartedMain:3 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 12:08:28  [ http-nio-8080-exec-1:13406 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:08:28  [ http-nio-8080-exec-1:13408 ] - [ INFO ]  completed increment
+2019-10-22 12:08:37  [ http-nio-8080-exec-2:22614 ] - [ INFO ]  index页
+2019-10-22 12:48:59  [ http-nio-8080-exec-4:2445056 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:48:59  [ http-nio-8080-exec-4:2445058 ] - [ INFO ]  completed increment
+2019-10-22 12:49:00  [ http-nio-8080-exec-5:2445871 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:00  [ http-nio-8080-exec-5:2445875 ] - [ INFO ]  completed increment
+2019-10-22 12:49:00  [ http-nio-8080-exec-6:2446174 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:00  [ http-nio-8080-exec-6:2446176 ] - [ INFO ]  completed increment
+2019-10-22 12:49:01  [ http-nio-8080-exec-7:2446429 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:01  [ http-nio-8080-exec-7:2446430 ] - [ INFO ]  completed increment
+2019-10-22 12:49:04  [ http-nio-8080-exec-9:2449542 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:04  [ http-nio-8080-exec-9:2449543 ] - [ INFO ]  completed increment
+2019-10-22 12:49:04  [ http-nio-8080-exec-8:2449822 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:04  [ http-nio-8080-exec-8:2449825 ] - [ INFO ]  completed increment
+2019-10-22 12:49:04  [ http-nio-8080-exec-10:2450086 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:04  [ http-nio-8080-exec-10:2450087 ] - [ INFO ]  completed increment
+2019-10-22 12:49:05  [ http-nio-8080-exec-1:2450335 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:05  [ http-nio-8080-exec-1:2450337 ] - [ INFO ]  completed increment
+2019-10-22 12:49:05  [ http-nio-8080-exec-2:2450742 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:05  [ http-nio-8080-exec-2:2450743 ] - [ INFO ]  completed increment
+2019-10-22 12:49:05  [ http-nio-8080-exec-3:2451006 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:05  [ http-nio-8080-exec-3:2451008 ] - [ INFO ]  completed increment
+2019-10-22 12:49:06  [ http-nio-8080-exec-4:2451253 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:06  [ http-nio-8080-exec-4:2451254 ] - [ INFO ]  completed increment
+2019-10-22 12:49:06  [ http-nio-8080-exec-5:2451500 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:06  [ http-nio-8080-exec-5:2451501 ] - [ INFO ]  completed increment
+2019-10-22 12:49:06  [ http-nio-8080-exec-6:2451724 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:06  [ http-nio-8080-exec-6:2451726 ] - [ INFO ]  completed increment
+2019-10-22 12:49:06  [ http-nio-8080-exec-7:2451933 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:06  [ http-nio-8080-exec-7:2451935 ] - [ INFO ]  completed increment
+2019-10-22 12:49:06  [ http-nio-8080-exec-9:2452238 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:06  [ http-nio-8080-exec-9:2452240 ] - [ INFO ]  completed increment
+2019-10-22 12:49:07  [ http-nio-8080-exec-8:2452525 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:07  [ http-nio-8080-exec-8:2452526 ] - [ INFO ]  completed increment
+2019-10-22 12:49:07  [ http-nio-8080-exec-10:2453037 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:07  [ http-nio-8080-exec-10:2453039 ] - [ INFO ]  completed increment
+2019-10-22 12:49:08  [ http-nio-8080-exec-1:2453381 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:08  [ http-nio-8080-exec-1:2453383 ] - [ INFO ]  completed increment
+2019-10-22 12:49:08  [ http-nio-8080-exec-2:2453821 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:08  [ http-nio-8080-exec-2:2453822 ] - [ INFO ]  completed increment
+2019-10-22 12:49:09  [ http-nio-8080-exec-3:2454269 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:09  [ http-nio-8080-exec-3:2454270 ] - [ INFO ]  completed increment
+2019-10-22 12:49:09  [ http-nio-8080-exec-4:2454757 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:09  [ http-nio-8080-exec-4:2454758 ] - [ INFO ]  completed increment
+2019-10-22 12:49:09  [ http-nio-8080-exec-5:2455172 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:09  [ http-nio-8080-exec-5:2455173 ] - [ INFO ]  completed increment
+2019-10-22 12:49:10  [ http-nio-8080-exec-6:2455619 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:10  [ http-nio-8080-exec-6:2455620 ] - [ INFO ]  completed increment
+2019-10-22 12:49:10  [ http-nio-8080-exec-7:2455997 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 12:49:10  [ http-nio-8080-exec-7:2455999 ] - [ INFO ]  completed increment
+2019-10-22 13:59:58  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 13:59:58  [ restartedMain:1 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 14:00:14  [ http-nio-8080-exec-2:15719 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 14:00:14  [ http-nio-8080-exec-2:15721 ] - [ INFO ]  completed increment
+2019-10-22 14:00:14  [ http-nio-8080-exec-3:16102 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 14:00:14  [ http-nio-8080-exec-3:16104 ] - [ INFO ]  completed increment
+2019-10-22 14:00:15  [ http-nio-8080-exec-4:16768 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:212}
+2019-10-22 14:00:15  [ http-nio-8080-exec-4:16769 ] - [ INFO ]  completed increment
+2019-10-22 14:03:08  [ http-nio-8080-exec-8:189640 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sadad}
+2019-10-22 14:03:08  [ http-nio-8080-exec-8:189642 ] - [ INFO ]  completed increment
+2019-10-22 14:03:34  [ http-nio-8080-exec-9:216550 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sadad}
+2019-10-22 14:03:34  [ http-nio-8080-exec-9:216552 ] - [ INFO ]  completed increment
+2019-10-22 14:03:35  [ http-nio-8080-exec-10:217559 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sadad}
+2019-10-22 14:03:35  [ http-nio-8080-exec-10:217560 ] - [ INFO ]  completed increment
+2019-10-22 14:03:37  [ http-nio-8080-exec-1:219566 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sadad}
+2019-10-22 14:03:37  [ http-nio-8080-exec-1:219567 ] - [ INFO ]  completed increment
+2019-10-22 14:03:39  [ http-nio-8080-exec-2:221575 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sadad}
+2019-10-22 14:03:39  [ http-nio-8080-exec-2:221576 ] - [ INFO ]  completed increment
+2019-10-22 14:03:41  [ http-nio-8080-exec-3:223583 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sadad}
+2019-10-22 14:03:41  [ http-nio-8080-exec-3:223584 ] - [ INFO ]  completed increment
+2019-10-22 14:03:43  [ http-nio-8080-exec-4:225589 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sadad}
+2019-10-22 14:03:43  [ http-nio-8080-exec-4:225591 ] - [ INFO ]  completed increment
+2019-10-22 14:09:36  [ http-nio-8080-exec-7:578406 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sadad}
+2019-10-22 14:09:36  [ http-nio-8080-exec-7:578408 ] - [ INFO ]  completed increment
+2019-10-22 14:16:27  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 14:16:27  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 14:17:18  [ http-nio-8080-exec-2:50911 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sadad}
+2019-10-22 14:17:19  [ http-nio-8080-exec-2:51665 ] - [ INFO ]  completed increment
+2019-10-22 14:17:35  [ http-nio-8080-exec-4:68267 ] - [ DEBUG ]  debug --- method extendWord:sadad
+2019-10-22 14:17:35  [ http-nio-8080-exec-4:68267 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sadad}
+2019-10-22 14:17:35  [ http-nio-8080-exec-4:68271 ] - [ INFO ]  completed increment
+2019-10-22 14:17:38  [ http-nio-8080-exec-6:70841 ] - [ DEBUG ]  debug --- method extendWord:sadad
+2019-10-22 14:17:38  [ http-nio-8080-exec-6:70842 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sadad}
+2019-10-22 14:17:38  [ http-nio-8080-exec-6:70843 ] - [ INFO ]  completed increment
+2019-10-22 14:17:44  [ http-nio-8080-exec-5:76864 ] - [ DEBUG ]  debug --- method extendWord:我是
+2019-10-22 14:17:44  [ http-nio-8080-exec-5:76864 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我是}
+2019-10-22 14:17:44  [ http-nio-8080-exec-5:76866 ] - [ INFO ]  completed increment
+2019-10-22 14:17:51  [ http-nio-8080-exec-7:83418 ] - [ DEBUG ]  debug --- method extendWord:不是的
+2019-10-22 14:17:51  [ http-nio-8080-exec-7:83418 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:不是的}
+2019-10-22 14:17:51  [ http-nio-8080-exec-7:83420 ] - [ INFO ]  completed increment
+2019-10-22 14:17:56  [ http-nio-8080-exec-8:88379 ] - [ DEBUG ]  debug --- method extendWord:不
+2019-10-22 14:17:56  [ http-nio-8080-exec-8:88379 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:不}
+2019-10-22 14:17:56  [ http-nio-8080-exec-8:88380 ] - [ INFO ]  completed increment
+2019-10-22 14:17:56  [ http-nio-8080-exec-9:88619 ] - [ DEBUG ]  debug --- method extendWord:不
+2019-10-22 14:17:56  [ http-nio-8080-exec-9:88620 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:不}
+2019-10-22 14:17:56  [ http-nio-8080-exec-9:88621 ] - [ INFO ]  completed increment
+2019-10-22 14:20:25  [ restartedMain:1 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 14:20:25  [ restartedMain:3 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 14:32:05  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 14:32:05  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 14:35:06  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 14:35:06  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 14:38:01  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 14:38:01  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 14:39:31  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 14:39:31  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 14:41:49  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 14:41:49  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 14:45:06  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 14:45:06  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 14:47:50  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 14:47:50  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:17:29  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:17:29  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:21:09  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:21:09  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:21:45  [ restartedMain:1 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:21:45  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:24:44  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:24:44  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:29:27  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:29:27  [ restartedMain:1 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:30:17  [ http-nio-8080-exec-3:50482 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:qdas}
+2019-10-22 15:30:18  [ http-nio-8080-exec-3:51231 ] - [ INFO ]  completed increment
+2019-10-22 15:30:20  [ http-nio-8080-exec-4:53952 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:qdas}
+2019-10-22 15:30:20  [ http-nio-8080-exec-4:53954 ] - [ INFO ]  completed increment
+2019-10-22 15:30:21  [ http-nio-8080-exec-5:54631 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:qdas}
+2019-10-22 15:30:21  [ http-nio-8080-exec-5:54632 ] - [ INFO ]  completed increment
+2019-10-22 15:30:21  [ http-nio-8080-exec-6:54855 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:qdas}
+2019-10-22 15:30:21  [ http-nio-8080-exec-6:54858 ] - [ INFO ]  completed increment
+2019-10-22 15:30:22  [ http-nio-8080-exec-7:55024 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:qdas}
+2019-10-22 15:30:22  [ http-nio-8080-exec-7:55026 ] - [ INFO ]  completed increment
+2019-10-22 15:30:22  [ http-nio-8080-exec-8:55279 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:qdas}
+2019-10-22 15:30:22  [ http-nio-8080-exec-8:55281 ] - [ INFO ]  completed increment
+2019-10-22 15:32:01  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:32:01  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:32:29  [ http-nio-8080-exec-1:28709 ] - [ DEBUG ]  debug --- method extendWord:sdaas
+2019-10-22 15:32:29  [ http-nio-8080-exec-1:28710 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:sdaas}
+2019-10-22 15:32:30  [ http-nio-8080-exec-1:29473 ] - [ INFO ]  completed increment
+2019-10-22 15:38:27  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:38:27  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:41:07  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:41:07  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:50:35  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:50:35  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:51:46  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:51:46  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:52:59  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:52:59  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:55:39  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:55:39  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:57:35  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:57:35  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 15:59:33  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 15:59:33  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 16:02:53  [ http-nio-8080-exec-1:199902 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我}
+2019-10-22 16:02:54  [ http-nio-8080-exec-1:200925 ] - [ INFO ]  completed increment
+2019-10-22 16:07:36  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 16:07:36  [ restartedMain:1 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 16:11:54  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-10-22 16:11:54  [ restartedMain:2 ] - [ INFO ]  redis地址：localhost:6379
+2019-10-22 16:12:00  [ http-nio-8080-exec-1:6180 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:01  [ http-nio-8080-exec-1:6841 ] - [ INFO ]  completed increment
+2019-10-22 16:12:04  [ http-nio-8080-exec-2:9619 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:04  [ http-nio-8080-exec-2:9621 ] - [ INFO ]  completed increment
+2019-10-22 16:12:05  [ http-nio-8080-exec-3:10539 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:05  [ http-nio-8080-exec-3:10540 ] - [ INFO ]  completed increment
+2019-10-22 16:12:44  [ http-nio-8080-exec-4:50000 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:44  [ http-nio-8080-exec-4:50002 ] - [ INFO ]  completed increment
+2019-10-22 16:12:44  [ http-nio-8080-exec-5:50212 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:44  [ http-nio-8080-exec-5:50215 ] - [ INFO ]  completed increment
+2019-10-22 16:12:45  [ http-nio-8080-exec-6:50459 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:45  [ http-nio-8080-exec-6:50461 ] - [ INFO ]  completed increment
+2019-10-22 16:12:45  [ http-nio-8080-exec-9:50664 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:45  [ http-nio-8080-exec-9:50666 ] - [ INFO ]  completed increment
+2019-10-22 16:12:45  [ http-nio-8080-exec-8:50795 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:45  [ http-nio-8080-exec-8:50796 ] - [ INFO ]  completed increment
+2019-10-22 16:12:45  [ http-nio-8080-exec-7:50953 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:45  [ http-nio-8080-exec-7:50955 ] - [ INFO ]  completed increment
+2019-10-22 16:12:45  [ http-nio-8080-exec-10:51115 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:45  [ http-nio-8080-exec-10:51116 ] - [ INFO ]  completed increment
+2019-10-22 16:12:46  [ http-nio-8080-exec-1:51264 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:46  [ http-nio-8080-exec-1:51267 ] - [ INFO ]  completed increment
+2019-10-22 16:12:46  [ http-nio-8080-exec-2:51451 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:46  [ http-nio-8080-exec-2:51452 ] - [ INFO ]  completed increment
+2019-10-22 16:12:46  [ http-nio-8080-exec-3:51578 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:46  [ http-nio-8080-exec-3:51580 ] - [ INFO ]  completed increment
+2019-10-22 16:12:46  [ http-nio-8080-exec-4:51977 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:46  [ http-nio-8080-exec-4:51979 ] - [ INFO ]  completed increment
+2019-10-22 16:12:46  [ http-nio-8080-exec-5:52165 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:46  [ http-nio-8080-exec-5:52167 ] - [ INFO ]  completed increment
+2019-10-22 16:12:47  [ http-nio-8080-exec-6:52319 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:47  [ http-nio-8080-exec-6:52321 ] - [ INFO ]  completed increment
+2019-10-22 16:12:54  [ http-nio-8080-exec-9:59701 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:54  [ http-nio-8080-exec-9:59703 ] - [ INFO ]  completed increment
+2019-10-22 16:12:54  [ http-nio-8080-exec-8:59926 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:54  [ http-nio-8080-exec-8:59928 ] - [ INFO ]  completed increment
+2019-10-22 16:12:54  [ http-nio-8080-exec-7:60106 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:54  [ http-nio-8080-exec-7:60108 ] - [ INFO ]  completed increment
+2019-10-22 16:12:55  [ http-nio-8080-exec-10:60305 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:55  [ http-nio-8080-exec-10:60307 ] - [ INFO ]  completed increment
+2019-10-22 16:12:55  [ http-nio-8080-exec-1:60482 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:55  [ http-nio-8080-exec-1:60485 ] - [ INFO ]  completed increment
+2019-10-22 16:12:55  [ http-nio-8080-exec-2:60613 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:55  [ http-nio-8080-exec-2:60615 ] - [ INFO ]  completed increment
+2019-10-22 16:12:55  [ http-nio-8080-exec-3:60828 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:55  [ http-nio-8080-exec-3:60830 ] - [ INFO ]  completed increment
+2019-10-22 16:12:55  [ http-nio-8080-exec-4:60984 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:55  [ http-nio-8080-exec-4:60985 ] - [ INFO ]  completed increment
+2019-10-22 16:12:55  [ http-nio-8080-exec-5:61157 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:55  [ http-nio-8080-exec-5:61159 ] - [ INFO ]  completed increment
+2019-10-22 16:12:56  [ http-nio-8080-exec-6:61352 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:56  [ http-nio-8080-exec-6:61353 ] - [ INFO ]  completed increment
+2019-10-22 16:12:56  [ http-nio-8080-exec-9:61519 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:56  [ http-nio-8080-exec-9:61520 ] - [ INFO ]  completed increment
+2019-10-22 16:12:56  [ http-nio-8080-exec-8:61707 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:56  [ http-nio-8080-exec-8:61708 ] - [ INFO ]  completed increment
+2019-10-22 16:12:56  [ http-nio-8080-exec-7:62068 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:56  [ http-nio-8080-exec-7:62070 ] - [ INFO ]  completed increment
+2019-10-22 16:12:57  [ http-nio-8080-exec-10:62253 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:57  [ http-nio-8080-exec-10:62255 ] - [ INFO ]  completed increment
+2019-10-22 16:12:57  [ http-nio-8080-exec-1:62524 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:57  [ http-nio-8080-exec-1:62527 ] - [ INFO ]  completed increment
+2019-10-22 16:12:57  [ http-nio-8080-exec-2:62692 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:57  [ http-nio-8080-exec-2:62694 ] - [ INFO ]  completed increment
+2019-10-22 16:12:57  [ http-nio-8080-exec-3:62875 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:57  [ http-nio-8080-exec-3:62877 ] - [ INFO ]  completed increment
+2019-10-22 16:12:57  [ http-nio-8080-exec-4:63144 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:57  [ http-nio-8080-exec-4:63146 ] - [ INFO ]  completed increment
+2019-10-22 16:12:58  [ http-nio-8080-exec-5:63253 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:58  [ http-nio-8080-exec-5:63255 ] - [ INFO ]  completed increment
+2019-10-22 16:12:58  [ http-nio-8080-exec-6:63422 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:58  [ http-nio-8080-exec-6:63425 ] - [ INFO ]  completed increment
+2019-10-22 16:12:58  [ http-nio-8080-exec-9:63605 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:58  [ http-nio-8080-exec-9:63607 ] - [ INFO ]  completed increment
+2019-10-22 16:12:58  [ http-nio-8080-exec-8:63766 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:58  [ http-nio-8080-exec-8:63768 ] - [ INFO ]  completed increment
+2019-10-22 16:12:58  [ http-nio-8080-exec-7:63994 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:58  [ http-nio-8080-exec-7:63999 ] - [ INFO ]  completed increment
+2019-10-22 16:12:58  [ http-nio-8080-exec-10:64193 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:58  [ http-nio-8080-exec-10:64194 ] - [ INFO ]  completed increment
+2019-10-22 16:12:59  [ http-nio-8080-exec-1:64401 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:59  [ http-nio-8080-exec-1:64402 ] - [ INFO ]  completed increment
+2019-10-22 16:12:59  [ http-nio-8080-exec-2:64558 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:59  [ http-nio-8080-exec-2:64559 ] - [ INFO ]  completed increment
+2019-10-22 16:12:59  [ http-nio-8080-exec-3:65130 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:12:59  [ http-nio-8080-exec-3:65132 ] - [ INFO ]  completed increment
+2019-10-22 16:13:00  [ http-nio-8080-exec-4:65661 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:13:00  [ http-nio-8080-exec-4:65662 ] - [ INFO ]  completed increment
+2019-10-22 16:13:00  [ http-nio-8080-exec-5:66089 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:13:00  [ http-nio-8080-exec-5:66090 ] - [ INFO ]  completed increment
+2019-10-22 16:13:01  [ http-nio-8080-exec-6:66410 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:13:01  [ http-nio-8080-exec-6:66411 ] - [ INFO ]  completed increment
+2019-10-22 16:13:01  [ http-nio-8080-exec-9:66774 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:13:01  [ http-nio-8080-exec-9:66775 ] - [ INFO ]  completed increment
+2019-10-22 16:13:01  [ http-nio-8080-exec-8:67100 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:13:01  [ http-nio-8080-exec-8:67101 ] - [ INFO ]  completed increment
+2019-10-22 16:13:02  [ http-nio-8080-exec-7:67463 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:13:02  [ http-nio-8080-exec-7:67464 ] - [ INFO ]  completed increment
+2019-10-22 16:13:02  [ http-nio-8080-exec-10:67891 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:13:02  [ http-nio-8080-exec-10:67892 ] - [ INFO ]  completed increment
+2019-10-22 16:13:03  [ http-nio-8080-exec-1:68313 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我的}
+2019-10-22 16:13:03  [ http-nio-8080-exec-1:68315 ] - [ INFO ]  completed increment

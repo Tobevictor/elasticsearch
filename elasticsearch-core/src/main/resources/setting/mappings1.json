@@ -7,15 +7,15 @@
       "type": "text",
       "fields": {
         "address_fullpinyin":{
-          "type":"text",
+          "type":"completion",
           "analyzer":"full_pinyin_analyzer"
         },
         "address_prefixpinyin":{
-          "type":"text",
+          "type":"completion",
           "analyzer":"prefix_pinyin_analyzer"
         },
         "address_text":{
-          "type":"text",
+          "type":"completion",
           "analyzer":"ik_smart"
         }
       }
@@ -24,15 +24,15 @@
       "type": "text",
       "fields": {
         "content_fullpinyin":{
-          "type":"text",
+          "type":"completion",
           "analyzer":"full_pinyin_analyzer"
         },
         "content_prefixpinyin":{
-          "type":"text",
+          "type":"completion",
           "analyzer":"prefix_pinyin_analyzer"
         },
         "content_text":{
-          "type":"text",
+          "type":"completion",
           "analyzer":"ik_smart"
         }
       }
@@ -53,15 +53,15 @@
       "type": "text",
       "fields": {
         "username_fullpinyin":{
-          "type":"text",
+          "type":"completion",
           "analyzer":"full_pinyin_analyzer"
         },
         "username_prefixpinyin":{
-          "type":"text",
+          "type":"completion",
           "analyzer":"prefix_pinyin_analyzer"
         },
         "username_text":{
-          "type":"text",
+          "type":"completion",
           "analyzer":"ik_smart"
         }
       }

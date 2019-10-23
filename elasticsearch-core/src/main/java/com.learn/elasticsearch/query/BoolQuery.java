@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * @Date 2019/8/22 16:50
+ * @date 2019/8/22 16:50
  * @author dshuyou
  */
 public class BoolQuery extends BaseQuery{

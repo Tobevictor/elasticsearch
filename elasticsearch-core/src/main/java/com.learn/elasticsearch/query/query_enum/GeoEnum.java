@@ -1,7 +1,7 @@
 package com.learn.elasticsearch.query.query_enum;
 
 /**
- * @Date 2019/8/30 11:41
+ * @date 2019/8/30 11:41
  * @author dshuyou
  */
 public enum  GeoEnum {

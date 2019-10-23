@@ -1,9 +1,8 @@
 package com.learn.elasticsearch.query.condition;
 
-import java.util.Arrays;
-
 /**
- * @Date 2019/8/21 10:06
+ * Terms Level Query Condition
+ * @date 2019/8/21 10:06
  * @author dshuyou
  */
 public class TermsLevelCondition extends BaseCondition {
@@ -20,6 +19,32 @@ public class TermsLevelCondition extends BaseCondition {
 
 	public TermsLevelCondition(int from, int size){
 		super(from, size);
+	}
+
+	public TermsLevelCondition(String field, String gte, String lte){
+		super();
+		this.field = field;
+		this.gte = gte;
+		this.lte = lte;
+	}
+
+	public TermsLevelCondition(int from, int size, String field, String gte, String lte){
+		super(from,size);
+		this.field = field;
+		this.gte = gte;
+		this.lte = lte;
+	}
+
+	public TermsLevelCondition(String field, String value){
+		super();
+		this.field = field;
+		this.value = value;
+	}
+
+	public TermsLevelCondition(int from, int size, String field, String value){
+		super(from,size);
+		this.field = field;
+		this.value = value;
 	}
 
 	public String getField() {
@@ -42,24 +67,12 @@ public class TermsLevelCondition extends BaseCondition {
 		return gte;
 	}
 
-	public void setGte(String gte) {
-		this.gte = gte;
-	}
-
 	public String getLte() {
 		return lte;
 	}
 
-	public void setLte(String lte) {
-		this.lte = lte;
-	}
-
 	public String getValue() {
 		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
 	}
 
 	public String[] getValues() {

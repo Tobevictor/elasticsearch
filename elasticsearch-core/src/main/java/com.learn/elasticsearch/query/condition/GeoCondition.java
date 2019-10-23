@@ -6,7 +6,8 @@ import org.locationtech.jts.geom.Coordinate;
 import java.util.List;
 
 /**
- * @Date 2019/8/21 10:06
+ * Geometry Query Condition
+ * @date 2019/8/21 10:06
  * @author dshuyou
  */
 public class GeoCondition extends BaseCondition {
@@ -32,30 +33,22 @@ public class GeoCondition extends BaseCondition {
 		super(from, size);
 	}
 
-	public void getBox(double leftLatitude,double leftLongitude,double rightLatitude,double rightLongitude){
+	public void setBox(double leftLatitude, double leftLongitude, double rightLatitude, double rightLongitude){
 		this.topLeft = new GeoPoint(leftLatitude,leftLongitude);
 		this.bottomRight = new GeoPoint(rightLatitude,rightLongitude);
 	}
 
-	public void getPoint(double latitude,double longitude){
+	public void setPoint(double latitude,double longitude){
 		this.point = new GeoPoint(latitude,longitude);
 	}
 
-	public void getPoints(List<GeoPoint> points){
-		this.points = points;
-	}
-
-	public void getCoordinate(double latitude,double longitude){
+	public void setCoordinate(double latitude,double longitude){
 		this.coordinate = new Coordinate(longitude,latitude);
 	}
 
-	public void getBoxfromCoord(double leftLatitude,double leftLongitude,double rightLatitude,double rightLongitude){
+	public void setBoxfromCoord(double leftLatitude,double leftLongitude,double rightLatitude,double rightLongitude){
 		this.tlCoordinate = new Coordinate(leftLongitude,leftLatitude);
 		this.brCoordinate = new Coordinate(rightLongitude,rightLatitude);
-	}
-
-	public void getCoordinates(List<Coordinate> coordinates){
-		this.coordinates = coordinates;
 	}
 
 	public String getField() {

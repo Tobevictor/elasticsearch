@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Bool Query Condition
  * @author dshuyou
- * @Date 2019/9/17 16:24
+ * @date 2019/9/17 16:24
  */
 public class BoolCondition extends BaseCondition {
 	private String[] queryType;
@@ -35,15 +36,8 @@ public class BoolCondition extends BaseCondition {
 		return queryType;
 	}
 
-	public void setQueryType(String[] queryType) {
-		this.queryType = queryType;
-	}
-
 	public BaseCondition[] getConditions() {
 		return conditions;
 	}
 
-	public void setConditions(BaseCondition[] conditions) {
-		this.conditions = conditions;
-	}
 }

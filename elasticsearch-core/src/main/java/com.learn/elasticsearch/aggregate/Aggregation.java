@@ -1,30 +1,36 @@
 package com.learn.elasticsearch.aggregate;
 
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.MaxAggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.io.IOException;
 
 /**
  * @author dshuyou
- * @Date 2019/9/25 11:44
+ * @date 2019/9/25 11:44
  */
 public class Aggregation {
+	private RestHighLevelClient client;
 
-	public List<String> aggregate(String field, String keyword){
-		List<String> returnList = new ArrayList<>();
-		AggregationBuilder aggregationBuilder = new MaxAggregationBuilder("").field("");
+	public Aggregation(RestHighLevelClient client){this.client = client;}
 
+	public String aggregate(String[] field) throws IOException {
+		AggregationBuilder aggregationBuilder = AggregationBuilders.max("max_XXX").field("")
+				.subAggregation(AggregationBuilders.avg("avg_XXX").field(""))
+				.subAggregation(AggregationBuilders.count("count_XXX").field(""));
+		//根据用户需求在service中自己实现aggregation
 
+		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+		sourceBuilder.aggregation(aggregationBuilder);
 
-
-
-
-
-
-
-		return new ArrayList<>(returnList);
+		SearchRequest searchRequest = new SearchRequest();
+		searchRequest.source(sourceBuilder);
+		SearchResponse aggregateResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+		return aggregateResponse.getAggregations().get("max_XXX");
 	}
 }

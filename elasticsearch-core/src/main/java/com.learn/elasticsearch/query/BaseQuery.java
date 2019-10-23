@@ -9,6 +9,8 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,8 +21,13 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * @Date 2019/8/21 10:43
+ * This class is the abstract class for query action.
+ * @date 2019/8/21 10:43
  * @author dshuyou
+ * @see BoolQuery
+ * @see FulltextQuery
+ * @see GeoQuery
+ * @see TermsQuery
  */
 public abstract class BaseQuery {
 	protected String index;
@@ -67,6 +74,13 @@ public abstract class BaseQuery {
 		}
 		if(baseCondition.getSize() != SIZE){
 			sourceBuilder.size(baseCondition.getSize());
+		}
+		//if(hasSort){sourceBuilder.sort("_score", SortOrder.DESC);}
+		String sortField;
+		if( !(sortField = baseCondition.getSortField()).isEmpty()){
+			sourceBuilder.sort(sortField, SortOrder.DESC);
+		}else {
+			sourceBuilder.sort(SortBuilders.scoreSort());
 		}
 		SearchRequest searchRequest = new SearchRequest(index);
 		searchRequest.source(sourceBuilder);

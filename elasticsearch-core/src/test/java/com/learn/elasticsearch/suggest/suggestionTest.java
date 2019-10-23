@@ -27,24 +27,26 @@ public class suggestionTest {
 	private RestHighLevelClient client;
 	@Before
 	public void init(){
-		suggestion = new Suggestion(client);
-		index = "dshuyou4";
 		client = EsClientInit.getInstance().getClient();
+		suggestion = new Suggestion(client);
+		index = "dshuyou2";
 	}
 
 	@Test
 	public void suggest() {
-		String[] field = new String[]{"content.content_fullpinyin","content.content_prefixpinyin","content.content_text"};
-		String keyword = "像我这";
+		String[] field = new String[]{"content.content_fullpinyin", "content.content_prefixpinyin", "content.content_text"};
+		String keyword = "像我";
 		int size = 10;
+		List<String> list = null;
 		try {
-			List<String> list = suggestion.suggest(keyword,size,field);
-			System.out.println(list.size());
-			for (String s : list){
-				System.out.println(s);
-			}
+			list = suggestion.suggest(keyword, size, field, index);
 		} catch (IOException e) {
-			System.out.println("IOEXCEPTION");
+			e.printStackTrace();
 		}
+		System.out.println(list.size());
+		for (String s : list) {
+			System.out.println(s);
+		}
+
 	}
 }

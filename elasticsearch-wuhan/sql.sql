@@ -59,3 +59,5 @@ select version();
 
 SHOW VARIABLES LIKE '%pro%';
 SET profiling=1;
+
+SELECT * from ums_admin where username = 'dshuyou' and password = '123456';

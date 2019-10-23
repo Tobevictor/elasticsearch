@@ -1,5 +1,7 @@
 package com.learn.util;
 
+import org.apache.log4j.Logger;
+
 import java.io.*;
 
 /**
@@ -7,7 +9,7 @@ import java.io.*;
  * @Date 2019/9/9 9:20
  */
 public class JSONUtil {
-
+	private static Logger logger = Logger.getLogger(JSONUtil.class);
 	public static String readLocalTextFile(String path) {
 		File file = new File(path);
 		StringBuilder sb = new StringBuilder();
@@ -19,7 +21,8 @@ public class JSONUtil {
 				sb.append(line);
 			}
 		}  catch (IOException e) {
-			e.printStackTrace();
+			logger.error("readLocalTextFile error");
+			return null;
 		}
 		return sb.toString();
 	}
