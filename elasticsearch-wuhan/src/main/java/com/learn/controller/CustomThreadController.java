@@ -1,3 +1,4 @@
+/*
 package com.learn.controller;
 
 import com.learn.config.CustomMultiThreadService;
@@ -6,10 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+*/
 /**
  * @author dshuyou
  * @date 2019/10/17 23:27
- */
+ *//*
+
 @Controller
 @RequestMapping(value="/multithreading")
 public class CustomThreadController {
@@ -28,3 +31,4 @@ public class CustomThreadController {
 	}
 }
 
+*/

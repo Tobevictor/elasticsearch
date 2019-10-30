@@ -76,11 +76,11 @@ public abstract class BaseQuery {
 			sourceBuilder.size(baseCondition.getSize());
 		}
 		//if(hasSort){sourceBuilder.sort("_score", SortOrder.DESC);}
-		String sortField;
-		if( !(sortField = baseCondition.getSortField()).isEmpty()){
-			sourceBuilder.sort(sortField, SortOrder.DESC);
-		}else {
+		String sortField = baseCondition.getSortField();
+		if(sortField == null||sortField.isEmpty()){
 			sourceBuilder.sort(SortBuilders.scoreSort());
+		}else {
+			sourceBuilder.sort(sortField, SortOrder.DESC);
 		}
 		SearchRequest searchRequest = new SearchRequest(index);
 		searchRequest.source(sourceBuilder);

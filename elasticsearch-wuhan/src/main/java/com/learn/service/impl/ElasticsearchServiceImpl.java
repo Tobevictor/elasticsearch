@@ -22,6 +22,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.learn.elasticsearch.Indice.*;
 
@@ -34,10 +35,6 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 	private Logger logger = Logger.getLogger(ElasticsearchServiceImpl.class);
 	@Autowired
 	private RestHighLevelClient client;
-	@Autowired
-	private EarthquakeMapper earthquakeMapper;
-	@Autowired
-	private CommentMapper commentMapper;
 
 	private Indice indice;
 	private Document document;
@@ -168,6 +165,17 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 			return result;
 		}
 		return null;
+	}
+
+	@Override
+	public ServiceResult getAllIndex() {
+		try {
+			Set<String> set = indice.getAllIndices();
+			String[] indices = set.toArray(new String[0]);
+			return ServiceResult.success(indices);
+		} catch (IOException e) {
+			return ServiceResult.internalServerError();
+		}
 	}
 
 	@Override

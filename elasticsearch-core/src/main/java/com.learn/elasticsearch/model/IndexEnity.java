@@ -1,4 +1,7 @@
 package com.learn.elasticsearch.model;
+;
+
+import java.util.Map;
 
 public class IndexEnity {
 
@@ -7,6 +10,8 @@ public class IndexEnity {
 	private int shards;
 	private int replicas;
 	private int reflushInterval;
+	private Map<String, Object> mapping;
+	private String settings;
 
 	public IndexEnity(){}
 
@@ -16,6 +21,12 @@ public class IndexEnity {
 		this.shards = shards;
 		this.replicas = replicas;
 		this.reflushInterval = reflushInterval;
+	}
+
+	public IndexEnity(String indexName, String settings,Map<String, Object> mapping) {
+		this.indexName = indexName;
+		this.settings = settings;
+		this.mapping = mapping;
 	}
 
 	public String getIndexName() {
@@ -56,5 +67,30 @@ public class IndexEnity {
 
 	public void setReflushInterval(int reflushInterval) {
 		this.reflushInterval = reflushInterval;
+	}
+
+	public Map<String, Object> getMapping() {
+		return mapping;
+	}
+
+	public void setMapping(Map<String, Object> mapping) {
+		this.mapping = mapping;
+	}
+
+	public String getSettings() {
+		return settings;
+	}
+
+	public void setSettings(String settings) {
+		this.settings = settings;
+	}
+
+	@Override
+	public String toString() {
+		return "IndexEnity{" +
+				"indexName='" + indexName + '\'' +
+				", mapping='" + mapping + '\'' +
+				", settings='" + settings + '\'' +
+				'}';
 	}
 }

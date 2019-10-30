@@ -34,7 +34,7 @@ public class HotWordController {
 				ServiceResult.success(key) : new ServiceResult(200,"this hotword is exist",key);
 	}
 
-	@ApiOperation("热词频率")
+	@ApiOperation("增加热词频率")
 	@RequestMapping(value = "/increment",method = RequestMethod.PUT)
 	@ResponseBody
 	@HotWord

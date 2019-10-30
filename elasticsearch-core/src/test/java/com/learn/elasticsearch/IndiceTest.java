@@ -1,5 +1,6 @@
 package com.learn.elasticsearch;
 
+import com.learn.elasticsearch.model.IndexEnity;
 import com.learn.util.JSONUtil;
 import com.vividsolutions.jts.geom.Geometry;
 import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest;
@@ -10,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Set;
 
 
 /**
@@ -132,7 +135,23 @@ public class IndiceTest {
 
 	@Test
 	public void get() {
+		try {
+			IndexEnity enity = indice.get(index);
+			System.out.println(enity.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
+	@Test
+	public void getAllIndices(){
+		try {
+			Set<String> set = indice.getAllIndices();
+			String[] indices = set.toArray(new String[0]);
+			System.out.println(Arrays.toString(indices));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test

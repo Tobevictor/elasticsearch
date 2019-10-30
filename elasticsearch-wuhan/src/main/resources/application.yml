@@ -11,17 +11,22 @@ spring:
   datasource:
     database1:
       url: jdbc:mysql://localhost:3306/dshuyou?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-      username: dshuyou
+      username: root
       password: 123456
       driverClassName: com.mysql.jdbc.Driver
     database2:
       url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-      username: dshuyou
+      username: root
       password: 123456
       driverClassName: com.mysql.jdbc.Driver
+    database3:
+      url: jdbc:oracle:thin:@172.16.4.130:1521/orclpdb
+      username: backend
+      password: backend
+      driverClassName: oracle.jdbc.OracleDriver
   redis:
-    host: localhost
-    database: 1
+    host: 172.16.4.136
+    database: 0
     port: 6379
     password:
     jedis:
@@ -31,17 +36,17 @@ spring:
         max-idle: 8
         min-idle: 0
     timeout: 3000
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: mall-port
+#  data:
+#    mongodb:
+#      host: localhost
+#      port: 27017
+#      database: mall-port
 
     elasticsearch:
       repositories:
         enabled: true
       cluster-nodes:
-        120.79.149.109:9200
+        172.16.4.136:9200
   thymeleaf:
     prefix: classpath:/templates/
     check-template-location: true
@@ -73,11 +78,11 @@ jwt:
 elasticsearch:
   ip:
     #127.0.0.1:9200,127.0.0.2:9200,127.0.0.3:9200,127.0.0.4:9200,127.0.0.5:9200,127.0.0.6:9200
-    120.79.149.109:9200
+    172.16.4.136:9200
 
-logging:
-  level:
-    cn.tycoding.mapper: DEBUG
+#logging:
+#  level:
+#    cn.tycoding.mapper: DEBUG
 
 mybatis:
   mapper-locations:

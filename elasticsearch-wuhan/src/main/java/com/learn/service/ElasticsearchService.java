@@ -74,6 +74,12 @@ public interface ElasticsearchService {
 	ServiceResult reflush(String indexName);
 
 	/**
+	 * 获取所有索引名称
+	 * @return ServiceResult
+	 */
+	ServiceResult getAllIndex();
+
+	/**
 	 * 单个索引
 	 * @param index 索引
 	 * @param id 索引编号id

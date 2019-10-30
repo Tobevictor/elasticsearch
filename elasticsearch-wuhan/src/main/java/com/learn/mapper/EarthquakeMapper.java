@@ -4,6 +4,7 @@ import com.learn.model.Earthquake;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import java.util.Map;
  * @author dshuyou
  */
 @Mapper
+@Resource(name="datasource2")
 public interface EarthquakeMapper {
 
 	@Select("select id,time,latitude,longitude,depth,mag,ST_AsWKT(geopoint) as point from earthquake")

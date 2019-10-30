@@ -1,5 +1,6 @@
 package com.learn.elasticsearch;
 
+import com.learn.elasticsearch.model.IndexEnity;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest;
 import org.elasticsearch.action.admin.indices.cache.clear.ClearIndicesCacheRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -23,6 +24,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+import static org.elasticsearch.client.Requests.getRequest;
 import static org.elasticsearch.client.Requests.refreshRequest;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
@@ -31,9 +33,9 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
  * @author dshuyou
  */
 public class Indice {
-	private static final int SHARDS = 3;
+	private static final int SHARDS = 2;
 	public static final int INIT_REPLICAS = 0;
-	public static final int REPLICAS = 2;
+	public static final int REPLICAS = 1;
 	private static final int TIMEOUT = 2;
 	private static final int MASTER_TIMEOUT = 1;
 	public static final int INIT_REFLUSH_INTERVAL = -1;
@@ -153,13 +155,13 @@ public class Indice {
 	 * @return - 索引中的映射
 	 * @throws IOException - io异常
 	 */
-	public Map<String,Object> getMapping(String... index) throws IOException {
+	public Map<String, Object> getMapping(String index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		GetMappingsRequest request = new GetMappingsRequest().indices(index);
 
 		Map<String,MappingMetaData> map =  client.indices().getMapping(request, RequestOptions.DEFAULT).mappings();
 		if(map != null){
-			return map.get(index).getSourceAsMap();
+			return map.get(index).sourceAsMap();
 		}
 		return Collections.emptyMap();
 	}
@@ -187,15 +189,22 @@ public class Indice {
 		return client.indices().exists(request, RequestOptions.DEFAULT);
 	}
 
-	public Object get(String... index) throws IOException {
+	public IndexEnity get(String index) throws IOException {
 		Objects.requireNonNull(index, "index");
 		GetIndexRequest request = new GetIndexRequest(index);
 
 		GetIndexResponse response = client.indices().get(request, RequestOptions.DEFAULT);
 		Map<String,Settings> setting = response.getSettings();
-		String[] indices = response.getIndices();
-		Map<String, MappingMetaData> mapping = response.getMappings();
-		return setting+"/"+ Arrays.toString(indices) +"/"+mapping;
+		Map<String, Object> mapping = response.getMappings().get(index).getSourceAsMap();
+
+		return new IndexEnity(index,setting.toString(),mapping);
+	}
+
+	public Set<String> getAllIndices() throws IOException {
+		GetMappingsRequest request = new GetMappingsRequest();
+
+		Map<String,MappingMetaData> map =  client.indices().getMapping(request, RequestOptions.DEFAULT).mappings();
+		return map.keySet();
 	}
 
 	public void refresh(String... index) throws IOException {
