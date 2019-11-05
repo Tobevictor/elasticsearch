@@ -2,6 +2,7 @@ package com.learn.controller;
 
 import com.learn.common.ServiceResult;
 import com.learn.component.HotWord;
+import com.learn.elasticsearch.query.condition.BoolCondition;
 import com.learn.elasticsearch.query.condition.FullTextCondition;
 import com.learn.elasticsearch.query.condition.GeoCondition;
 import com.learn.elasticsearch.query.condition.TermsLevelCondition;
@@ -14,11 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/elastic/search")
+@CrossOrigin
 public class SearchController {
     @Autowired
     private ElasticsearchService elasticsearchService;
 
-    @ApiOperation("全文检索")
+    @ApiOperation("全部检索")
     @RequestMapping(value = "/matchall",method = RequestMethod.GET)
     @ResponseBody
     public ServiceResult matchAll(@RequestParam String index,
@@ -33,12 +35,36 @@ public class SearchController {
     @RequestMapping(value = "/match",method = RequestMethod.POST)
     @ResponseBody
     @HotWord
-    public ServiceResult matchQuery(@RequestParam String index,
+    public ServiceResult match(@RequestParam String index,
                                     @RequestBody FullTextCondition condition,
                                     @RequestParam(defaultValue = "0") int pageNum,
                                     @RequestParam(defaultValue = "10") int pageSize){
         String queryType = "matchQuery";
         return elasticsearchService.fulltextQuery(index,queryType,condition,pageNum,pageSize);
+    }
+
+    @ApiOperation("全文检索")
+    @RequestMapping(value = "/fulltext",method = RequestMethod.POST)
+    @ResponseBody
+    @HotWord
+    public ServiceResult fulltextQuery(@RequestParam String index,
+                                    @RequestBody FullTextCondition condition,
+                                    @RequestParam String queryType,
+                                    @RequestParam(defaultValue = "0") int pageNum,
+                                    @RequestParam(defaultValue = "10") int pageSize){
+        return elasticsearchService.fulltextQuery(index,queryType,condition,pageNum,pageSize);
+    }
+
+    @ApiOperation("字段检索")
+    @RequestMapping(value = "/terms",method = RequestMethod.POST)
+    @ResponseBody
+    @HotWord
+    public ServiceResult termsQuery(@RequestParam String index,
+                                    @RequestBody TermsLevelCondition condition,
+                                    @RequestParam String queryType,
+                                    @RequestParam(defaultValue = "0") int pageNum,
+                                    @RequestParam(defaultValue = "10") int pageSize){
+        return elasticsearchService.termsQuery(index,queryType,condition,pageNum,pageSize);
     }
 
     @ApiOperation("范围检索")
@@ -67,7 +93,7 @@ public class SearchController {
     }
 
     @ApiOperation("检索联想词")
-    @RequestMapping(value = "/extendWord",method = RequestMethod.GET)
+    @RequestMapping(value = "/extendWord",method = RequestMethod.POST)
     @ResponseBody
     @HotWord
     public ServiceResult extendWord(@RequestParam(required = false,defaultValue = "") String index,
@@ -76,5 +102,17 @@ public class SearchController {
 
         String[] field = new String[]{"title.title_fullpinyin","title.title_prefixpinyin","title.title_text"};
         return elasticsearchService.extendWord(index,keyword,size,field);
+    }
+
+    @ApiOperation("多条件查询")
+    @RequestMapping(value = "/bool",method = RequestMethod.GET)
+    @ResponseBody
+    @HotWord
+    public ServiceResult boolQuery(@RequestParam String index,
+                                   @RequestBody BoolCondition boolCondition,
+                                   @RequestParam(defaultValue = "0") int pageNum,
+                                   @RequestParam(defaultValue = "10") int pageSize){
+
+        return elasticsearchService.boolQuery(index,boolCondition,pageNum,pageSize);
     }
 }

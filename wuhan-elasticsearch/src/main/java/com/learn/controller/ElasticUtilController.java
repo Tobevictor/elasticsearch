@@ -5,7 +5,9 @@ import com.learn.common.ServiceResult;
 import com.learn.elasticsearch.model.SourceEntity;
 
 import com.learn.mbg.mapper3.ResourcedirectoryMapper;
+import com.learn.mbg.mapper4.SaMapper;
 import com.learn.model.Resourcedirectory;
+import com.learn.model.SA.VIEW_MAP_model;
 import com.learn.service.ElasticsearchService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
@@ -20,11 +22,14 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/elastic/indice")
+@CrossOrigin
 public class ElasticUtilController {
 	@Resource
 	private ElasticsearchService elasticsearchService;
 	@Resource
 	private ResourcedirectoryMapper resourcedirectoryMapper;
+	@Resource
+	private SaMapper saMapper;
 
 	@ApiOperation("构建默认索引")
 	@RequestMapping(value = "/create",method = RequestMethod.GET)
@@ -90,16 +95,25 @@ public class ElasticUtilController {
 	@RequestMapping(value = "/bulkindex",method = RequestMethod.GET)
 	@ResponseBody
 	public ServiceResult bulkIndex(@RequestParam String index,
-								   @RequestParam String table){
-		List<Resourcedirectory> list = resourcedirectoryMapper.findAll();
-		List<SourceEntity> queries = new LinkedList<>();
-		for (Resourcedirectory r : list){
+								   @RequestParam String table,
+								   @RequestParam String idColumn){
+		/*List<VIEW_MAP_model> list = saMapper.findAllFromSA(table);
+		List<SourceEntity> bulk = new ArrayList<>();
+		for (VIEW_MAP_model r : list){
 			SourceEntity sourceEntity = new SourceEntity();
 			sourceEntity.setSource(JSONObject.toJSONString(r));
-			sourceEntity.setId(String.valueOf(r.getId()));
-			queries.add(sourceEntity);
+			sourceEntity.setId(String.valueOf(r.getBjno()));
+			bulk.add(sourceEntity);
+		}*/
+		List<Map<String, Object>> list = saMapper.findAll(table);
+		List<SourceEntity> bulk = new ArrayList<>();
+		for (Map<String, Object> r : list){
+			SourceEntity sourceEntity = new SourceEntity();
+			sourceEntity.setSource(JSONObject.toJSONString(r));
+			sourceEntity.setId(String.valueOf(r.get(idColumn)));
+			bulk.add(sourceEntity);
 		}
-		return elasticsearchService.bulkIndex(index,queries);
+		return elasticsearchService.bulkIndex(index,bulk);
 	}
 
 	@ApiOperation("批量更新")
@@ -107,15 +121,24 @@ public class ElasticUtilController {
 	@ResponseBody
 	public ServiceResult bulkUpdate(@RequestParam String index,
 									@RequestParam String table,
+									@RequestParam String idColumn,
 									@RequestParam Date updateTime){
-		List<Resourcedirectory> list = resourcedirectoryMapper.findAll();
-		List<SourceEntity> queries = new LinkedList<>();
+		/*List<Resourcedirectory> list = resourcedirectoryMapper.findAll();
+		List<SourceEntity> bulk = new ArrayList<>();
 		for (Resourcedirectory r : list){
 			SourceEntity sourceEntity = new SourceEntity();
 			sourceEntity.setSource(JSONObject.toJSONString(r));
 			sourceEntity.setId(String.valueOf(r.getId()));
-			queries.add(sourceEntity);
+			bulk.add(sourceEntity);
+		}*/
+		List<Map<String, Object>> list = saMapper.findAll(table);
+		List<SourceEntity> bulk = new ArrayList<>();
+		for (Map<String, Object> r : list){
+			SourceEntity sourceEntity = new SourceEntity();
+			sourceEntity.setSource(JSONObject.toJSONString(r));
+			sourceEntity.setId(String.valueOf(r.get(idColumn)));
+			bulk.add(sourceEntity);
 		}
-		return elasticsearchService.bulkUpdate(index,queries);
+		return elasticsearchService.bulkUpdate(index,bulk);
 	}
 }

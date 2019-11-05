@@ -2,6 +2,7 @@ package com.learn.elasticsearch.query;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.learn.elasticsearch.query.condition.BaseCondition;
+import com.learn.elasticsearch.query.model.DataContent;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -64,11 +65,11 @@ public abstract class BaseQuery {
 		resultQueue = new LinkedTransferQueue<>();
 	}
 
-	public abstract List<String> executeQuery(BaseCondition baseCondition) throws IOException;
+	public abstract DataContent executeQuery(BaseCondition baseCondition) throws IOException;
 
 	public abstract QueryBuilder queryBuilder(BaseCondition baseCondition) throws IOException;
 
-	List<String> returnList(SearchSourceBuilder sourceBuilder,BaseCondition baseCondition) throws IOException {
+	DataContent returnList(SearchSourceBuilder sourceBuilder, BaseCondition baseCondition) throws IOException {
 		if(baseCondition.getFrom() != FROM){
 			sourceBuilder.from(baseCondition.getFrom());
 		}
@@ -82,17 +83,19 @@ public abstract class BaseQuery {
 		}else {
 			sourceBuilder.sort(sortField, SortOrder.DESC);
 		}
-		SearchRequest searchRequest = new SearchRequest(index);
+		//String.split("",),前端传参形式（a,b,c,d）
+		SearchRequest searchRequest = new SearchRequest(index.split(","));
 		searchRequest.source(sourceBuilder);
 
 		SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
+		long count = response.getHits().getTotalHits().value;
 		SearchHit[] hits = response.getHits().getHits();
 
 		List<String> list = new ArrayList<>();
 		for (SearchHit searchHit : hits) {
 			list.add(searchHit.getSourceAsString());
 		}
-		return list;
+		return new DataContent(list,count);
 	}
 
 }

@@ -2,6 +2,7 @@ package com.learn.elasticsearch.query;
 
 import com.learn.elasticsearch.EsClientInit;
 import com.learn.elasticsearch.query.condition.FullTextCondition;
+import com.learn.elasticsearch.query.model.DataContent;
 import com.learn.elasticsearch.query.query_enum.FulltextEnum;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.Before;
@@ -45,9 +46,7 @@ public class FulltextQueryTest {
 		condition.setFrom(10);
 		condition.setSize(10);
 		condition.setSortField("id");
-		List<String> list = fulltextQuery.executeQuery(condition);
-		for (String s :list){
-			System.out.println(s);
-		}
+		DataContent dataContent = fulltextQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 }

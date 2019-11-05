@@ -1,6 +1,5 @@
 package com.learn.service;
 
-import com.github.pagehelper.PageInfo;
 import com.learn.common.ServiceResult;
 import com.learn.elasticsearch.model.SourceEntity;
 import com.learn.elasticsearch.query.condition.*;
@@ -207,5 +206,13 @@ public interface ElasticsearchService {
 	 */
 	ServiceResult boolQuery(String index, BoolCondition conditions, int pageNum, int pageSize);
 
+	/**
+	 * 联想词
+	 * @param index 索引
+	 * @param keyWord 关键词
+	 * @param size 返回结果集的大小
+	 * @param fields 索引字段
+	 * @return ServiceResult
+	 */
 	ServiceResult extendWord(String index, String keyWord, int size, String[] fields);
 }

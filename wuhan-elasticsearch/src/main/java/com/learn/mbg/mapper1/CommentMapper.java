@@ -1,5 +1,6 @@
 package com.learn.mbg.mapper1;
 
+
 import com.learn.mbg.model.Comment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

@@ -2,6 +2,7 @@ package com.learn.elasticsearch.query;
 
 import com.learn.elasticsearch.query.condition.BaseCondition;
 import com.learn.elasticsearch.query.condition.TermsLevelCondition;
+import com.learn.elasticsearch.query.model.DataContent;
 import com.learn.elasticsearch.query.query_enum.TermsEnum;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.*;
@@ -23,10 +24,10 @@ public class TermsQuery extends BaseQuery{
 	}
 
 	@Override
-	public List<String> executeQuery(BaseCondition baseCondition) throws IOException {
+	public DataContent executeQuery(BaseCondition baseCondition) throws IOException {
 		sourceBuilder.query(queryBuilder(baseCondition));
 		if(sourceBuilder == null){
-			return Collections.emptyList();
+			return new DataContent(Collections.emptyList(),0);
 		}
 		return returnList(sourceBuilder,baseCondition);
 	}

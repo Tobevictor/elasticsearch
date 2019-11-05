@@ -6,6 +6,7 @@ import com.learn.elasticsearch.Indice;
 import com.learn.elasticsearch.model.SourceEntity;
 import com.learn.elasticsearch.query.*;
 import com.learn.elasticsearch.query.condition.*;
+import com.learn.elasticsearch.query.model.DataContent;
 import com.learn.elasticsearch.query.query_enum.FulltextEnum;
 import com.learn.elasticsearch.query.query_enum.GeoEnum;
 import com.learn.elasticsearch.query.query_enum.TermsEnum;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -80,17 +82,17 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 		return ServiceResult.internalServerError();
 	}
 
-	private ServiceResult isIndexExist(String index) {
+	private ServiceResult isIndexExist(String... index) {
 		try {
 			if(indice.isExists(index)){
-				logger.debug("Index-" + index + " Is Exist");
+				logger.debug("Index-" + Arrays.toString(index) + " Is Exist");
 				return ServiceResult.isExist();
 			}
 		} catch (IOException e) {
 			logger.error("Internal Server Error");
 			return ServiceResult.internalServerError();
 		}
-		logger.debug("Index-" + index + " Is Not Exist");
+		logger.debug("Index-" + Arrays.toString(index) + " Is Not Exist");
 		return ServiceResult.notFound();
 	}
 
@@ -323,7 +325,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 	@Override
 	public ServiceResult fulltextQuery(String index, String queryType, FullTextCondition condition) {
-		ServiceResult result = isIndexExist(index);
+		ServiceResult result = isIndexExist(index.split(","));
 		if(! result.equals(ServiceResult.isExist())){
 			return result;
 		}
@@ -333,7 +335,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 	@Override
 	public ServiceResult termsQuery(String index, String queryType, TermsLevelCondition condition) {
-		ServiceResult result = isIndexExist(index);
+		ServiceResult result = isIndexExist(index.split(","));
 		if(! result.equals(ServiceResult.isExist())){
 			return result;
 		}
@@ -343,7 +345,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 	@Override
 	public ServiceResult geoQuery(String index, String queryType, GeoCondition condition) {
-		ServiceResult result = isIndexExist(index);
+		ServiceResult result = isIndexExist(index.split(","));
 		if(! result.equals(ServiceResult.isExist())){
 			return result;
 		}
@@ -353,7 +355,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 	@Override
 	public ServiceResult boolQuery(String index, BoolCondition conditions) {
-		ServiceResult result = isIndexExist(index);
+		ServiceResult result = isIndexExist(index.split(","));
 		if(! result.equals(ServiceResult.isExist())){
 			return result;
 		}
@@ -363,7 +365,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 	@Override
 	public ServiceResult fulltextQuery(String index, String queryType, FullTextCondition condition, int pageNum, int pageSize) {
-		ServiceResult result = isIndexExist(index);
+		ServiceResult result = isIndexExist(index.split(","));
 		if(! result.equals(ServiceResult.isExist())){
 			return result;
 		}
@@ -376,7 +378,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 	@Override
 	public ServiceResult termsQuery(String index, String queryType, TermsLevelCondition condition, int pageNum, int pageSize) {
-		ServiceResult result = isIndexExist(index);
+		ServiceResult result = isIndexExist(index.split(","));
 		if(! result.equals(ServiceResult.isExist())){
 			return result;
 		}
@@ -389,7 +391,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 	@Override
 	public ServiceResult geoQuery(String index, String queryType, GeoCondition condition, int pageNum, int pageSize) {
-		ServiceResult result = isIndexExist(index);
+		ServiceResult result = isIndexExist(index.split(","));
 		if(! result.equals(ServiceResult.isExist())){
 			return result;
 		}
@@ -402,7 +404,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 	@Override
 	public ServiceResult boolQuery(String index, BoolCondition conditions, int pageNum, int pageSize) {
-		ServiceResult result = isIndexExist(index);
+		ServiceResult result = isIndexExist(index.split(","));
 		if(! result.equals(ServiceResult.isExist())){
 			return result;
 		}
@@ -416,7 +418,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 	@Override
 	public ServiceResult extendWord(String index, String keyWord, int size, String[] fields) {
 		if(!index.isEmpty()){
-			ServiceResult result = isIndexExist(index);
+			ServiceResult result = isIndexExist(index.split(","));
 			if(! result.equals(ServiceResult.isExist())){
 				return result;
 			}
@@ -434,11 +436,8 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 
 	private ServiceResult executeAndReturn(BaseQuery query,BaseCondition condition){
 		try {
-			List<String> list = query.executeQuery(condition);
-			if(list == null || list.isEmpty()){
-				return ServiceResult.isNull();
-			}
-			return ServiceResult.success(list);
+			DataContent dataContent = query.executeQuery(condition);
+			return ServiceResult.success(dataContent);
 		} catch (IOException e) {
 			logger.error("Internal Server Error");
 			return ServiceResult.internalServerError();

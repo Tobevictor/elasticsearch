@@ -1,6 +1,7 @@
 package com.learn.elasticsearch.query;
 
 import com.learn.elasticsearch.query.condition.*;
+import com.learn.elasticsearch.query.model.DataContent;
 import com.learn.elasticsearch.query.query_enum.FulltextEnum;
 import com.learn.elasticsearch.query.query_enum.GeoEnum;
 import com.learn.elasticsearch.query.query_enum.TermsEnum;
@@ -22,10 +23,10 @@ public class BoolQuery extends BaseQuery{
 	}
 
 	@Override
-	public List<String> executeQuery(BaseCondition baseCondition) throws IOException {
+	public DataContent executeQuery(BaseCondition baseCondition) throws IOException {
 		sourceBuilder.query(queryBuilder(baseCondition));
 		if(sourceBuilder == null){
-			return Collections.emptyList();
+			return new DataContent(Collections.emptyList(),0);
 		}
 		return returnList(sourceBuilder,baseCondition);
 	}

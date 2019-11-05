@@ -2,6 +2,7 @@ package com.learn.elasticsearch.query;
 
 import com.learn.elasticsearch.EsClientInit;
 import com.learn.elasticsearch.query.condition.GeoCondition;
+import com.learn.elasticsearch.query.model.DataContent;
 import com.learn.elasticsearch.query.query_enum.GeoEnum;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.geo.GeoPoint;
@@ -36,11 +37,8 @@ public class GeoQueryTest {
 		condition.setField("address");
 		condition.setPoint(50,30);
 		condition.setDistance(String.valueOf(10000));
-		List<String> list = geoQuery.executeQuery(condition);
-		System.out.println(list.size());
-		for (int i = 0;i<list.size();i++){
-			System.out.println(list.get(i));
-		}
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 	@Test
@@ -55,11 +53,8 @@ public class GeoQueryTest {
 		list.add(new Coordinate(-20,-20));
 		list.add(new Coordinate(-20,20));
 		condition.setCoordinates(list);
-		List<String> result = geoQuery.executeQuery(condition);
-		System.out.println(result.size());
-		for (int i = 0;i<result.size();i++){
-			System.out.println(result.get(i));
-		}
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 	@Test
@@ -74,11 +69,8 @@ public class GeoQueryTest {
 		list.add(new GeoPoint(-80,-180));
 		list.add(new GeoPoint(-80,180));
 		condition.setPoints(list);
-		List<String> result = geoQuery.executeQuery(condition);
-		System.out.println(result.size());
-		for (int i = 0;i<result.size();i++){
-			System.out.println(result.get(i));
-		}
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 	@Test
@@ -93,11 +85,8 @@ public class GeoQueryTest {
 		list.add(new Coordinate(-180,-80));
 		list.add(new Coordinate(-180,80));
 		condition.setCoordinates(list);
-		List<String> result = geoQuery.executeQuery(condition);
-		System.out.println(result.size());
-		for (int i = 0;i<result.size();i++){
-			System.out.println(result.get(i));
-		}
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 	@Test
@@ -112,11 +101,8 @@ public class GeoQueryTest {
 		list.add(new Coordinate(-180,-80));
 		list.add(new Coordinate(-180,80));
 		condition.setCoordinates(list);
-		List<String> result = geoQuery.executeQuery(condition);
-		System.out.println(result.size());
-		for (int i = 0;i<result.size();i++){
-			System.out.println(result.get(i));
-		}
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 	@Test
@@ -124,11 +110,8 @@ public class GeoQueryTest {
 		GeoCondition condition = new GeoCondition();
 		condition.setField("address");
 		condition.setBox(80,-180,-80,180);
-		List<String> list = geoQuery.executeQuery(condition);
-		System.out.println(list.size());
-		for (int i = 0;i<list.size();i++){
-			System.out.println(list.get(i));
-		}
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 	@Test
@@ -145,8 +128,8 @@ public class GeoQueryTest {
 		System.out.println(condition.getTlCoordinate().toString());
 		System.out.println(condition.getBrCoordinate().toString());
 
-		List<String> list = geoQuery.executeQuery(condition);
-		System.out.println(list.size());
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 	@Test
@@ -161,8 +144,8 @@ public class GeoQueryTest {
 		list.add(new Coordinate(-180,-80));
 		list.add(new Coordinate(-180,80));
 		condition.setCoordinates(list);
-		List<String> result = geoQuery.executeQuery(condition);
-		System.out.println(result.size());
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 	@Test
@@ -172,8 +155,8 @@ public class GeoQueryTest {
 		condition.setShapeType("POINT");
 
 		condition.setCoordinate(80,-180);
-		List<String> result = geoQuery.executeQuery(condition);
-		System.out.println(result.size());
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 	@Test
@@ -185,8 +168,8 @@ public class GeoQueryTest {
 
 		condition.setCoordinate(80,-180);
 		condition.setDistance(String.valueOf(1000000));
-		List<String> result = geoQuery.executeQuery(condition);
-		System.out.println(result.size());
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 	@Test
 	public void linestring() throws IOException {
@@ -200,8 +183,8 @@ public class GeoQueryTest {
 		list.add(new Coordinate(-180,-80));
 
 		condition.setCoordinates(list);
-		List<String> result = geoQuery.executeQuery(condition);
-		System.out.println(result.size());
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 	@Test
@@ -217,8 +200,8 @@ public class GeoQueryTest {
 		list.add(new Coordinate(-180,-80));
 
 		condition.setCoordinates(list);
-		List<String> result = geoQuery.executeQuery(condition);
-		System.out.println(result.size());
+		DataContent dataContent = geoQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 }

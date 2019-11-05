@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Mapper
-public interface MyMapper {
+public interface MyMapper<T> {
     @Select("select * from ${table}")
     List<Resourcedirectory> findAll1(@Param("table") String table);
 

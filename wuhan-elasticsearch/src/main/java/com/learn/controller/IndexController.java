@@ -3,10 +3,12 @@ package com.learn.controller;
 import org.apache.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+@CrossOrigin
 public class IndexController {
 
     private Logger logger = Logger.getLogger(this.getClass());

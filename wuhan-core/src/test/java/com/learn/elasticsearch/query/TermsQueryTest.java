@@ -2,6 +2,7 @@ package com.learn.elasticsearch.query;
 
 import com.learn.elasticsearch.EsClientInit;
 import com.learn.elasticsearch.query.condition.TermsLevelCondition;
+import com.learn.elasticsearch.query.model.DataContent;
 import com.learn.elasticsearch.query.query_enum.TermsEnum;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.Before;
@@ -43,10 +44,8 @@ public class TermsQueryTest {
 	public void query() throws IOException {
 		TermsLevelCondition condition = new TermsLevelCondition(0,10,"ids","100","1000");
 		//condition.setValue("我");
-		List<String> list = termsQuery.executeQuery(condition);
-		for (String s :list){
-			System.out.println(s);
-		}
+		DataContent dataContent = termsQuery.executeQuery(condition);
+		System.out.println(dataContent);
 	}
 
 
