@@ -1,9 +1,9 @@
 package com.learn.elasticsearch.model;
-;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class IndexEnity {
+public class IndexEnity implements Serializable {
 
 	private String indexName;
 	private Object objectEnity;

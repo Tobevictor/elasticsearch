@@ -1,7 +1,6 @@
 package com.learn.component;
 
 import com.learn.dto.QueueEnum;
-import com.learn.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
 
 /**
  * @author dshuyou

@@ -1,11 +1,14 @@
 package com.learn.elasticsearch.query.condition;
 
+import java.io.Serializable;
+import java.util.Arrays;
+
 /**
  * Terms Level Query Condition
  * @date 2019/8/21 10:06
  * @author dshuyou
  */
-public class TermsLevelCondition extends BaseCondition {
+public class TermsLevelCondition extends BaseCondition implements Serializable {
 	private String field;
 	private String value;
 	private String[] values;
@@ -81,6 +84,18 @@ public class TermsLevelCondition extends BaseCondition {
 
 	public void setValues(String[] values) {
 		this.values = values;
+	}
+
+	@Override
+	public String toString() {
+		return "TermsLevelCondition{" +
+				"field='" + field + '\'' +
+				", value='" + value + '\'' +
+				", values=" + Arrays.toString(values) +
+				", ids=" + Arrays.toString(ids) +
+				", gte='" + gte + '\'' +
+				", lte='" + lte + '\'' +
+				'}';
 	}
 }
 

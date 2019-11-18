@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * @author dshuyou
  * @date 2019/11/4 23:00
+ * @description  Used to facilitate the return of query data
  */
 public class DataContent implements Serializable {
     /**

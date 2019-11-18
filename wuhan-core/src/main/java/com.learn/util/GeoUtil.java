@@ -1,15 +1,17 @@
 package com.learn.util;
 
-import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
-import org.locationtech.jts.io.WKTWriter;
-import org.apache.log4j.Logger;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.io.WKTWriter;
 import org.geotools.geojson.geom.GeometryJSON;
-import org.locationtech.jts.geom.Geometry;
+
+import org.apache.log4j.Logger;
 
 import java.io.*;
+
 /**
- * @Date 2019/8/24 16:48
+ * @date 2019/8/24 16:48
  * @author dshuyou
  */
 public class GeoUtil {
@@ -41,6 +43,7 @@ public class GeoUtil {
 	public static String wkt2Geojson(String wkt) {
 		WKTReader wktReader = new WKTReader();
 		Geometry geometry;
+
 		try {
 			geometry = wktReader.read(wkt);
 		} catch (ParseException e) {

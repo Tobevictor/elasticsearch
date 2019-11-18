@@ -48,7 +48,7 @@ public class EsEarthquakeServiceImplTest {
 		list.clear();
 		Document document = new Document(client);
 
-		document.bulkProcessorIndex(index,queries);
+		document.asycBulkIndex(index,queries);
 		long end = System.currentTimeMillis();
 		System.out.println((end-start)/1000 + "s");
 	}

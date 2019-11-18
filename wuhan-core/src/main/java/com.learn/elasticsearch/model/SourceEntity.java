@@ -1,10 +1,12 @@
 package com.learn.elasticsearch.model;
 
+import java.io.Serializable;
+
 /**
  * @author dshuyou
- * @Date 2019/8/30 16:05
+ * @date 2019/8/30 16:05
  */
-public class SourceEntity<T> {
+public class SourceEntity<T> implements Serializable {
 	private String id;
 	private Long version;
 	private T source;
@@ -35,4 +37,12 @@ public class SourceEntity<T> {
 		this.source = source;
 	}
 
+	@Override
+	public String toString() {
+		return "SourceEntity{" +
+				"id='" + id + '\'' +
+				", version=" + version +
+				", source=" + source +
+				'}';
+	}
 }

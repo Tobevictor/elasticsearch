@@ -3,6 +3,7 @@ package com.learn.elasticsearch.query.condition;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.locationtech.jts.geom.Coordinate;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @date 2019/8/21 10:06
  * @author dshuyou
  */
-public class GeoCondition extends BaseCondition {
+public class GeoCondition extends BaseCondition implements Serializable {
 	private String field;
 	private String distance;
 	private String shapeType;

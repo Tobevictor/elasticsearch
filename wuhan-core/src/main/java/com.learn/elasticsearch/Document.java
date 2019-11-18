@@ -31,7 +31,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Date 2019/8/21 10:03
+ * @date 2019/8/21 10:03
  * @author dshuyou
  */
 
@@ -411,7 +411,52 @@ public class Document {
 		}
 	}
 
-	public void bulkProcessorIndex(String index, List<SourceEntity> queries) throws InterruptedException {
+	/**
+	 * use bulk processor to Asynchronous batch indexing
+	 */
+	public void asycBulkIndex(String index, List<SourceEntity> queries) throws InterruptedException {
+		BulkProcessor bulkProcessor = buldBulkProcessor();
+		for (SourceEntity source : queries) {
+			IndexRequest indexRequest = new IndexRequest(index).id(source.getId());
+			setIndexRequest(indexRequest,source.getSource());
+			bulkProcessor.add(indexRequest);
+		}
+		bulkProcessor.flush();
+		bulkProcessor.awaitClose(10, TimeUnit.SECONDS);
+	}
+
+	/**
+	 * use bulk processor to Asynchronous batch update
+	 */
+	public void asycBulkUpdate(String index, List<SourceEntity> queries) throws InterruptedException {
+		BulkProcessor bulkProcessor = buldBulkProcessor();
+		for (SourceEntity source : queries) {
+			UpdateRequest request = new UpdateRequest(index,source.getId());
+			setUpdateRequest(request,source.getSource());
+			bulkProcessor.add(request);
+		}
+		bulkProcessor.flush();
+		bulkProcessor.awaitClose(10, TimeUnit.SECONDS);
+	}
+
+	/**
+	 * use bulk processor to Asynchronous batch delete
+	 */
+	public void asycBulkDelete(String index, List<SourceEntity> queries) throws InterruptedException {
+		BulkProcessor bulkProcessor = buldBulkProcessor();
+		for (SourceEntity source : queries) {
+			IndexRequest indexRequest = new IndexRequest(index).id(source.getId());
+			setIndexRequest(indexRequest,source.getSource());
+			bulkProcessor.add(indexRequest);
+		}
+		bulkProcessor.flush();
+		bulkProcessor.awaitClose(10, TimeUnit.SECONDS);
+	}
+
+	/**
+	 * buld a custom asyc bulk processor
+	 */
+	private BulkProcessor  buldBulkProcessor(){
 		BulkProcessor.Listener listener = new BulkProcessor.Listener() {
 			@Override
 			public void beforeBulk(long executionId, BulkRequest request) {
@@ -427,7 +472,7 @@ public class Document {
 				} else {
 					logger.debug("Executing bulk:"+ executionId +
 							"	completed in " + response.getTook().getMillis()+
-									" milliseconds");
+							" milliseconds");
 				}
 			}
 
@@ -437,10 +482,9 @@ public class Document {
 				logger.error("Failed to execute bulk");
 			}
 		};
-		BulkProcessor bulkProcessor = BulkProcessor.builder(
+		return BulkProcessor.builder(
 				(request, bulkListener) ->
-						client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener),
-				listener)
+						client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener), listener)
 				.setBulkActions(COUNT)
 				.setBulkSize(new ByteSizeValue(BULK_SIZE, ByteSizeUnit.MB))
 				.setFlushInterval(TimeValue.timeValueSeconds(FLUSH_INTERVAL))
@@ -448,14 +492,8 @@ public class Document {
 				.setBackoffPolicy(
 						BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(100), 3))
 				.build();
-		for (SourceEntity query : queries) {
-			IndexRequest indexRequest = new IndexRequest(index).id(query.getId());
-			setIndexRequest(indexRequest,query.getSource());
-			bulkProcessor.add(indexRequest);
-		}
-		bulkProcessor.flush();
-		bulkProcessor.awaitClose(10, TimeUnit.SECONDS);
 	}
+
 }
 
 

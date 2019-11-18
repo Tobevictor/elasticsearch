@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * @author dshuyou
- * @Date 2019/9/24 14:47
+ * @date 2019/9/24 14:47
  */
 public class Suggestion {
 	private Logger logger = Logger.getLogger(this.getClass());

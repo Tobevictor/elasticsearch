@@ -1,8 +1,8 @@
 package com.learn.util;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.junit.Before;
 import org.junit.Test;
-import org.locationtech.jts.geom.Geometry;
 
 import java.io.IOException;
 import java.text.ParseException;

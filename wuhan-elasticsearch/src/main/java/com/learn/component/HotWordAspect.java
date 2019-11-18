@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class DoneTimeAspect {
+public class HotWordAspect {
 	private Logger logger = Logger.getLogger(this.getClass());
 	@Autowired
 	private HotWordService hotWordService;

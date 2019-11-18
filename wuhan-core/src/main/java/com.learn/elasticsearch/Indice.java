@@ -29,7 +29,7 @@ import static org.elasticsearch.client.Requests.refreshRequest;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 /**
- * @Date 2019/8/21 10:02
+ * @date 2019/8/21 10:02
  * @author dshuyou
  */
 public class Indice {
@@ -70,7 +70,7 @@ public class Indice {
 		request.setTimeout(TimeValue.timeValueMinutes(TIMEOUT));
 		request.setMasterTimeout(TimeValue.timeValueMinutes(MASTER_TIMEOUT));
 		request.waitForActiveShards(ActiveShardCount.DEFAULT);
-		request.source(createAnalysis());
+		//request.source(createAnalysis());
 		return client.indices().create(request, RequestOptions.DEFAULT).isAcknowledged();
 	}
 

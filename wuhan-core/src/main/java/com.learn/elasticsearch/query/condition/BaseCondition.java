@@ -1,5 +1,7 @@
 package com.learn.elasticsearch.query.condition;
 
+import java.io.Serializable;
+
 /**
  * Abstract class of query condition.
  * @date 2019/8/21 10:06
@@ -9,7 +11,7 @@ package com.learn.elasticsearch.query.condition;
  * @see GeoCondition
  * @see TermsLevelCondition
  */
-public abstract class BaseCondition {
+public abstract class BaseCondition implements Serializable {
 	private static final int DEFAULT_FROM = 0;
 	private static final int DEFAULT_SIZE = 100;
 

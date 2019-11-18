@@ -158,7 +158,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 			return result;
 		}
 		try {
-			indice.updateSetting(setting);
+			indice.updateSetting(indexName,setting);
 			logger.info("Update Setting Success-" + indexName);
 			return ServiceResult.success(setting);
 		} catch (IOException e) {

@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * @Date 2019/8/26 11:22
+ * @date 2019/8/26 11:22
  * @author dshuyou
  */
 public class EsClientInit {

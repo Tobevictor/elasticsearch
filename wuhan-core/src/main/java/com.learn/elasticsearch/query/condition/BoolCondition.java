@@ -1,5 +1,7 @@
 package com.learn.elasticsearch.query.condition;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +10,7 @@ import java.util.Map;
  * @author dshuyou
  * @date 2019/9/17 16:24
  */
-public class BoolCondition extends BaseCondition {
+public class BoolCondition extends BaseCondition implements Serializable {
 	private String[] queryType;
 	private BaseCondition[] conditions;
 
@@ -40,4 +42,11 @@ public class BoolCondition extends BaseCondition {
 		return conditions;
 	}
 
+	@Override
+	public String toString() {
+		return "BoolCondition{" +
+				"queryType=" + Arrays.toString(queryType) +
+				", conditions=" + Arrays.toString(conditions) +
+				'}';
+	}
 }

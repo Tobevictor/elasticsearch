@@ -6,8 +6,6 @@ import com.learn.elasticsearch.model.SourceEntity;
 
 import com.learn.mbg.mapper3.ResourcedirectoryMapper;
 import com.learn.mbg.mapper4.SaMapper;
-import com.learn.model.Resourcedirectory;
-import com.learn.model.SA.VIEW_MAP_model;
 import com.learn.service.ElasticsearchService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
@@ -39,7 +37,7 @@ public class ElasticUtilController {
 	}
 
 	@ApiOperation("构建自定义索引")
-	@RequestMapping(value = "/createbycustom",method = RequestMethod.GET)
+	@RequestMapping(value = "/createbycustom",method = RequestMethod.POST)
 	@ResponseBody
 	public ServiceResult createByCustom(@RequestParam String index,
 								 @RequestParam String setting,
@@ -48,7 +46,7 @@ public class ElasticUtilController {
 	}
 
 	@ApiOperation("更新映射")
-	@RequestMapping(value = "/putmapping",method = RequestMethod.PUT)
+	@RequestMapping(value = "/putmapping",method = RequestMethod.POST)
 	@ResponseBody
 	public ServiceResult putMapping(@RequestParam String index,
 								 @RequestParam String mapping){
@@ -56,7 +54,7 @@ public class ElasticUtilController {
 	}
 
 	@ApiOperation("更新配置")
-	@RequestMapping(value = "/updateset",method = RequestMethod.PUT)
+	@RequestMapping(value = "/updateset",method = RequestMethod.POST)
 	@ResponseBody
 	public ServiceResult updateSet(@RequestParam String index,
 								 @RequestParam String setting){
@@ -97,14 +95,6 @@ public class ElasticUtilController {
 	public ServiceResult bulkIndex(@RequestParam String index,
 								   @RequestParam String table,
 								   @RequestParam String idColumn){
-		/*List<VIEW_MAP_model> list = saMapper.findAllFromSA(table);
-		List<SourceEntity> bulk = new ArrayList<>();
-		for (VIEW_MAP_model r : list){
-			SourceEntity sourceEntity = new SourceEntity();
-			sourceEntity.setSource(JSONObject.toJSONString(r));
-			sourceEntity.setId(String.valueOf(r.getBjno()));
-			bulk.add(sourceEntity);
-		}*/
 		List<Map<String, Object>> list = saMapper.findAll(table);
 		List<SourceEntity> bulk = new ArrayList<>();
 		for (Map<String, Object> r : list){
@@ -123,14 +113,6 @@ public class ElasticUtilController {
 									@RequestParam String table,
 									@RequestParam String idColumn,
 									@RequestParam Date updateTime){
-		/*List<Resourcedirectory> list = resourcedirectoryMapper.findAll();
-		List<SourceEntity> bulk = new ArrayList<>();
-		for (Resourcedirectory r : list){
-			SourceEntity sourceEntity = new SourceEntity();
-			sourceEntity.setSource(JSONObject.toJSONString(r));
-			sourceEntity.setId(String.valueOf(r.getId()));
-			bulk.add(sourceEntity);
-		}*/
 		List<Map<String, Object>> list = saMapper.findAll(table);
 		List<SourceEntity> bulk = new ArrayList<>();
 		for (Map<String, Object> r : list){

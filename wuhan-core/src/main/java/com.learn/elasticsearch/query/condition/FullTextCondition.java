@@ -1,11 +1,13 @@
 package com.learn.elasticsearch.query.condition;
 
+import java.io.Serializable;
+
 /**
  * Full Text Query Condition
  * @date 2019/8/21 10:05
  * @author dshuyou
  */
-public class FullTextCondition extends BaseCondition {
+public class FullTextCondition extends BaseCondition implements Serializable {
 	private String field;
 	private String value;
 

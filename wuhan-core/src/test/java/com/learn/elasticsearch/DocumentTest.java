@@ -121,6 +121,6 @@ public class DocumentTest {
 		sourceEntity.setSource(map);
 		List<SourceEntity> list = new ArrayList<>();
 		list.add(sourceEntity);
-		document.bulkProcessorIndex(index,list);
+		document.asycBulkIndex(index,list);
 	}
 }
