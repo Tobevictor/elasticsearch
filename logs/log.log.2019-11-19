@@ -1,0 +1,8 @@
+2019-11-19 09:23:06  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-19 09:23:06  [ restartedMain:2 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-19 09:28:44  [ http-nio-8080-exec-4:337281 ] - [ DEBUG ]  Index-[index] Is Not Exist
+2019-11-19 09:28:45  [ http-nio-8080-exec-4:338263 ] - [ INFO ]  Create Index Success-index
+2019-11-19 09:29:21  [ restartedMain:374531 ] - [ INFO ]  JedisPool注入成功
+2019-11-19 09:29:21  [ restartedMain:374532 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-19 09:29:28  [ restartedMain:381607 ] - [ INFO ]  JedisPool注入成功
+2019-11-19 09:29:28  [ restartedMain:381608 ] - [ INFO ]  redis地址：120.79.149.109:6379

@@ -364,6 +364,16 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 	}
 
 	@Override
+	public ServiceResult queryString(String index, FullTextCondition condition) {
+		ServiceResult result = isIndexExist(index.split(","));
+		if(! result.equals(ServiceResult.isExist())){
+			return result;
+		}
+		FulltextQuery query = new FulltextQuery(index,client);
+		return executeAndReturn(query,condition);
+	}
+
+	@Override
 	public ServiceResult fulltextQuery(String index, String queryType, FullTextCondition condition, int pageNum, int pageSize) {
 		ServiceResult result = isIndexExist(index.split(","));
 		if(! result.equals(ServiceResult.isExist())){
@@ -432,6 +442,20 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 			logger.error("Internal Server Error");
 			return ServiceResult.internalServerError();
 		}
+	}
+
+	@Override
+	public ServiceResult queryString(String index, FullTextCondition condition, int pageNum, int pageSize) {
+		ServiceResult result = isIndexExist(index.split(","));
+		if(! result.equals(ServiceResult.isExist())){
+			return result;
+		}
+		FulltextEnum queryType = FulltextEnum.valueOf("queryString");
+		FulltextQuery query = new FulltextQuery(index,client,queryType);
+		condition.setFrom(from(pageNum,pageSize));
+		condition.setSize(pageSize);
+
+		return executeAndReturn(query,condition);
 	}
 
 	private ServiceResult executeAndReturn(BaseQuery query,BaseCondition condition){

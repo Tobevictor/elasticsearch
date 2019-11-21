@@ -9,7 +9,8 @@ import org.elasticsearch.index.query.*;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @date 2019/8/21 10:04
@@ -63,6 +64,9 @@ public class FulltextQuery extends BaseQuery{
 			case matchPhrasePrefixQuery:
 				queryBuilder = matchPhrasePrefixBuilder(condition);
 				break;
+			case queryString:
+				queryBuilder = queryStringBuilder(condition);
+				break;
 			default:
 				throw new IllegalArgumentException("not supported FullText search type");
 		}
@@ -94,5 +98,20 @@ public class FulltextQuery extends BaseQuery{
 		builder.maxExpansions(10);
 
 		return builder;
+	}
+
+	private QueryBuilder queryStringBuilder(FullTextCondition condition){
+		String value = condition.getValue();
+        QueryStringQueryBuilder builder = new QueryStringQueryBuilder(value);
+		String field = condition.getField();
+		if(field != null){
+		    return builder.field(field);
+        }
+        String[] fileds = condition.getFields();
+		Map<String, Float> map = new HashMap<>();
+		for (String s : fileds){
+			map.put(s,1.0f);
+		}
+		return builder.fields(map);
 	}
 }

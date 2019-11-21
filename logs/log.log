@@ -1,105 +1,82 @@
-2019-11-15 15:24:40  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 15:24:40  [ restartedMain:2 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 15:25:22  [ http-nio-8080-exec-1:41700 ] - [ DEBUG ]  Index-[index] Is Not Exist
-2019-11-15 15:27:07  [ http-nio-8080-exec-7:147143 ] - [ DEBUG ]  Index-[index] Is Not Exist
-2019-11-15 15:29:32  [ http-nio-8080-exec-2:292575 ] - [ DEBUG ]  Index-[index] Is Exist
-2019-11-15 15:29:40  [ http-nio-8080-exec-9:299928 ] - [ DEBUG ]  Index-[index3] Is Not Exist
-2019-11-15 15:29:40  [ http-nio-8080-exec-9:300007 ] - [ INFO ]  Create Index Success-index3
-2019-11-15 15:31:46  [ http-nio-8080-exec-1:425706 ] - [ DEBUG ]  Index-[index3] Is Not Exist
-2019-11-15 15:31:46  [ http-nio-8080-exec-1:425796 ] - [ INFO ]  Create Index Success-index3
-2019-11-15 15:35:05  [ http-nio-8080-exec-6:624848 ] - [ DEBUG ]  Index-[index4] Is Not Exist
-2019-11-15 15:35:05  [ http-nio-8080-exec-6:624928 ] - [ INFO ]  Create Index Success-index4
-2019-11-15 15:36:20  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 15:36:20  [ restartedMain:1 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 15:37:46  [ http-nio-8080-exec-9:86130 ] - [ DEBUG ]  Index-[index] Is Not Exist
-2019-11-15 15:37:46  [ http-nio-8080-exec-9:86293 ] - [ INFO ]  Create Index Success-index
-2019-11-15 16:11:08  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 16:11:08  [ restartedMain:1 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 16:11:52  [ http-nio-8080-exec-6:44556 ] - [ DEBUG ]  Index-[index] Is Exist
-2019-11-15 16:12:00  [ http-nio-8080-exec-3:52648 ] - [ DEBUG ]  Index-[index1] Is Not Exist
-2019-11-15 16:12:00  [ http-nio-8080-exec-3:52812 ] - [ INFO ]  Create Index Success-index1
-2019-11-15 16:12:05  [ http-nio-8080-exec-2:57278 ] - [ DEBUG ]  Index-[index2] Is Not Exist
-2019-11-15 16:12:05  [ http-nio-8080-exec-2:57353 ] - [ INFO ]  Create Index Success-index2
-2019-11-15 16:14:09  [ http-nio-8080-exec-1:181087 ] - [ DEBUG ]  Index-[index2] Is Exist
-2019-11-15 16:14:09  [ http-nio-8080-exec-1:181114 ] - [ INFO ]  Get Mapping Success-index2
-2019-11-15 16:55:55  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 16:55:55  [ restartedMain:1 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 16:56:47  [ http-nio-8080-exec-9:51700 ] - [ DEBUG ]  Index-[test] Is Exist
-2019-11-15 16:58:21  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 16:58:21  [ restartedMain:2 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 16:58:27  [ http-nio-8080-exec-1:6730 ] - [ DEBUG ]  Index-[test] Is Exist
-2019-11-15 16:59:31  [ http-nio-8080-exec-2:70245 ] - [ DEBUG ]  Index-[index] Is Exist
-2019-11-15 16:59:32  [ http-nio-8080-exec-2:71466 ] - [ INFO ]  Put Mapping Success-index
-2019-11-15 16:59:47  [ http-nio-8080-exec-3:86087 ] - [ DEBUG ]  Index-[index] Is Exist
-2019-11-15 16:59:55  [ http-nio-8080-exec-3:94301 ] - [ INFO ]  Get Mapping Success-index
-2019-11-15 17:00:41  [ http-nio-8080-exec-4:140329 ] - [ DEBUG ]  Index-[tes] Is Not Exist
-2019-11-15 17:00:43  [ http-nio-8080-exec-5:142759 ] - [ DEBUG ]  Index-[test] Is Exist
-2019-11-15 17:00:43  [ http-nio-8080-exec-5:142781 ] - [ INFO ]  Put Mapping Success-test
-2019-11-15 17:02:12  [ http-nio-8080-exec-7:231214 ] - [ DEBUG ]  Index-[test] Is Exist
-2019-11-15 17:07:33  [ http-nio-8080-exec-8:551912 ] - [ DEBUG ]  Index-[test1] Is Not Exist
-2019-11-15 17:07:33  [ http-nio-8080-exec-8:552005 ] - [ INFO ]  Create Index Success-test1
-2019-11-15 17:09:17  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 17:09:17  [ restartedMain:3 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 17:09:28  [ http-nio-8080-exec-1:11013 ] - [ DEBUG ]  Index-[test1] Is Exist
-2019-11-15 17:09:32  [ http-nio-8080-exec-2:15679 ] - [ DEBUG ]  Index-[test2] Is Not Exist
-2019-11-15 17:09:33  [ http-nio-8080-exec-2:15843 ] - [ INFO ]  Create Index Success-test2
-2019-11-15 17:09:40  [ http-nio-8080-exec-3:22997 ] - [ DEBUG ]  Index-[test] Is Exist
-2019-11-15 17:10:37  [ http-nio-8080-exec-2:79981 ] - [ DEBUG ]  Index-[index3] Is Not Exist
-2019-11-15 17:10:37  [ http-nio-8080-exec-2:80037 ] - [ INFO ]  Create Index Success-index3
-2019-11-15 17:15:29  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 17:15:29  [ restartedMain:2 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 17:16:04  [ http-nio-8080-exec-8:34763 ] - [ DEBUG ]  Index-[test2] Is Not Exist
-2019-11-15 17:16:04  [ http-nio-8080-exec-8:34932 ] - [ INFO ]  Create Index Success-test2
-2019-11-15 17:16:57  [ http-nio-8080-exec-5:87979 ] - [ DEBUG ]  Index-[test2] Is Exist
-2019-11-15 17:21:11  [ http-nio-8080-exec-3:341938 ] - [ DEBUG ]  Index-[test3] Is Not Exist
-2019-11-15 17:21:11  [ http-nio-8080-exec-3:342014 ] - [ INFO ]  Create Index Success-test3
-2019-11-15 17:27:01  [ http-nio-8080-exec-9:692255 ] - [ DEBUG ]  Index-[test3] Is Not Exist
-2019-11-15 17:27:13  [ http-nio-8080-exec-9:703830 ] - [ INFO ]  Create Index Success-test3
-2019-11-15 17:27:33  [ http-nio-8080-exec-8:723731 ] - [ INFO ]  Get Index List Success
-2019-11-15 17:27:52  [ http-nio-8080-exec-4:743438 ] - [ DEBUG ]  Index-[test2] Is Exist
-2019-11-15 17:27:53  [ http-nio-8080-exec-4:743470 ] - [ INFO ]  Delete Index Success-test2
-2019-11-15 17:27:54  [ http-nio-8080-exec-2:745201 ] - [ DEBUG ]  Index-[test3] Is Exist
-2019-11-15 17:27:54  [ http-nio-8080-exec-2:745239 ] - [ INFO ]  Delete Index Success-test3
-2019-11-15 17:30:00  [ restartedMain:870902 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 17:30:00  [ restartedMain:870903 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 17:33:45  [ http-nio-8080-exec-3:1095966 ] - [ INFO ]  Get Index List Success
-2019-11-15 17:33:57  [ http-nio-8080-exec-4:1108031 ] - [ DEBUG ]  Index-[index2] Is Not Exist
-2019-11-15 17:33:57  [ http-nio-8080-exec-4:1108355 ] - [ ERROR ]  Internal Server Error
-2019-11-15 17:34:11  [ http-nio-8080-exec-7:1122001 ] - [ INFO ]  Get Index List Success
-2019-11-15 17:34:18  [ http-nio-8080-exec-8:1128559 ] - [ DEBUG ]  Index-[index2] Is Not Exist
-2019-11-15 17:34:18  [ http-nio-8080-exec-8:1128861 ] - [ ERROR ]  Internal Server Error
-2019-11-15 17:34:40  [ restartedMain:1 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 17:34:40  [ restartedMain:3 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 17:34:49  [ http-nio-8080-exec-2:8558 ] - [ INFO ]  Get Index List Success
-2019-11-15 17:34:56  [ http-nio-8080-exec-3:15410 ] - [ DEBUG ]  Index-[index2] Is Not Exist
-2019-11-15 17:34:56  [ http-nio-8080-exec-3:15731 ] - [ ERROR ]  Internal Server Error
-2019-11-15 17:35:23  [ http-nio-8080-exec-10:42560 ] - [ DEBUG ]  Index-[index] Is Exist
-2019-11-15 17:35:23  [ http-nio-8080-exec-10:42609 ] - [ INFO ]  Delete Index Success-index
-2019-11-15 17:35:27  [ http-nio-8080-exec-5:46820 ] - [ DEBUG ]  Index-[index2] Is Not Exist
-2019-11-15 17:35:27  [ http-nio-8080-exec-5:46888 ] - [ INFO ]  Create Index Success-index2
-2019-11-15 17:35:46  [ http-nio-8080-exec-6:65433 ] - [ DEBUG ]  Index-[index2] Is Exist
-2019-11-15 17:35:51  [ http-nio-8080-exec-2:70693 ] - [ DEBUG ]  Index-[index] Is Not Exist
-2019-11-15 17:35:56  [ http-nio-8080-exec-3:75459 ] - [ DEBUG ]  Index-[index2] Is Exist
-2019-11-15 17:36:26  [ http-nio-8080-exec-10:105654 ] - [ DEBUG ]  Index-[index2] Is Exist
-2019-11-15 17:36:29  [ http-nio-8080-exec-5:108684 ] - [ DEBUG ]  Index-[index2] Is Exist
-2019-11-15 17:37:11  [ http-nio-8080-exec-6:150406 ] - [ DEBUG ]  Index-[index2] Is Exist
-2019-11-15 17:37:52  [ http-nio-8080-exec-8:191333 ] - [ DEBUG ]  Index-[index2] Is Exist
-2019-11-15 17:38:10  [ http-nio-8080-exec-7:209708 ] - [ DEBUG ]  Index-[index2] Is Exist
-2019-11-15 17:40:21  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 17:40:21  [ restartedMain:1 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 17:43:22  [ http-nio-8080-exec-1:180792 ] - [ DEBUG ]  Index-[index2] Is Exist
-2019-11-15 17:43:22  [ http-nio-8080-exec-1:180924 ] - [ INFO ]  Update Setting Success-index2
-2019-11-15 17:43:39  [ http-nio-8080-exec-2:197935 ] - [ DEBUG ]  Index-[index2] Is Exist
-2019-11-15 17:44:23  [ http-nio-8080-exec-3:241768 ] - [ DEBUG ]  Index-[index2] Is Exist
-2019-11-15 17:44:23  [ http-nio-8080-exec-3:241787 ] - [ INFO ]  Put Mapping Success-index2
-2019-11-15 17:45:32  [ restartedMain:310967 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 17:45:32  [ restartedMain:310968 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 18:09:57  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
-2019-11-15 18:09:57  [ restartedMain:1 ] - [ INFO ]  redis地址：172.16.4.136:6379
-2019-11-15 18:10:24  [ http-nio-8080-exec-5:26990 ] - [ DEBUG ]  Index-[index] Is Exist
-2019-11-15 18:10:56  [ http-nio-8080-exec-9:58463 ] - [ DEBUG ]  Index-[index] Is Exist
-2019-11-15 18:11:21  [ http-nio-8080-exec-1:84089 ] - [ DEBUG ]  Index-[index] Is Exist
-2019-11-15 18:11:21  [ http-nio-8080-exec-1:84129 ] - [ INFO ]  Update Setting Success-index
-2019-11-15 18:14:26  [ http-nio-8080-exec-10:268938 ] - [ DEBUG ]  Index-[index] Is Exist
-2019-11-15 18:14:26  [ http-nio-8080-exec-10:268953 ] - [ INFO ]  Update Setting Success-index
-2019-11-15 18:17:46  [ http-nio-8080-exec-8:468493 ] - [ DEBUG ]  Index-[index] Is Exist
+2019-11-20 11:07:37  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 11:07:37  [ restartedMain:3 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 11:11:38  [ restartedMain:240760 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 11:11:38  [ restartedMain:240761 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 11:11:57  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 11:11:57  [ restartedMain:2 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 11:14:33  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 11:14:33  [ restartedMain:1 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 11:14:55  [ http-nio-8080-exec-3:21791 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 11:14:55  [ http-nio-8080-exec-3:21950 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我是你的}
+2019-11-20 11:14:56  [ http-nio-8080-exec-3:22828 ] - [ INFO ]  completed increment
+2019-11-20 11:15:20  [ http-nio-8080-exec-4:46765 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 11:15:20  [ http-nio-8080-exec-4:46807 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:+我是 -你的}
+2019-11-20 11:15:20  [ http-nio-8080-exec-4:46839 ] - [ INFO ]  completed increment
+2019-11-20 11:16:44  [ http-nio-8080-exec-9:131328 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 11:16:45  [ http-nio-8080-exec-9:131381 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我知道是}
+2019-11-20 11:16:45  [ http-nio-8080-exec-9:131412 ] - [ INFO ]  completed increment
+2019-11-20 11:16:55  [ http-nio-8080-exec-1:141912 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 11:16:55  [ http-nio-8080-exec-1:141955 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:+我 +知道 -是}
+2019-11-20 11:16:55  [ http-nio-8080-exec-1:141982 ] - [ INFO ]  completed increment
+2019-11-20 11:17:27  [ http-nio-8080-exec-7:174310 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 11:17:28  [ http-nio-8080-exec-7:174394 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我 知道 是}
+2019-11-20 11:17:28  [ http-nio-8080-exec-7:174420 ] - [ INFO ]  completed increment
+2019-11-20 11:17:40  [ http-nio-8080-exec-10:187186 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 11:17:40  [ http-nio-8080-exec-10:187235 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:像我这样的人}
+2019-11-20 11:17:40  [ http-nio-8080-exec-10:187279 ] - [ INFO ]  completed increment
+2019-11-20 11:18:05  [ http-nio-8080-exec-5:211392 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 11:18:05  [ http-nio-8080-exec-5:211438 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:科比}
+2019-11-20 11:18:05  [ http-nio-8080-exec-5:211464 ] - [ INFO ]  completed increment
+2019-11-20 11:21:54  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 11:21:54  [ restartedMain:2 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 11:22:39  [ http-nio-8080-exec-6:44727 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 11:22:39  [ http-nio-8080-exec-6:44894 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:我知道 这样}
+2019-11-20 11:22:40  [ http-nio-8080-exec-6:45706 ] - [ INFO ]  completed increment
+2019-11-20 11:22:52  [ http-nio-8080-exec-2:58140 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 11:22:53  [ http-nio-8080-exec-2:58186 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:+我知道 -这样}
+2019-11-20 11:22:53  [ http-nio-8080-exec-2:58223 ] - [ INFO ]  completed increment
+2019-11-20 12:49:58  [ restartedMain:5283811 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 12:49:58  [ restartedMain:5283812 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 12:50:19  [ restartedMain:5304225 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 12:50:19  [ restartedMain:5304225 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 12:51:31  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 12:51:31  [ restartedMain:2 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 12:52:37  [ http-nio-8080-exec-4:65771 ] - [ DEBUG ]  Index-[dshuou5] Is Not Exist
+2019-11-20 12:52:37  [ http-nio-8080-exec-4:65772 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:像我}
+2019-11-20 12:52:38  [ http-nio-8080-exec-4:66578 ] - [ INFO ]  completed increment
+2019-11-20 12:52:48  [ http-nio-8080-exec-6:76884 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 12:53:53  [ http-nio-8080-exec-5:142027 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 12:53:53  [ http-nio-8080-exec-5:142183 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:像我}
+2019-11-20 12:53:53  [ http-nio-8080-exec-5:142210 ] - [ INFO ]  completed increment
+2019-11-20 12:56:49  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 12:56:49  [ restartedMain:1 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 12:57:27  [ http-nio-8080-exec-2:38219 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 12:58:21  [ http-nio-8080-exec-4:92325 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 12:58:55  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 12:58:55  [ restartedMain:2 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 12:59:26  [ http-nio-8080-exec-7:30950 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 13:00:53  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 13:00:53  [ restartedMain:2 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 13:01:03  [ http-nio-8080-exec-1:9561 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 13:01:11  [ http-nio-8080-exec-1:17629 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:string}
+2019-11-20 13:01:12  [ http-nio-8080-exec-1:18780 ] - [ INFO ]  completed increment
+2019-11-20 13:01:22  [ http-nio-8080-exec-2:28434 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 13:01:22  [ http-nio-8080-exec-2:28525 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:像我}
+2019-11-20 13:01:22  [ http-nio-8080-exec-2:28550 ] - [ INFO ]  completed increment
+2019-11-20 13:01:34  [ http-nio-8080-exec-3:41072 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 13:01:34  [ http-nio-8080-exec-3:41121 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:像我}
+2019-11-20 13:01:34  [ http-nio-8080-exec-3:41150 ] - [ INFO ]  completed increment
+2019-11-20 13:02:25  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-20 13:02:25  [ restartedMain:2 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-20 13:02:31  [ http-nio-8080-exec-1:5980 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 13:02:31  [ http-nio-8080-exec-1:6174 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:像我}
+2019-11-20 13:02:32  [ http-nio-8080-exec-1:7078 ] - [ INFO ]  completed increment
+2019-11-20 13:02:42  [ http-nio-8080-exec-3:16804 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 13:02:42  [ http-nio-8080-exec-3:16845 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:像我}
+2019-11-20 13:02:42  [ http-nio-8080-exec-3:16870 ] - [ INFO ]  completed increment
+2019-11-20 13:03:14  [ http-nio-8080-exec-2:48334 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 13:03:14  [ http-nio-8080-exec-2:48381 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:string}
+2019-11-20 13:03:14  [ http-nio-8080-exec-2:48407 ] - [ INFO ]  completed increment
+2019-11-20 13:03:22  [ http-nio-8080-exec-4:56637 ] - [ DEBUG ]  Index-[dshuyou5] Is Exist
+2019-11-20 13:03:22  [ http-nio-8080-exec-4:56683 ] - [ INFO ]  Start increment hot words score to redis:{key:hotword,value:像我}
+2019-11-20 13:03:22  [ http-nio-8080-exec-4:56715 ] - [ INFO ]  completed increment

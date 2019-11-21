@@ -1,21 +1,26 @@
 package com.learn.elasticsearch.query;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.learn.elasticsearch.query.condition.BaseCondition;
+import com.learn.elasticsearch.query.condition.*;
 import com.learn.elasticsearch.query.model.DataContent;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.text.Text;
+import org.elasticsearch.index.mapper.ObjectMapper;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.ThreadFactory;
@@ -76,6 +81,7 @@ public abstract class BaseQuery {
 		if(baseCondition.getSize() != SIZE){
 			sourceBuilder.size(baseCondition.getSize());
 		}
+
 		//if(hasSort){sourceBuilder.sort("_score", SortOrder.DESC);}
 		String sortField = baseCondition.getSortField();
 		if(sortField == null||sortField.isEmpty()){
@@ -83,7 +89,35 @@ public abstract class BaseQuery {
 		}else {
 			sourceBuilder.sort(sortField, SortOrder.DESC);
 		}
-		//String.split("",),前端传参形式（a,b,c,d）
+
+		//选择是否高亮
+		boolean hasHighlight = baseCondition.isHasHighlight();
+		HighlightBuilder highlightBuilder = null;
+		if(hasHighlight){
+			if(baseCondition instanceof FullTextCondition){
+				FullTextCondition condition = (FullTextCondition) baseCondition;
+				String field = condition.getField();
+				if(!field.isEmpty()){
+					highlightBuilder = new HighlightBuilder().field(field);
+				}else {
+					String[] fields = condition.getFields();
+					highlightBuilder = new HighlightBuilder();
+					for (String s : fields){
+						highlightBuilder.field(s);
+					}
+				}
+			}else if(baseCondition instanceof GeoCondition){
+				GeoCondition condition = (GeoCondition) baseCondition;
+				highlightBuilder = new HighlightBuilder().field(condition.getField());
+			}else if(baseCondition instanceof TermsLevelCondition){
+				TermsLevelCondition condition = (TermsLevelCondition) baseCondition;
+				highlightBuilder = new HighlightBuilder().field(condition.getField());
+			}
+		}
+		if(highlightBuilder != null){
+			sourceBuilder.highlighter(highlightBuilder);
+		}
+		//index : String.split("",),前端传参形式（a,b,c,d）
 		SearchRequest searchRequest = new SearchRequest(index.split(","));
 		searchRequest.source(sourceBuilder);
 

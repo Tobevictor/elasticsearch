@@ -54,30 +54,6 @@ public class EsEarthquakeServiceImplTest {
 	}
 
 	@Test
-	public void bulkIndex1() throws IOException {
-		String index = "dshuyou4";
-		long start = System.currentTimeMillis();
-		List<Map<String,Object>> list = mapper.findAll();
-		Document document = new Document(client);
-
-		document.bulkIndex1(index,list);
-		long end = System.currentTimeMillis();
-		System.out.println((end-start)/1000 + "s");
-	}
-
-	@Test
-	public void bulkIndex2() throws IOException {
-		String index = "dshuyou2";
-		long start = System.currentTimeMillis();
-		List<Map<String,Object>> list = mapper.findAll();
-		Document document = new Document(client);
-
-		document.bulkIndex1(index,list);
-		long end = System.currentTimeMillis();
-		System.out.println((end-start)/1000 + "s");
-	}
-
-	@Test
 	public void extendWord(){
 		String[] field = new String[]{"content.content_fullpinyin", "content.content_prefixpinyin", "content.content_text"};
 		String keyword = "像我";

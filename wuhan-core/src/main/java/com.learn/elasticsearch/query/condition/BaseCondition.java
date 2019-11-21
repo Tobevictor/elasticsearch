@@ -18,6 +18,7 @@ public abstract class BaseCondition implements Serializable {
 	protected int from;
 	protected int size;
 	protected String sortField;
+	protected boolean hasHighlight;
 
 	public BaseCondition() {
 		this.from = DEFAULT_FROM;
@@ -51,6 +52,14 @@ public abstract class BaseCondition implements Serializable {
 
 	public void setSortField(String sortField) {
 		this.sortField = sortField;
+	}
+
+	public boolean isHasHighlight() {
+		return hasHighlight;
+	}
+
+	public void setHasHighlight(boolean hasHighlight) {
+		this.hasHighlight = hasHighlight;
 	}
 }
 

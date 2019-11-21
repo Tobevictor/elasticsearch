@@ -11,7 +11,9 @@ public enum FulltextEnum {
 
 	matchPhraseQuery(2,"matchPhraseQuery"),
 
-	matchPhrasePrefixQuery(3,"matchPhrasePrefixQuery");
+	matchPhrasePrefixQuery(3,"matchPhrasePrefixQuery"),
+
+	queryString(4,"queryString");
 
 	public int index;
 	public String name;

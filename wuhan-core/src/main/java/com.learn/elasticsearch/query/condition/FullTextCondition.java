@@ -1,6 +1,7 @@
 package com.learn.elasticsearch.query.condition;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Full Text Query Condition
@@ -9,6 +10,7 @@ import java.io.Serializable;
  */
 public class FullTextCondition extends BaseCondition implements Serializable {
 	private String field;
+	private String[] fields;
 	private String value;
 
 	public FullTextCondition(){
@@ -31,6 +33,12 @@ public class FullTextCondition extends BaseCondition implements Serializable {
 		this.value = value;
 	}
 
+	public FullTextCondition(int from, int size, String[] fields, String value){
+		super(from, size);
+		this.fields = fields;
+		this.value = value;
+	}
+
 	public String getField() {
 		return field;
 	}
@@ -39,11 +47,16 @@ public class FullTextCondition extends BaseCondition implements Serializable {
 		return value;
 	}
 
+	public String[] getFields() {
+		return fields;
+	}
 
 	@Override
 	public String toString() {
-		return "field:" + field + ",value:" + value + ",from:" + from + ",size:" + size;
+		if(this.field == null || this.field.isEmpty()){
+			return "fields:" + Arrays.toString(fields) + ",value:" + value + ",from:" + from + ",size:" + size;
+		}else {
+			return "field:" + field + ",value:" + value + ",from:" + from + ",size:" + size;
+		}
 	}
-
-
 }

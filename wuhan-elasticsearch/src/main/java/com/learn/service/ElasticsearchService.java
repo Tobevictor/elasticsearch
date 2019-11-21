@@ -164,6 +164,13 @@ public interface ElasticsearchService {
 	ServiceResult boolQuery(String index, BoolCondition conditions);
 
 	/**
+	 * QueryString查询
+	 * @param index 索引
+	 * @param condition queryString 查询条件
+	 * @return ServiceResult
+	 */
+	ServiceResult queryString(String index, FullTextCondition condition);
+	/**
 	 * 全文查询
 	 * @param index 索引
 	 * @param queryType 全文查询类型
@@ -215,4 +222,14 @@ public interface ElasticsearchService {
 	 * @return ServiceResult
 	 */
 	ServiceResult extendWord(String index, String keyWord, int size, String[] fields);
+
+	/**
+	 * QueryString查询
+	 * @param index 索引
+	 * @param condition queryString 查询条件
+	 * @param pageNum 页数
+	 * @param pageSize 单页数据量
+	 * @return ServiceResult
+	 */
+	ServiceResult queryString(String index, FullTextCondition condition, int pageNum, int pageSize);
 }

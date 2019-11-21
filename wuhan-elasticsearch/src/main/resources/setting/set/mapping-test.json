@@ -18,7 +18,8 @@
           "type":"completion",
           "analyzer":"ik_smart"
         }
-      }
+      },
+      "analyzer":"prefix_pinyin_analyzer"
     },
     "type": {
       "type": "integer"

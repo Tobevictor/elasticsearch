@@ -101,12 +101,13 @@ public class Document {
 		ActionListener listener = new ActionListener<IndexResponse>() {
 			@Override
 			public void onResponse(IndexResponse indexResponse) {
-
+				//System.out.println(indexResponse.status().getStatus() == RestStatus.OK.getStatus());
+				logger.info("Async index status: " + indexResponse.status());
 			}
 
 			@Override
 			public void onFailure(Exception e) {
-
+				logger.info("Async index failure");
 			}
 		};
 		client.indexAsync(request, RequestOptions.DEFAULT, listener);
@@ -238,45 +239,6 @@ public class Document {
 
 		UpdateResponse response = client.update(request, RequestOptions.DEFAULT);
 		return response.status() == RestStatus.OK;
-	}
-
-	/**
-	 * @param index - 索引名称
-	 * @param source - 索引内容
-	 * @return - 索引数量
-	 * @throws IOException - IOException
-	 */
-	public long bulkIndex1(String index,List<Map<String,Object>> source) throws IOException {
-		Objects.requireNonNull(index, "index");
-		Objects.requireNonNull(source, "source");
-
-		BulkRequest bulkRequest = new BulkRequest();
-		List<IndexRequest> requests = new LinkedList<>();
-		int count = 0;
-		for (Map<String, Object> aSource : source) {
-			IndexRequest indexRequest = new IndexRequest(index);
-			indexRequest.source(aSource, XContentType.JSON);
-			requests.add(indexRequest);
-			if (requests.size() % COUNT == 0) {
-				for (IndexRequest request : requests) {
-					bulkRequest.add(request);
-				}
-				BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-				if (responses.status() == RestStatus.OK) {
-					count = count + COUNT;
-				}
-				bulkRequest.requests().clear();
-				requests.clear();
-			}
-		}
-		for (IndexRequest request : requests) {
-			bulkRequest.add(request);
-		}
-		BulkResponse responses = client.bulk(bulkRequest, RequestOptions.DEFAULT);
-		if(responses.status() == RestStatus.OK){
-			count = count + requests.size();
-		}
-		return count;
 	}
 
 	/**

@@ -20,7 +20,7 @@
           "ignore_above": 256
         }
       },
-      "analyzer":"full_pinyin_analyzer"
+      "analyzer":"prefix_pinyin_analyzer"
     },
     "项目名称": {
       "type": "text",

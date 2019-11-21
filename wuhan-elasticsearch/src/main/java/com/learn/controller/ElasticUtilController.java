@@ -6,6 +6,7 @@ import com.learn.elasticsearch.model.SourceEntity;
 
 import com.learn.mbg.mapper3.ResourcedirectoryMapper;
 import com.learn.mbg.mapper4.SaMapper;
+import com.learn.mbg.mapper4.ViewMapper;
 import com.learn.service.ElasticsearchService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,8 @@ public class ElasticUtilController {
 	private ResourcedirectoryMapper resourcedirectoryMapper;
 	@Resource
 	private SaMapper saMapper;
+	@Resource
+	private ViewMapper viewMapper;
 
 	@ApiOperation("构建默认索引")
 	@RequestMapping(value = "/create",method = RequestMethod.GET)
@@ -106,14 +109,31 @@ public class ElasticUtilController {
 		return elasticsearchService.bulkIndex(index,bulk);
 	}
 
+	@ApiOperation("全量索引1")
+	@RequestMapping(value = "/bulkindex1",method = RequestMethod.GET)
+	@ResponseBody
+	public ServiceResult bulkIndex1(@RequestParam String index,
+								   @RequestParam String table,
+								   @RequestParam String idColumn){
+		List<Map<String, Object>> list = viewMapper.findAll(table);
+		List<SourceEntity> bulk = new ArrayList<>();
+		for (Map<String, Object> r : list){
+			SourceEntity sourceEntity = new SourceEntity();
+			sourceEntity.setSource(JSONObject.toJSONString(r));
+			sourceEntity.setId(String.valueOf(r.get(idColumn)));
+			bulk.add(sourceEntity);
+		}
+		return elasticsearchService.bulkIndex(index,bulk);
+	}
+
 	@ApiOperation("批量更新")
 	@RequestMapping(value = "/bulkupdate",method = RequestMethod.GET)
 	@ResponseBody
 	public ServiceResult bulkUpdate(@RequestParam String index,
 									@RequestParam String table,
 									@RequestParam String idColumn,
-									@RequestParam Date updateTime){
-		List<Map<String, Object>> list = saMapper.findAll(table);
+									@RequestParam String updateTime){
+		List<Map<String, Object>> list = viewMapper.find(table,updateTime);
 		List<SourceEntity> bulk = new ArrayList<>();
 		for (Map<String, Object> r : list){
 			SourceEntity sourceEntity = new SourceEntity();

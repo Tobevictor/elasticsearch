@@ -117,7 +117,7 @@ public class SearchController {
     }
 
     @ApiOperation("多条件查询")
-    @RequestMapping(value = "/bool",method = RequestMethod.GET)
+    @RequestMapping(value = "/bool",method = RequestMethod.POST)
     @ResponseBody
     @HotWord
     public ServiceResult boolQuery(@RequestParam String index,
@@ -126,5 +126,17 @@ public class SearchController {
                                    @RequestParam(defaultValue = "10") int rn){
 
         return elasticsearchService.boolQuery(index,boolCondition,pn,rn);
+    }
+
+    @ApiOperation("主页输入框查询")
+    @RequestMapping(value = "/home",method = RequestMethod.POST)
+    @ResponseBody
+    @HotWord
+    public ServiceResult queryString(@RequestParam String index,
+                                   @RequestBody FullTextCondition condition,
+                                   @RequestParam(defaultValue = "0") int pn,
+                                   @RequestParam(defaultValue = "10") int rn){
+
+        return elasticsearchService.queryString(index,condition,pn,rn);
     }
 }
