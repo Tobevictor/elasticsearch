@@ -49,9 +49,9 @@ wuhan-rabbitmq:
     │   │   ├── config              配置
     │   │   ├── controller          控制器
     │   │   ├── dto                 数据传输对象
-    │   │   │   ├── mapper          数据操作映射
-    │   │   │   ├── model           数据对象
-    │   │   │   ├── service         基本服务
+    │   │   ├── mapper              数据操作映射
+    │   │   ├── model               数据对象
+    │   │   ├── service             基本服务
     │   │   ├── suggest                                 
     ├── resource                      
     └──
