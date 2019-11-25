@@ -1,0 +1,9 @@
+2019-11-23 09:43:01  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-23 09:43:01  [ restartedMain:3 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-23 10:11:00  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-23 10:11:00  [ restartedMain:1 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-23 11:28:37  [ restartedMain:0 ] - [ INFO ]  JedisPool注入成功
+2019-11-23 11:28:37  [ restartedMain:2 ] - [ INFO ]  redis地址：120.79.149.109:6379
+2019-11-23 11:29:30  [ http-nio-8080-exec-8:52760 ] - [ DEBUG ]  Index-[wuhan-test] Is Not Exist
+2019-11-23 11:29:31  [ http-nio-8080-exec-8:53843 ] - [ INFO ]  Create Index Success-wuhan-test
+2019-11-23 11:29:38  [ http-nio-8080-exec-1:61143 ] - [ INFO ]  Get Index List Success

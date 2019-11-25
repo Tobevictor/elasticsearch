@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -16,4 +17,7 @@ public interface StudentMapper {
 
     @Select("Select * from Student where sid > 03")
     List<Student> findAll();
+
+    @Select("Select * from Student where sid > 03")
+    List<Map<String,Object>> findAll1();
 }

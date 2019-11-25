@@ -61,3 +61,5 @@ SHOW VARIABLES LIKE '%pro%';
 SET profiling=1;
 
 SELECT * from ums_admin where username = 'dshuyou' and password = '123456';
+
+INSERT INTO comment_copy (comment_id, music_id, content, liked_count,time,user_id,nickname,user_img ) VALUES (1,1,1,'1',1,1,'1','1');

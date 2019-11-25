@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @author dshuyou
  * @date 2019/10/21 17:40
  */
-@Service
+@Service("hotWordServiceImpl")
 public class HotWordServiceImpl implements HotWordService {
 	@Autowired
 	private StringRedisTemplate stringRedisTemplate;

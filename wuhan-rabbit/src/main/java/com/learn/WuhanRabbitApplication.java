@@ -8,7 +8,6 @@ public class WuhanRabbitApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WuhanRabbitApplication.class, args);
-
     }
 
 }

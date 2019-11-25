@@ -5,6 +5,7 @@ import com.learn.component.HotWord;
 import com.learn.service.HotWordService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.Set;
 @CrossOrigin
 public class HotWordController {
 	@Autowired
+	@Qualifier("hotWordServiceImpl")
 	private HotWordService hotWordService;
 
 	@ApiOperation("导入热词")

@@ -1,6 +1,5 @@
 package com.learn.config;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +12,6 @@ import redis.clients.jedis.JedisPoolConfig;
  */
 @Configuration
 public class JedisConfig {
-    private Logger logger = Logger.getLogger(this.getClass());
 
     @Value("${spring.redis.host}")
     private String host;
@@ -44,12 +42,10 @@ public class JedisConfig {
         jedisPoolConfig.setMaxTotal(maxActive);
         jedisPoolConfig.setMinIdle(minIdle);
         JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout, null);
-        logger.info("JedisPool注入成功");
-        logger.info("redis地址：" + host + ":" + port);
+        System.out.println("redis：" + host + ":" + port);
         return jedisPool;
     }
     public JedisPool getConfig() {
         return redisPoolFactory();
     }
-
 }

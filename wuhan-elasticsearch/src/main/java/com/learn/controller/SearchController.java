@@ -25,11 +25,6 @@ public class SearchController {
     @ApiOperation("全部检索")
     @RequestMapping(value = "/matchall",method = RequestMethod.GET)
     @ResponseBody
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="index",value = "索引",required = true),
-            @ApiImplicitParam(name="pn",value = "搜索页码",required = true),
-            @ApiImplicitParam(name="rn",value = "每页搜索结果数",required = true)
-    })
     public ServiceResult matchAll(@RequestParam String index,
                                   @RequestParam(defaultValue = "0") int pn,
                                   @RequestParam(defaultValue = "10") int rn){
@@ -103,16 +98,11 @@ public class SearchController {
     @RequestMapping(value = "/extendWord",method = RequestMethod.POST)
     @ResponseBody
     @HotWord
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "index", value = "索引", required = false),
-            @ApiImplicitParam(name = "wd", value = "关键词", required = true),
-            @ApiImplicitParam(name="rn",value = "搜索结果数",required = true),
-    })
     public ServiceResult extendWord(@RequestParam(required = false,defaultValue = "") String index,
                                     @RequestParam String keyword,
                                     @RequestParam(defaultValue = "5") int rn){
 
-        String[] field = new String[]{"title.title_fullpinyin","title.title_prefixpinyin","title.title_text"};
+        String[] field = new String[]{"TITLE.full","TITLE.prefix","TITLE.text"};
         return elasticsearchService.extendWord(index,keyword,rn,field);
     }
 

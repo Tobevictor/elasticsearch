@@ -14,7 +14,6 @@ public enum QueueEnum {
      * 消息通知ttl队列
      */
     QUEUE_TTL_DATA_TRANSPORT("rabbit.data.direct.ttl", "rabbit.data.transport.ttl", "rabbit.data.transport.ttl");
-
     /**
      * 交换名称
      */
