@@ -11,6 +11,7 @@ import com.learn.elasticsearch.query.query_enum.FulltextEnum;
 import com.learn.elasticsearch.query.query_enum.GeoEnum;
 import com.learn.elasticsearch.query.query_enum.TermsEnum;
 import com.learn.elasticsearch.suggest.Suggestion;
+import com.learn.service.AsycService;
 import com.learn.service.ElasticsearchService;
 import org.apache.log4j.Logger;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -35,13 +36,15 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 	private Logger logger = Logger.getLogger(ElasticsearchServiceImpl.class);
 	@Autowired
 	private RestHighLevelClient client;
+	@Autowired
+	private AsycService asycService;
 
 	private Indice indice;
 	private Document document;
 	@PostConstruct
 	public void init(){
-		indice = new Indice(client);
-		document = new Document(client);
+		indice = Indice.getInstance(client);
+		document = Document.getInstance(client);
 	}
 
 	@Override
@@ -281,14 +284,47 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
 		try {
 			//索引数据前调整副本和刷新时间，完成后再更改回来，以提升索引效率和稳定性
 			indice.updateSetting(index,INIT_REPLICAS,String.valueOf(INIT_REFLUSH_INTERVAL));
-			long count = document.bulkIndex(index, source);
+			long count = document.bulkIndex(index,source);
 			indice.updateSetting(index,REPLICAS,String.valueOf(REFRESH_INTERVAL)+"s");
 			logger.info("Bulk Index Success-" + index);
 			return ServiceResult.success(count);
 		} catch (IOException e) {
-			logger.error("Internal Server Error");
+			logger.error("Bulk Index Failed-" + index);
 			return ServiceResult.internalServerError();
 		}
+	}
+
+	@Override
+	public ServiceResult asycBulkIndex(String index, List<SourceEntity> source) {
+		ServiceResult result = isIndexExist(index);
+		if(! result.equals(ServiceResult.isExist())){
+			return result;
+		}
+		asycService.bulkIndex(document,indice,index,source);
+		logger.info("Regist Bulk Index Service Success-" + index);
+		return ServiceResult.success();
+	}
+
+	@Override
+	public ServiceResult asycBulkUpdate(String index, List<SourceEntity> source) {
+		ServiceResult result = isIndexExist(index);
+		if(! result.equals(ServiceResult.isExist())){
+			return result;
+		}
+		asycService.bulkUpdate(document,index,source);
+		logger.info("Regist Bulk Update Service Success-" + index);
+		return ServiceResult.success();
+	}
+
+	@Override
+	public ServiceResult asycBulkDelete(String index, List<SourceEntity> source) {
+		ServiceResult result = isIndexExist(index);
+		if(! result.equals(ServiceResult.isExist())){
+			return result;
+		}
+		asycService.bulkDelete(document,index,source);
+		logger.info("Regist Bulk Detete Service Success-" + index);
+		return ServiceResult.success();
 	}
 
 	@Override

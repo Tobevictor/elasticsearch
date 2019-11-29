@@ -19,13 +19,14 @@ public class DataSourceController {
     @Autowired
     private DataService dataService;
 
-    @ApiOperation("点击")
-    @RequestMapping(value = "/findone",method = RequestMethod.GET)
+    @ApiOperation("点击查询")
+    @RequestMapping(value = "/selectone",method = RequestMethod.GET)
     @ResponseBody
     @HotWord
     public ServiceResult findOne(@RequestParam String table,
-                                 @RequestParam String pk){
+                                 @RequestParam String pk,
+                                 @RequestParam String id){
 
-        return dataService.findOne(table,pk);
+        return dataService.findOne(table,pk,id);
     }
 }

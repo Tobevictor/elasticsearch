@@ -6,6 +6,7 @@ import com.learn.service.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,12 +19,16 @@ public class DataServiceImpl implements DataService {
     private ViewMapper viewMapper;
 
     @Override
-    public ServiceResult findOne(String table, String primaryKey) {
-        Map<String,Object> map = viewMapper.findOne(table,primaryKey);
-        if(map.isEmpty()){
+    public ServiceResult findOne(String table, String primaryKey, String id) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("table",table);
+        params.put("pk",primaryKey);
+        params.put("id",id);
+        Map<String,Object> res = viewMapper.selectWithId(params);
+        if(res.isEmpty()){
             return ServiceResult.isNull();
         }else {
-            return ServiceResult.success(map);
+            return ServiceResult.success(res);
         }
     }
 }

@@ -42,13 +42,12 @@ public class Document {
 	private static final int FLUSH_INTERVAL = 5;
 	private RestHighLevelClient client;
 
-	public Document(RestHighLevelClient client){
+	private Document(RestHighLevelClient client){
 		this.client = client;
 	}
 
-	public Document setClient(RestHighLevelClient client){
-		this.client = client;
-		return this;
+	public static Document getInstance(RestHighLevelClient client){
+		return new Document(client);
 	}
 
 	/**
@@ -430,7 +429,7 @@ public class Document {
 			public void afterBulk(long executionId, BulkRequest request,
 								  BulkResponse response) {
 				if (response.hasFailures()) {
-					logger.warn("Executing bulk:"+ executionId + " failure");
+					logger.error("Executing bulk:"+ executionId + " failure");
 				} else {
 					logger.debug("Executing bulk:"+ executionId +
 							"	completed in " + response.getTook().getMillis()+
@@ -441,7 +440,7 @@ public class Document {
 			@Override
 			public void afterBulk(long executionId, BulkRequest request,
 								  Throwable failure) {
-				logger.error("Failed to execute bulk");
+				logger.error("Failed to execute bulk :" + executionId);
 			}
 		};
 		return BulkProcessor.builder(

@@ -8,5 +8,5 @@ import com.learn.common.ServiceResult;
  */
 public interface DataService {
 
-    ServiceResult findOne(String table,String primaryKey);
+    ServiceResult findOne(String table, String primaryKey, String id);
 }

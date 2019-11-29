@@ -1,3 +1,4 @@
+/*
 package com.learn.config;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -11,13 +12,16 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.util.HashSet;
 import java.util.Set;
 
+*/
 /*
  * @author dshuyou
  * @date 2019/11/22 11:30
- */
+ *//*
+
 @Configuration
 public class RedisConfig extends CachingConfigurerSupport {
-    /*@Autowired
+    */
+/*@Autowired
     private RedisConnectionFactory factory;
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
@@ -29,7 +33,8 @@ public class RedisConfig extends CachingConfigurerSupport {
         redisTemplate.setConnectionFactory(factory);
         System.out.println("redisTemplate");
         return redisTemplate;
-    }*/
+    }*//*
+
 
     @Value("${spring.redis.cluster.nodes}")
     private String cluster;
@@ -69,3 +74,4 @@ public class RedisConfig extends CachingConfigurerSupport {
         return new JedisCluster(nodeSet,timeout,jedisPoolConfig);
     }
 }
+*/

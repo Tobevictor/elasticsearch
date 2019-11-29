@@ -1,9 +1,7 @@
 package com.learn.mbg.mapper4;
 
-import org.apache.ibatis.annotations.MapKey;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.learn.model.IndexSource;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -16,10 +14,10 @@ import java.util.Map;
 public interface ViewMapper {
     //select 'GW' type, caseno as  id ,'420000' qy, fwsj as time ,TITLE ,'业务编号：'||caseno||',发文名称：'||title||',发文时间：'||fwsj ||',立搞单位：'|| ligaounit ||',立搞人：'||ligaoman as content from sa.view_fwxx;
     @Select("select 'GW' type, caseno as  id ,'420000' qy, fwsj as time ,TITLE as title ,'业务编号：'||caseno||',发文名称：'||title||',发文时间：'||fwsj ||',立搞单位：'|| ligaounit ||',立搞人：'||ligaoman as content from ${table}")
-    List<Map<String,Object>> findAll(@Param("table") String table);
+    List<Map<String,Object>> findGw(@Param("table") String table);
 
     @Select("select 'GW' type, caseno as  id ,'420000' qy, fwsj as time ,TITLE as title ,'业务编号：'||caseno||',发文名称：'||title||',发文时间：'||fwsj ||',立搞单位：'|| ligaounit ||',立搞人：'||ligaoman as content from ${table} where time > #{updatetime}")
-    List<Map<String,Object>> find(@Param("table") String table, @Param("updatetime") String updatetime);
+    List<Map<String,Object>> updateGw(@Param("table") String table, @Param("updatetime") String updatetime);
 
     @Select("SELECT 'KC' TYPE,BJNO AS ID, 行政区代码 qy,inputdate AS TIME,项目名称 AS title, '报建编号：' || BJNO || '业务编号：' || BSNUM || ',项目名称：' || 项目名称 || ',行政区名称：' || 行政区名称 || ',原许可证号：' || 原许可证号 || ',批准文号：' || 批准文号 || ',录入时间：' || inputdate || ',申请人：' || 申请人 || ',矿山名称：' || 矿山名称 || ',总面积' || 总面积 ||',总储量' || 总储量 || ',区域范围' || 区域范围 AS CONTENT FROM SA.VIEW_MAP_CK_BJINFO")
     List<Map<String,Object>> ckBjinfo();
@@ -33,7 +31,18 @@ public interface ViewMapper {
     @Select("SELECT 'KC' TYPE,BJNO AS ID, 行政区代码 qy,inputdate AS TIME,项目名称 AS title, '报建编号：' || BJNO || '业务编号：' || BSNUM || ',项目名称：' || 项目名称 || ',行政区名称：' || 行政区名称 || ',原许可证号：' || 原许可证号 || ',批准文号：' || 批准文号 || ',录入时间：' || inputdate || ',申请人：' || 申请人 || ',矿山名称：' || 矿山名称 || ',总面积' || 总面积 || ',区域范围' || 区域范围 AS CONTENT FROM SA.VIEW_MAP_TK_BJINFO")
     List<Map<String,Object>> tkBjinfo();
 
-    @Select("SELECT * from ${table} where BJNO = #{pk}")
-    Map<String,Object> findOne(@Param(value = "table") String table, @Param(value = "pk") String pk);
+/*    @Select("SELECT * from ${table} where BJNO = #{pk}")
+    Map<String,Object> findKc(@Param(value = "table") String table, @Param(value = "pk") String pk);
 
+    @Select("SELECT * from ${table} where caseno = #{pk}")
+    Map<String,Object> findGw(@Param(value = "table") String table, @Param(value = "pk") String pk);*/
+
+    @SelectProvider(type = CreateSql.class, method = "selectWithParamSql")
+    Map<String,Object> selectWithId(Map<String,Object> params);
+
+    @Select("SELECT * from ${table}")
+    List<Map<String,Object>> select(@Param("table")String table);
+
+    @Select("SELECT * from ${table}")
+    List<IndexSource> selectIndex(@Param("table")String table);
 }

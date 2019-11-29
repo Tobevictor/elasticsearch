@@ -129,6 +129,30 @@ public interface ElasticsearchService {
 	ServiceResult bulkDelete(String index, List<SourceEntity> source);
 
 	/**
+	 * 异步批量索引
+	 * @param index 索引
+	 * @param source 索引数据
+	 * @return ServiceResult
+	 */
+	ServiceResult asycBulkIndex(String index, List<SourceEntity> source);
+
+	/**
+	 * 异步批量更新
+	 * @param index 索引
+	 * @param source 索引数据
+	 * @return ServiceResult
+	 */
+	ServiceResult asycBulkUpdate(String index, List<SourceEntity> source);
+
+	/**
+	 * 批量删除
+	 * @param index 索引
+	 * @param source 索引数据
+	 * @return ServiceResult
+	 */
+	ServiceResult asycBulkDelete(String index, List<SourceEntity> source);
+
+	/**
 	 * 全文查询
 	 * @param index 索引
 	 * @param queryType 全文查询类型

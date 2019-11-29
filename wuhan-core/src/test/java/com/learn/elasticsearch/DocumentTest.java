@@ -23,12 +23,12 @@ public class DocumentTest {
 	@Before
 	public void init(){
 		client = EsClientInit.getInstance().getClient();
-		indice = new Indice(client);
+		indice = Indice.getInstance(client);
 		index = "dshuyou0";
 	}
 	@Test
 	public void index() throws IOException {
-		Document document = new Document(client);
+		Document document = Document.getInstance(client);
 		Map<String, Object> map = new HashMap<>();
 		map.put("point","POINT(-118.1850357 34.1645203)");
 		Object o = document.index(index,map);
@@ -45,7 +45,7 @@ public class DocumentTest {
 				" \"point\":{\"type\": \"Point\", \"coordinates\": [-118.7435, 37.4333333]},"+
 				"\"longitude\":-118.7435}";
 
-		Document document = new Document(client);
+		Document document = Document.getInstance(client);
 		Object object = document.index(index,json);
 		System.out.println(object);
 	}
@@ -56,7 +56,7 @@ public class DocumentTest {
 
 	@Test
 	public void delete() throws IOException {
-		Document document = new Document(client);
+		Document document = Document.getInstance(client);
 		boolean result = document.delete(index,"s5zQ3GwBiAEaKMA44SCd");
 		System.out.println(result);
 	}
@@ -113,7 +113,7 @@ public class DocumentTest {
 
 	@Test
 	public void bulkProcessorIndex() throws IOException, InterruptedException {
-		Document document = new Document(client);
+		Document document = Document.getInstance(client);
 		SourceEntity sourceEntity = new SourceEntity();
 		sourceEntity.setId("0");
 		Map<String, Object> map = new HashMap<>();

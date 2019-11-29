@@ -43,15 +43,12 @@ public class Indice {
 
 	private RestHighLevelClient client;
 
-	public Indice(RestHighLevelClient client){
+	private Indice(RestHighLevelClient client){
 		this.client = client;
 	}
 
-	public Indice(){}
-
-	public Indice setClient(RestHighLevelClient client){
-		this.client = client;
-		return this;
+	public static Indice getInstance(RestHighLevelClient client){
+		return new Indice(client);
 	}
 
 	/**

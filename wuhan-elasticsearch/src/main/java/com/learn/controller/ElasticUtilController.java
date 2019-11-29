@@ -3,7 +3,9 @@ package com.learn.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.learn.common.ServiceResult;
 import com.learn.elasticsearch.model.SourceEntity;
+import com.learn.mbg.mapper1.ViewMapper1;
 import com.learn.mbg.mapper4.ViewMapper;
+import com.learn.model.IndexSource;
 import com.learn.service.ElasticsearchService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
@@ -94,7 +96,7 @@ public class ElasticUtilController {
 	public ServiceResult bulkIndex(@RequestParam String index,
 								   @RequestParam String table,
 								   @RequestParam String idColumn){
-		List<Map<String, Object>> list = viewMapper.findAll(table);
+		List<Map<String, Object>> list = viewMapper.select(table);
 		List<SourceEntity> bulk = new ArrayList<>();
 		for (Map<String, Object> r : list){
 			SourceEntity sourceEntity = new SourceEntity();
@@ -105,7 +107,40 @@ public class ElasticUtilController {
 		return elasticsearchService.bulkIndex(index,bulk);
 	}
 
-	@ApiOperation("采矿")
+	@ApiOperation("全量索引1")
+	@RequestMapping(value = "/bulkindex1",method = RequestMethod.GET)
+	@ResponseBody
+	public ServiceResult bulkIndex1(@RequestParam String index,
+								   @RequestParam String table){
+		List<IndexSource> list = viewMapper.selectIndex(table);
+		List<SourceEntity> bulk = new ArrayList<>();
+		for (IndexSource r : list){
+			SourceEntity sourceEntity = new SourceEntity();
+			sourceEntity.setSource(JSONObject.toJSONString(r));
+			sourceEntity.setId(r.getId());
+			bulk.add(sourceEntity);
+		}
+		return elasticsearchService.bulkIndex(index,bulk);
+	}
+
+	@ApiOperation("全量异步索引")
+	@RequestMapping(value = "/asycindex",method = RequestMethod.GET)
+	@ResponseBody
+	public ServiceResult asycIndex(@RequestParam String index,
+								   @RequestParam String table,
+								   @RequestParam String idColumn){
+		List<Map<String, Object>> list = viewMapper.select(table);
+		List<SourceEntity> bulk = new ArrayList<>();
+		for (Map<String, Object> r : list){
+			SourceEntity sourceEntity = new SourceEntity();
+			sourceEntity.setSource(JSONObject.toJSONString(r));
+			sourceEntity.setId(String.valueOf(r.get(idColumn)));
+			bulk.add(sourceEntity);
+		}
+		return elasticsearchService.asycBulkIndex(index,bulk);
+	}
+
+	/*@ApiOperation("采矿")
 	@RequestMapping(value = "/caikuang",method = RequestMethod.GET)
 	@ResponseBody
 	public ServiceResult caikuang(@RequestParam String index,
@@ -162,7 +197,7 @@ public class ElasticUtilController {
 									@RequestParam String table,
 									@RequestParam String idColumn,
 									@RequestParam String updateTime){
-		List<Map<String, Object>> list = viewMapper.find(table,updateTime);
+		List<Map<String, Object>> list = viewMapper.updateGw(table,updateTime);
 		if(list == null || list.isEmpty()){
 			return ServiceResult.isNull();
 		}
@@ -174,5 +209,5 @@ public class ElasticUtilController {
 			bulk.add(sourceEntity);
 		}
 		return elasticsearchService.bulkUpdate(index,bulk);
-	}
+	}*/
 }

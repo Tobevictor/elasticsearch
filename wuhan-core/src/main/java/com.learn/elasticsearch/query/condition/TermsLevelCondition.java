@@ -54,10 +54,6 @@ public class TermsLevelCondition extends BaseCondition implements Serializable {
 		return field;
 	}
 
-	public void setField(String field) {
-		this.field = field;
-	}
-
 	public String[] getIds() {
 		return ids;
 	}

@@ -14,10 +14,10 @@ public class BoolCondition extends BaseCondition implements Serializable {
 	private String[] queryType;
 	private BaseCondition[] conditions;
 
-	public BoolCondition(){super();}
-
-	public BoolCondition(int from, int size){
-		super(from,size);
+	public BoolCondition(String[] queryType, BaseCondition[] conditions){
+		super();
+		this.queryType = queryType;
+		this.conditions = conditions;
 	}
 
 	public BoolCondition(int from, int size, String[] queryType, BaseCondition[] conditions){

@@ -14,16 +14,17 @@ public class FullTextCondition extends BaseCondition implements Serializable {
 	private String value;
 
 	public FullTextCondition(){
-		super();
-	}
-
-	public FullTextCondition(int from, int size){
-		super(from, size);
 	}
 
 	public FullTextCondition(String field, String value){
 		super();
 		this.field = field;
+		this.value = value;
+	}
+
+	public FullTextCondition(String[] fields, String value){
+		super();
+		this.fields = fields;
 		this.value = value;
 	}
 

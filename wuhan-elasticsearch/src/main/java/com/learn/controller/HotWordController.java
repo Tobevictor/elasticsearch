@@ -24,7 +24,7 @@ public class HotWordController {
 	private HotWordService hotWordService;
 
 	@ApiOperation("导入热词")
-	@RequestMapping(value = "/set",method = RequestMethod.PUT)
+	@RequestMapping(value = "/set",method = RequestMethod.GET)
 	@ResponseBody
 	public ServiceResult setHotWord(@RequestParam(defaultValue = "hotword") String key,
 								   @RequestParam String value,
@@ -35,7 +35,7 @@ public class HotWordController {
 	}
 
 	@ApiOperation("增加热词频率")
-	@RequestMapping(value = "/increment",method = RequestMethod.PUT)
+	@RequestMapping(value = "/increment",method = RequestMethod.GET)
 	@ResponseBody
 	@HotWord
 	public ServiceResult increment(@RequestParam(defaultValue = "hotword") String key,
@@ -47,7 +47,7 @@ public class HotWordController {
 
 
 	@ApiOperation("热词列表")
-	@RequestMapping(value = "/list",method = RequestMethod.PUT)
+	@RequestMapping(value = "/list",method = RequestMethod.GET)
 	@ResponseBody
 	public ServiceResult getHotWord(@RequestParam(defaultValue = "hotword") String key,
 									 @RequestParam(defaultValue = "0") long start,

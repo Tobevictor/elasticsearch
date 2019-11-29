@@ -39,8 +39,8 @@ public abstract class BaseQuery {
 	protected String index;
 	protected RestHighLevelClient client;
 	protected SearchSourceBuilder sourceBuilder;
-	protected static int FROM = 0;
-	protected static int SIZE = 100;
+	protected final int FROM = 0;
+	protected final int SIZE = 100;
 
 
 	protected final int threadNum;
