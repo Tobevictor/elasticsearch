@@ -13,8 +13,9 @@ import com.learn.elasticsearch.query.query_enum.TermsEnum;
 import com.learn.elasticsearch.suggest.Suggestion;
 import com.learn.service.AsycService;
 import com.learn.service.ElasticsearchService;
-import org.apache.log4j.Logger;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ import static com.learn.elasticsearch.Indice.*;
  */
 @Service
 public class ElasticsearchServiceImpl implements ElasticsearchService {
-	private Logger logger = Logger.getLogger(ElasticsearchServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(ElasticsearchServiceImpl.class);
 	@Autowired
 	private RestHighLevelClient client;
 	@Autowired

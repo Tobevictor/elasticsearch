@@ -25,7 +25,7 @@ import java.util.Map;
 @Component
 @RabbitListener(queues = "rabbit.data.transport")
 public class DataReceiver<T extends Map<String, Object>> {
-    private static Logger logger = LoggerFactory.getLogger(DataReceiver.class);
+    private static final Logger logger = LoggerFactory.getLogger(DataReceiver.class);
     @Autowired
     private ElasticsearchService elasticsearchService;
     @Value("${elastic.index}")
@@ -48,10 +48,10 @@ public class DataReceiver<T extends Map<String, Object>> {
                 elasticsearchService.bulkIndex(index,bulk);
             }
             logger.info("Consumption data success");
-            channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (IOException e) {
             logger.error(e.getMessage());//TODO 业务处理    记录未被消费的消息id，并返回队列继续发送
-            channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+            channel.basicRecover(true);
         }
     }
 }

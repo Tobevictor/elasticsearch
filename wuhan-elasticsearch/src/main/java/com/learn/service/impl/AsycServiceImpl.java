@@ -4,7 +4,8 @@ import com.learn.elasticsearch.Document;
 import com.learn.elasticsearch.Indice;
 import com.learn.elasticsearch.model.SourceEntity;
 import com.learn.service.AsycService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ import static com.learn.elasticsearch.Indice.*;
  */
 @Service
 public class AsycServiceImpl implements AsycService {
-    private Logger logger = Logger.getLogger(AsycServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AsycServiceImpl.class);
 
     @Async
     @Override

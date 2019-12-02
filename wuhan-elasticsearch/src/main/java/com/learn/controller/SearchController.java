@@ -95,7 +95,7 @@ public class SearchController {
     }
 
     @ApiOperation("检索联想词")
-    @RequestMapping(value = "/extendWord",method = RequestMethod.POST)
+    @RequestMapping(value = "/extendWord",method = RequestMethod.GET)
     @ResponseBody
     @HotWord
     public ServiceResult extendWord(@RequestParam(required = false,defaultValue = "") String index,

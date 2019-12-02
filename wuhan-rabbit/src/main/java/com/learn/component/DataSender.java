@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,13 +16,13 @@ import java.util.UUID;
  * @date 2019/11/1 10:45
  */
 @Component
-public class DataSender<T> implements RabbitTemplate.ConfirmCallback {
-    public Logger logger = LoggerFactory.getLogger(DataSender.class);
+public class DataSender<T> {
+    private static final Logger logger = LoggerFactory.getLogger(DataSender.class);
     private RabbitTemplate rabbitTemplate;
     @Autowired
     public DataSender(RabbitTemplate rabbitTemplate){
         this.rabbitTemplate = rabbitTemplate;
-        rabbitTemplate.setConfirmCallback(this);
+        //rabbitTemplate.setConfirmCallback(this);
     }
 
     public void sendMessage(final long delayTime, List<T> object){
@@ -35,7 +34,7 @@ public class DataSender<T> implements RabbitTemplate.ConfirmCallback {
         logger.info("Send delay message size is : {}" ,object.size());
     }
 
-    @Override
+    /*@Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         logger.info(" Callback id: {}", correlationData.getId());
         if (ack) {
@@ -43,5 +42,5 @@ public class DataSender<T> implements RabbitTemplate.ConfirmCallback {
         } else {
             logger.info("Message sent failed: {}" , cause);
         }
-    }
+    }*/
 }

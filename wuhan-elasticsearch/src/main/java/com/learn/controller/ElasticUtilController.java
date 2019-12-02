@@ -3,12 +3,14 @@ package com.learn.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.learn.common.ServiceResult;
 import com.learn.elasticsearch.model.SourceEntity;
-import com.learn.mbg.mapper1.ViewMapper1;
 import com.learn.mbg.mapper4.ViewMapper;
 import com.learn.model.IndexSource;
 import com.learn.service.ElasticsearchService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +26,7 @@ import java.util.*;
 @RequestMapping("/elastic/indice")
 @CrossOrigin
 public class ElasticUtilController {
-	private Logger logger = Logger.getLogger(ElasticUtilController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ElasticUtilController.class);
 	@Autowired
 	private ElasticsearchService elasticsearchService;
 	@Resource
@@ -33,6 +35,7 @@ public class ElasticUtilController {
 	@ApiOperation("构建默认索引")
 	@RequestMapping(value = "/create",method = RequestMethod.GET)
 	@ResponseBody
+	@ApiImplicitParam(name = "index",value = "索引名称",required = true,dataType = "String",paramType = "query")
 	public ServiceResult createIndex(@RequestParam String index){
 		return elasticsearchService.createIndex(index);
 	}
@@ -40,6 +43,9 @@ public class ElasticUtilController {
 	@ApiOperation("构建自定义索引")
 	@RequestMapping(value = "/createbycustom",method = RequestMethod.POST)
 	@ResponseBody
+	@ApiImplicitParams({@ApiImplicitParam(name = "index",value = "索引名称",required = true,dataType = "String",paramType = "query"),
+						@ApiImplicitParam(name = "setting",value = "配置",required = true,dataType = "String",paramType = "query"),
+						@ApiImplicitParam(name = "mapping",value = "映射",required = true,dataType = "String",paramType = "query")})
 	public ServiceResult createByCustom(@RequestParam String index,
 								 @RequestParam String setting,
 								 @RequestParam String mapping){
@@ -47,16 +53,20 @@ public class ElasticUtilController {
 	}
 
 	@ApiOperation("更新映射")
-	@RequestMapping(value = "/putmapping",method = RequestMethod.POST)
+	@RequestMapping(value = "/putmapping",method = RequestMethod.PUT)
 	@ResponseBody
+	@ApiImplicitParams({@ApiImplicitParam(name = "index",value = "索引名称",required = true,dataType = "String",paramType = "query"),
+						@ApiImplicitParam(name = "mapping",value = "映射",required = true,dataType = "String",paramType = "query")})
 	public ServiceResult putMapping(@RequestParam String index,
 								 @RequestParam String mapping){
 		return elasticsearchService.putMapping(index,mapping);
 	}
 
 	@ApiOperation("更新配置")
-	@RequestMapping(value = "/updateset",method = RequestMethod.POST)
+	@RequestMapping(value = "/updateset",method = RequestMethod.PUT)
 	@ResponseBody
+	@ApiImplicitParams({@ApiImplicitParam(name = "index",value = "索引名称",required = true,dataType = "String",paramType = "query"),
+						@ApiImplicitParam(name = "setting",value = "配置",required = true,dataType = "String",paramType = "query")})
 	public ServiceResult updateSet(@RequestParam String index,
 								 @RequestParam String setting){
 		return elasticsearchService.updateSetting(index,setting);
@@ -72,6 +82,7 @@ public class ElasticUtilController {
 	@ApiOperation("查看索引配置")
 	@RequestMapping(value = "/settings",method = RequestMethod.GET)
 	@ResponseBody
+	@ApiImplicitParam(name = "index",value = "索引名称",required = true,dataType = "String",paramType = "query")
 	public ServiceResult getSettings(@RequestParam String index){
 		return elasticsearchService.getSetting(index);
 	}
@@ -79,6 +90,7 @@ public class ElasticUtilController {
 	@ApiOperation("查看索引映射")
 	@RequestMapping(value = "/mapping",method = RequestMethod.GET)
 	@ResponseBody
+	@ApiImplicitParam(name = "index",value = "索引名称",required = true,dataType = "String",paramType = "query")
 	public ServiceResult getMapping(@RequestParam String index){
 		return elasticsearchService.getMapping(index);
 	}
@@ -86,6 +98,7 @@ public class ElasticUtilController {
 	@ApiOperation("删除索引")
 	@RequestMapping(value = "/delete",method = RequestMethod.GET)
 	@ResponseBody
+	@ApiImplicitParam(name = "index",value = "索引名称",required = true,dataType = "String",paramType = "query")
 	public ServiceResult deleteIndex(@RequestParam String index){
 		return elasticsearchService.deleteIndex(index);
 	}
@@ -93,6 +106,9 @@ public class ElasticUtilController {
 	@ApiOperation("全量索引")
 	@RequestMapping(value = "/bulkindex",method = RequestMethod.GET)
 	@ResponseBody
+	@ApiImplicitParams({@ApiImplicitParam(name = "index",value = "索引名称",required = true,dataType = "String",paramType = "query"),
+						@ApiImplicitParam(name = "table",value = "元数据表名称",required = true,dataType = "String",paramType = "query"),
+						@ApiImplicitParam(name = "idColumn",value = "主键",required = true,dataType = "String",paramType = "query")})
 	public ServiceResult bulkIndex(@RequestParam String index,
 								   @RequestParam String table,
 								   @RequestParam String idColumn){
@@ -110,6 +126,8 @@ public class ElasticUtilController {
 	@ApiOperation("全量索引1")
 	@RequestMapping(value = "/bulkindex1",method = RequestMethod.GET)
 	@ResponseBody
+	@ApiImplicitParams({@ApiImplicitParam(name = "index",value = "索引名称",required = true,dataType = "String",paramType = "query"),
+						@ApiImplicitParam(name = "table",value = "元数据表名称",required = true,dataType = "String",paramType = "query")})
 	public ServiceResult bulkIndex1(@RequestParam String index,
 								   @RequestParam String table){
 		List<IndexSource> list = viewMapper.selectIndex(table);
@@ -126,6 +144,9 @@ public class ElasticUtilController {
 	@ApiOperation("全量异步索引")
 	@RequestMapping(value = "/asycindex",method = RequestMethod.GET)
 	@ResponseBody
+	@ApiImplicitParams({@ApiImplicitParam(name = "index",value = "索引名称",required = true,dataType = "String",paramType = "query"),
+						@ApiImplicitParam(name = "table",value = "元数据表名称",required = true,dataType = "String",paramType = "query"),
+						@ApiImplicitParam(name = "idColumn",value = "主键",required = true,dataType = "String",paramType = "query")})
 	public ServiceResult asycIndex(@RequestParam String index,
 								   @RequestParam String table,
 								   @RequestParam String idColumn){

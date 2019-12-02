@@ -29,15 +29,4 @@ public class CreateSql {
 
         }.toString();
     }
-
-    public static void main(String[] args){
-        Map<String,Object> map = new HashMap<>();
-        map.put("table","SA.VIEW_SEARCH_KC");
-        map.put("pk","bjno");
-        map.put("BJNO","123");
-
-        CreateSql createSql = new CreateSql();
-        String res = createSql.selectWithParamSql(map);
-        System.out.println(res);
-    }
 }
